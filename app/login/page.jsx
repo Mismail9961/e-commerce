@@ -49,17 +49,17 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-white py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full">
         <div className="bg-white rounded-2xl shadow-2xl p-8 border border-gray-100">
           {/* Header */}
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full mb-4">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-[#ea580c] rounded-full mb-4">
               <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
             </div>
-            <h2 className="text-3xl font-bold text-gray-900">
+            <h2 className="text-3xl font-bold text-[#ea580c]">
               Welcome Back
             </h2>
             <p className="mt-2 text-sm text-gray-600">
@@ -85,7 +85,7 @@ export default function LoginPage() {
                   name="email"
                   type="email"
                   required
-                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ea580c] focus:border-transparent transition"
                   placeholder="you@example.com"
                   value={formData.email}
                   onChange={(e) =>
@@ -111,7 +111,7 @@ export default function LoginPage() {
                   name="password"
                   type="password"
                   required
-                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ea580c] focus:border-transparent transition"
                   placeholder="Enter your password"
                   value={formData.password}
                   onChange={(e) =>
@@ -121,11 +121,11 @@ export default function LoginPage() {
               </div>
             </div>
 
-            {/* Forgot Password Link - FIXED */}
+            {/* Forgot Password Link */}
             <div className="flex items-center justify-end">
               <Link
                 href="/forgot-password"
-                className="text-sm font-medium text-blue-600 hover:text-blue-500 transition"
+                className="text-sm font-medium text-[#ea580c] hover:text-[#ff7c3f] transition"
               >
                 Forgot password?
               </Link>
@@ -135,7 +135,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-3 rounded-lg font-medium hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition transform hover:scale-[1.02] active:scale-[0.98]"
+              className="w-full bg-[#ea580c] text-white py-3 rounded-lg font-medium hover:bg-[#ff7c3f] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#ea580c] disabled:opacity-50 disabled:cursor-not-allowed transition transform hover:scale-[1.02] active:scale-[0.98]"
             >
               {loading ? (
                 <span className="flex items-center justify-center">
@@ -165,7 +165,7 @@ export default function LoginPage() {
           <button
             type="button"
             onClick={handleGoogleSignIn}
-            className="w-full flex justify-center items-center gap-3 py-3 px-4 border-2 border-gray-200 rounded-lg shadow-sm bg-white hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition transform hover:scale-[1.02] active:scale-[0.98]"
+            className="w-full flex justify-center items-center gap-3 py-3 px-4 border-2 border-[#ea580c] rounded-lg shadow-sm bg-white hover:bg-[#fff5f0] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#ea580c] transition transform hover:scale-[1.02] active:scale-[0.98]"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path
@@ -185,7 +185,7 @@ export default function LoginPage() {
                 d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
               />
             </svg>
-            <span className="text-sm font-medium text-gray-700">Sign in with Google</span>
+            <span className="text-sm font-medium text-[#ea580c]">Sign in with Google</span>
           </button>
 
           {/* Sign Up Link */}
@@ -194,7 +194,7 @@ export default function LoginPage() {
               Don't have an account?{" "}
               <Link
                 href="/signup"
-                className="font-semibold text-blue-600 hover:text-blue-500 transition"
+                className="font-semibold text-[#ea580c] hover:text-[#ff7c3f] transition"
               >
                 Sign up for free
               </Link>

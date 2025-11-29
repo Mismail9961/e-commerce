@@ -13,6 +13,8 @@
     "bcryptjs": "^3.0.3",
     "cloudinary": "^2.8.0",
     "crypto": "^1.0.1",
+    "framer-motion": "^12.23.24",
+    "lucide-react": "^0.555.0",
     "mongodb": "^7.0.0",
     "mongoose": "^9.0.0",
     "nanoid": "^5.1.6",

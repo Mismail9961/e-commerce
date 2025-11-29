@@ -5,18 +5,25 @@ import Link from "next/link";
 import { useAppContext } from "@/context/AppContext";
 import { useSession, signOut } from "next-auth/react";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 const Navbar = () => {
   const { router, getCartCount } = useAppContext();
   const { data: session, status } = useSession();
+  const pathname = usePathname();
   const [showDropdown, setShowDropdown] = useState(false);
 
   const canAccessSellerDashboard =
     session?.user?.role === "seller" || session?.user?.role === "admin";
 
-  const handleSignOut = () => {
-    signOut({ callbackUrl: "/login" });
+  const handleSignOut = async () => {
     setShowDropdown(false);
+    
+    // Sign out without redirecting
+    await signOut({ redirect: false });
+    
+    // Reload the current page to clear session
+    window.location.reload();
   };
 
   // Cart Count
@@ -40,10 +47,10 @@ const Navbar = () => {
         <Link href="/all-products" className="hover:text-gray-900 transition">
           Shop
         </Link>
-        <Link href="/" className="hover:text-gray-900 transition">
+        <Link href="/about-us" className="hover:text-gray-900 transition">
           About Us
         </Link>
-        <Link href="/" className="hover:text-gray-900 transition">
+        <Link href="/contact-us" className="hover:text-gray-900 transition">
           Contact
         </Link>
 
@@ -112,14 +119,7 @@ const Navbar = () => {
                   </p>
                 </div>
                 <Link
-                  href="/profile"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
-                  onClick={() => setShowDropdown(false)}
-                >
-                  My Profile
-                </Link>
-                <Link
-                  href="/orders"
+                  href="/my-orders"
                   className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
                   onClick={() => setShowDropdown(false)}
                 >
@@ -203,14 +203,7 @@ const Navbar = () => {
                   </p>
                 </div>
                 <Link
-                  href="/profile"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
-                  onClick={() => setShowDropdown(false)}
-                >
-                  My Profile
-                </Link>
-                <Link
-                  href="/orders"
+                  href="/my-orders"
                   className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
                   onClick={() => setShowDropdown(false)}
                 >
