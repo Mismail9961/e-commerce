@@ -23,10 +23,10 @@ const MyOrders = () => {
         setLoading(true);
         setError(null);
         try {
-            const { data } = await axios.get("/api/order/get-orders", { 
-                withCredentials: true 
+            const { data } = await axios.get("/api/order/get-orders", {
+                withCredentials: true
             });
-            
+
             if (data.success) {
                 setOrders(data.orders || []);
             } else {
@@ -61,7 +61,7 @@ const MyOrders = () => {
     }, [sessionStatus, session?.user?.id]);
 
     const getStatusColor = (status) => {
-        switch(status) {
+        switch (status) {
             case "Delivered":
                 return "bg-green-50 text-green-700 border-green-200";
             case "Cancelled":
@@ -76,7 +76,7 @@ const MyOrders = () => {
     };
 
     const getPaymentColor = (paymentType) => {
-        switch(paymentType) {
+        switch (paymentType) {
             case "Paid":
                 return "text-green-600";
             case "Refunded":
@@ -149,10 +149,10 @@ const MyOrders = () => {
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                             </svg>
                                             <span className="text-xs sm:text-sm text-gray-600">
-                                                {order.date ? new Date(order.date).toLocaleDateString('en-US', { 
-                                                    month: 'short', 
-                                                    day: 'numeric', 
-                                                    year: 'numeric' 
+                                                {order.date ? new Date(order.date).toLocaleDateString('en-US', {
+                                                    month: 'short',
+                                                    day: 'numeric',
+                                                    year: 'numeric'
                                                 }) : "N/A"}
                                             </span>
                                         </div>
@@ -245,18 +245,20 @@ const MyOrders = () => {
 
                                         {/* Track Order Button */}
                                         <div className="mt-4 flex gap-2">
-                                            <button 
+                                            <button
                                                 className="flex-1 sm:flex-none px-4 py-2 bg-orange-500 text-white text-sm font-medium rounded-lg hover:bg-orange-600 transition-colors"
                                                 onClick={() => toast.info('Tracking feature coming soon!')}
                                             >
                                                 Track Order
                                             </button>
-                                            <button 
-                                                className="px-4 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors"
-                                                onClick={() => toast.info('Support feature coming soon!')}
-                                            >
-                                                Need Help?
-                                            </button>
+                                            <a href="/contact-us">
+                                                <button
+                                                    className="px-4 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors"
+                                                    onClick={() => toast.info('Support feature coming soon!')}
+                                                >
+                                                    Need Help?
+                                                </button>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>

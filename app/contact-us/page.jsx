@@ -91,7 +91,7 @@ export default function ContactUs() {
                   <Phone className="w-5 h-5" />
                   <div>
                     <dt className="font-medium">Phone</dt>
-                    <dd className="text-white/80">+92 310 2437201</dd>
+                    <dd className="text-white/80">+92 330 2533241</dd>
                   </div>
                 </div>
 
@@ -99,7 +99,7 @@ export default function ContactUs() {
                   <Mail className="w-5 h-5" />
                   <div>
                     <dt className="font-medium">Email</dt>
-                    <dd className="text-white/80">sheikhmuhammadismail79@gmail.com</dd>
+                    <dd className="text-white/80">7even86gamehub@gmail.com</dd>
                   </div>
                 </div>
 
