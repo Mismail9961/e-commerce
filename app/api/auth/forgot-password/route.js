@@ -39,8 +39,8 @@ export async function POST(req) {
 
     // Generate secure token
     const token = crypto.randomBytes(32).toString("hex");
-    user.resetToken = crypto.createHash("sha256").update(token).digest("hex");
-    user.resetTokenExpiry = Date.now() + 3600000; // 1 hour
+    user.resetPasswordToken = crypto.createHash("sha256").update(token).digest("hex");
+    user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
     await user.save();
 
     // Configure Gmail transporter
