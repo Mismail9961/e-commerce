@@ -116,10 +116,10 @@ const ProductList = () => {
                         </td>
 
                         <td className="px-4 py-3 font-semibold text-gray-900">
-                          ${product.offerPrice || product.price}
+                          PKR{product.offerPrice || product.price}
                           {product.offerPrice && (
                             <span className="ml-2 text-xs text-gray-400 line-through">
-                              ${product.price}
+                              PKR{product.price}
                             </span>
                           )}
                         </td>
