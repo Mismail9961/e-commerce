@@ -6,6 +6,8 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -67,12 +69,14 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-red-50 py-8 px-4 sm:px-6 lg:px-8">
+    <>
+    <Navbar/>
+    <div className="min-h-screen flex items-center justify-center bg-white py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full">
         <div className="bg-white rounded-xl sm:rounded-2xl shadow-2xl p-6 sm:p-8 border border-gray-100">
           {/* Header */}
           <div className="text-center mb-6 sm:mb-8">
-            <div className="inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-[#EA580C] to-[#C2410C] rounded-full mb-3 sm:mb-4">
+            <div className="inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 bg-[#9D0208] rounded-full mb-3 sm:mb-4">
               <svg className="w-7 h-7 sm:w-8 sm:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
               </svg>
@@ -81,7 +85,7 @@ export default function SignupPage() {
               Create Account
             </h2>
             <p className="mt-2 text-xs sm:text-sm text-gray-600">
-              Join QuickCart today and start shopping
+              Join 7even86gamehub today and start shopping
             </p>
           </div>
 
@@ -170,7 +174,7 @@ export default function SignupPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-[#EA580C] to-[#C2410C] text-white py-2.5 sm:py-3 rounded-lg font-medium hover:from-[#C2410C] hover:to-[#9A3412] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#EA580C] disabled:opacity-50 disabled:cursor-not-allowed transition transform hover:scale-[1.02] active:scale-[0.98] text-sm sm:text-base"
+              className="w-full  bg-[#9D0208] text-white py-2.5 sm:py-3 rounded-lg font-medium  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#EA580C] disabled:opacity-50 disabled:cursor-not-allowed transition transform hover:scale-[1.02] active:scale-[0.98] text-sm sm:text-base"
             >
               {loading ? (
                 <span className="flex items-center justify-center">
@@ -229,7 +233,7 @@ export default function SignupPage() {
               Already have an account?{" "}
               <Link
                 href="/login"
-                className="font-semibold text-[#EA580C] hover:text-[#C2410C] transition"
+                className="font-semibold text-[#9D0208] hover:text-black transition"
               >
                 Sign in
               </Link>
@@ -238,5 +242,7 @@ export default function SignupPage() {
         </div>
       </div>
     </div>
+    <Footer/>
+    </>
   );
 }

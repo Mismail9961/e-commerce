@@ -47,8 +47,14 @@ import product_details_page_apple_earphone_image3 from "./product_details_page_a
 import product_details_page_apple_earphone_image4 from "./product_details_page_apple_earphone_image4.png";
 import product_details_page_apple_earphone_image5 from "./product_details_page_apple_earphone_image5.png";
 import mainlogo from "./unamed3.jpg"
+import HeadBanner from "./banner1.webp"
+import HeadBanner1 from "./banner3.jpg"
+import HeadBanner2 from "./banner4.jpg"
 
 export const assets = {
+  HeadBanner2,
+  HeadBanner,
+  HeadBanner1,
   mainlogo,
   logo,
   search_icon,

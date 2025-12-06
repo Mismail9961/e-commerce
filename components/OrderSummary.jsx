@@ -218,18 +218,18 @@ const OrderSummary = ({ cartItems = {}, cartProducts = {} }) => {
 
         <div className="space-y-4">
           <div className="flex justify-between text-base font-medium">
-            <p className="uppercase text-gray-600">Items {cartTotals.itemCount}</p>
-            <p className="text-gray-800">{currency}{cartTotals.subtotal}</p>
+            <p className="uppercase text-[#9D0208]">Items {cartTotals.itemCount}</p>
+            <p className="text-white">{currency}{cartTotals.subtotal}</p>
           </div>
           <div className="flex justify-between">
-            <p className="text-gray-600">Shipping Fee</p>
-            <p className="font-medium text-gray-800">Free</p>
+            <p className="text-[#9D0208]">Shipping Fee</p>
+            <p className="font-medium text-white">Free</p>
           </div>
           <div className="flex justify-between">
-            <p className="text-gray-600">Tax (2%)</p>
-            <p className="font-medium text-gray-800">{currency}{cartTotals.tax}</p>
+            <p className="text-[#9D0208]">Tax (2%)</p>
+            <p className="font-medium text-white">{currency}{cartTotals.tax}</p>
           </div>
-          <div className="flex justify-between text-lg md:text-xl font-medium border-t pt-3">
+          <div className="flex justify-between text-white text-lg md:text-xl font-medium border-t pt-3">
             <p>Total</p>
             <p>{currency}{cartTotals.total}</p>
           </div>
@@ -239,7 +239,7 @@ const OrderSummary = ({ cartItems = {}, cartProducts = {} }) => {
       <button 
         onClick={createOrder} 
         disabled={isPlacingOrder || cartItemIds.length === 0}
-        className={`w-full bg-orange-600 text-white py-3 mt-5 hover:bg-orange-700 transition ${
+        className={`w-full bg-[#22333b] text-white py-3 mt-5 hover:bg-[#9D0208] transition ${
           isPlacingOrder || cartItemIds.length === 0 ? 'opacity-50 cursor-not-allowed' : ''
         }`}
       >

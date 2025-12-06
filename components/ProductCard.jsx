@@ -8,57 +8,79 @@ import { useAppContext } from "@/context/AppContext";
 const ProductCard = ({ product }) => {
   const { currency, router } = useAppContext();
 
-  // Get the first image or use a placeholder
   const productImage = product?.image?.[0] || assets.upload_area;
-  // Use offerPrice if available, otherwise use regular price
   const displayPrice = product?.offerPrice || product?.price || 0;
+  const hasOffer = product?.offerPrice && product?.price && product.offerPrice < product.price;
 
   return (
     <div
-      onClick={() => {
-        router.push("/product/" + product._id);
-      }}
-      className="flex flex-col items-start gap-1 max-w-[200px] w-full cursor-pointer"
+      onClick={() => router.push("/product/" + product._id)}
+      className="flex flex-col gap-2 w-full cursor-pointer group"
     >
-      <div className="group relative bg-gray-500/10 rounded-lg w-full h-52 flex items-center justify-center overflow-hidden">
+      {/* Image Container */}
+      <div className="relative bg-white/5 border border-white/10 w-full aspect-[3/4] flex items-center justify-center overflow-hidden">
+        {/* Sale Badge */}
+        {hasOffer && (
+          <div className="absolute top-2 left-2 z-10 bg-[#9d0208] text-white text-xs font-bold px-2.5 py-1">
+            Sale
+          </div>
+        )}
+
         <Image
           src={productImage}
           alt={product?.name || "Product"}
-          className="group-hover:scale-105 transition-transform object-cover w-4/5 h-4/5 md:w-full md:h-full"
-          width={800}
-          height={800}
+          className="group-hover:scale-105 transition-transform duration-500 object-cover w-full h-full"
+          width={400}
+          height={500}
         />
-        <button className="absolute top-2 right-2 bg-white p-2 rounded-full shadow-md">
-          <Image
-            className="h-3 w-3"
-            src={assets.heart_icon}
-            alt="heart_icon"
-          />
-        </button>
+
+
       </div>
 
-      <p className="md:text-base font-medium pt-2 w-full truncate">{product?.name || "Unnamed Product"}</p>
-      <p className="w-full text-xs text-gray-500/70 max-sm:hidden truncate">{product?.description || ""}</p>
+      {/* Product Info */}
+      <div className="flex flex-col gap-1.5 px-1">
+        {/* Product Name */}
+        <p className="text-sm sm:text-base font-semibold text-white truncate">
+          {product?.name || "Unnamed Product"}
+        </p>
 
-      <div className="flex items-center gap-2">
-        <p className="text-xs">{4.5}</p>
-        <div className="flex items-center gap-0.5">
-          {Array.from({ length: 5 }).map((_, index) => (
-            <Image
-              key={index}
-              className="h-3 w-3"
-              src={index < Math.floor(4) ? assets.star_icon : assets.star_dull_icon}
-              alt="star_icon"
-            />
-          ))}
+        {/* Description - Hidden on mobile */}
+        <p className="hidden md:block text-xs text-gray-400 truncate">
+          {product?.description || ""}
+        </p>
+
+        {/* Rating */}
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-0.5">
+            {Array.from({ length: 5 }).map((_, index) => (
+              <Image
+                key={index}
+                className="h-3 w-3"
+                src={index < 4 ? assets.star_icon : assets.star_dull_icon}
+                alt="star"
+              />
+            ))}
+          </div>
+          <p className="text-xs text-gray-400">(4.5)</p>
         </div>
-      </div>
 
-      <div className="flex items-end justify-between w-full mt-1">
-        <p className="text-base font-medium">{currency}{displayPrice}</p>
-        <button className="max-sm:hidden px-4 py-1.5 text-gray-500 border border-gray-500/20 rounded-full text-xs hover:bg-slate-50 transition">
-          Buy now
-        </button>
+        {/* Price and Buy Button */}
+        <div className="flex items-center justify-between mt-1">
+          <div className="flex items-center gap-2">
+            <p className="text-base sm:text-lg font-bold text-white">
+              {currency}{displayPrice}
+            </p>
+            {hasOffer && (
+              <p className="text-xs sm:text-sm text-gray-500 line-through">
+                {currency}{product.price}
+              </p>
+            )}
+          </div>
+          
+          <button className="hidden sm:flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-white bg-[#9d0208] hover:bg-[#7a0106] transition-colors">
+            Buy
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -14,14 +14,13 @@ const Home = () => {
     <>
       <TopBar />
       <Navbar/>
-      <div className="px-6 md:px-16 lg:px-32">
+      <div className="bg-black">
         <HeaderSlider />
         <HomeProducts />
-        <FeaturedProduct />
         <Banner />
-        <NewsLetter />
+        <Footer />
+
       </div>
-      <Footer />
     </>
   );
 };
