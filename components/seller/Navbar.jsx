@@ -8,7 +8,7 @@ const Navbar = () => {
   const { router } = useAppContext()
 
   return (
-    <div className='flex items-center justify-between border-b 
+    <div className='flex items-center bg-black justify-between border-b 
       px-3 py-2  
       sm:px-4 md:px-8 md:py-3'
     >
@@ -24,7 +24,7 @@ const Navbar = () => {
       />
 
       <button
-        className='bg-gray-700 text-white rounded-full
+        className='bg-[#9d0208] text-white rounded-full
         text-[10px] px-3 py-1
         sm:text-xs sm:px-5 sm:py-2
         md:text-sm md:px-7 md:py-2'

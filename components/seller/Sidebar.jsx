@@ -8,47 +8,45 @@ import { useSession } from 'next-auth/react';
 const SideBar = () => {
     const pathname = usePathname();
     const { data: session } = useSession();
-    
-    // Base menu items for all sellers
+
     const baseMenuItems = [
         { name: 'Add Product', path: '/seller', icon: assets.add_icon },
         { name: 'Product List', path: '/seller/product-list', icon: assets.product_list_icon },
         { name: 'Orders', path: '/seller/orders', icon: assets.order_icon },
     ];
 
-    // Admin/Seller only items
     const adminMenuItems = [
-        { name: 'All Users', path: '/seller/users', icon: assets.user_icon || assets.add_icon }, // Use user icon if available
-        { name: 'SEO Settings', path: '/seller/seo', icon: assets.seo_icon || assets.add_icon }, // Use SEO icon if available
+        { name: 'All Users', path: '/seller/users', icon: assets.user_icon || assets.add_icon },
+        { name: 'SEO Settings', path: '/seller/seo', icon: assets.seo_icon || assets.add_icon },
     ];
 
-    // Combine menu items based on user role
-    const menuItems = session?.user?.role === 'admin' || session?.user?.role === 'seller'
-        ? [...baseMenuItems, ...adminMenuItems]
-        : baseMenuItems;
+    const menuItems =
+        session?.user?.role === 'admin' || session?.user?.role === 'seller'
+            ? [...baseMenuItems, ...adminMenuItems]
+            : baseMenuItems;
 
     return (
-        <div className='md:w-64 w-16 border-r min-h-screen text-base border-gray-300 py-2 flex flex-col'>
+        <div className="md:w-64 w-16 bg-black min-h-screen border-r border-[#9d0208] flex flex-col py-2">
             {menuItems.map((item) => {
                 const isActive = pathname === item.path;
 
                 return (
-                    <Link href={item.path} key={item.name} passHref>
+                    <Link href={item.path} key={item.name}>
                         <div
-                            className={
-                                `flex items-center py-3 px-4 gap-3 transition-all duration-200 ${
-                                    isActive
-                                        ? "border-r-4 md:border-r-[6px] bg-orange-600/10 border-orange-500/90"
-                                        : "hover:bg-gray-100/90 border-white hover:border-r-2 hover:border-gray-300"
-                                }`
-                            }
+                            className={`flex items-center py-3 px-4 gap-3 transition-all duration-200 
+                                ${isActive
+                                    ? "bg-[#9d0208]/20 border-r-4 border-[#9d0208]"
+                                    : "hover:bg-[#9d0208]/10"
+                                }`}
                         >
                             <Image
                                 src={item.icon}
-                                alt={`${item.name.toLowerCase()}_icon`}
-                                className="w-7 h-7 flex-shrink-0"
+                                alt={item.name}
+                                className="w-7 h-7 brightness-0 invert"
                             />
-                            <p className='md:block hidden text-sm font-medium text-gray-700'>{item.name}</p>
+                            <p className="md:block hidden text-sm font-medium text-white">
+                                {item.name}
+                            </p>
                         </div>
                     </Link>
                 );

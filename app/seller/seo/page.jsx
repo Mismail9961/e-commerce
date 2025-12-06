@@ -1,4 +1,3 @@
-// app/admin/seo/page.jsx
 "use client";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
@@ -21,15 +20,15 @@ export default function SeoManagement() {
       url: "",
       siteName: "",
       locale: "en_US",
-      type: "website"
-    }
+      type: "website",
+    },
   });
   const [keywordInput, setKeywordInput] = useState("");
 
-  // Check authentication and authorization
+  // Auth check
   useEffect(() => {
     if (status === "loading") return;
-    
+
     if (status === "unauthenticated") {
       toast.error("Please login to access this page");
       router.push("/login");
@@ -37,13 +36,13 @@ export default function SeoManagement() {
     }
 
     if (session?.user?.role !== "admin" && session?.user?.role !== "seller") {
-      toast.error("Access denied. Admin or Seller role required.");
+      toast.error("Access denied");
       router.push("/");
       return;
     }
   }, [status, session, router]);
 
-  // Fetch current SEO settings
+  // Fetch SEO
   useEffect(() => {
     if (session?.user?.role === "admin" || session?.user?.role === "seller") {
       fetchSeoData();
@@ -66,43 +65,37 @@ export default function SeoManagement() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setSeoData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setSeoData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleOpenGraphChange = (e) => {
     const { name, value } = e.target;
-    setSeoData(prev => ({
+    setSeoData((prev) => ({
       ...prev,
-      openGraph: {
-        ...prev.openGraph,
-        [name]: value
-      }
+      openGraph: { ...prev.openGraph, [name]: value },
     }));
   };
 
   const addKeyword = () => {
     if (keywordInput.trim() && !seoData.keywords.includes(keywordInput.trim())) {
-      setSeoData(prev => ({
+      setSeoData((prev) => ({
         ...prev,
-        keywords: [...prev.keywords, keywordInput.trim()]
+        keywords: [...prev.keywords, keywordInput.trim()],
       }));
       setKeywordInput("");
     }
   };
 
-  const removeKeyword = (index) => {
-    setSeoData(prev => ({
+  const removeKeyword = (i) => {
+    setSeoData((prev) => ({
       ...prev,
-      keywords: prev.keywords.filter((_, i) => i !== index)
+      keywords: prev.keywords.filter((_, idx) => idx !== i),
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!seoData.title || !seoData.description) {
       toast.error("Title and description are required");
       return;
@@ -111,12 +104,9 @@ export default function SeoManagement() {
     try {
       setLoading(true);
       const response = await axios.post("/api/seo", seoData);
-      
-      if (response.data.success) {
-        toast.success("SEO settings updated successfully");
-      }
+      if (response.data.success) toast.success("SEO updated");
     } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to update SEO settings");
+      toast.error("Failed to update");
     } finally {
       setLoading(false);
     }
@@ -124,251 +114,191 @@ export default function SeoManagement() {
 
   if (fetching || status === "loading") {
     return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+      <div className="flex justify-center items-center min-h-screen bg-black">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#9d0208]"></div>
       </div>
     );
   }
 
-  // Don't render if not authorized
-  if (!session || (session.user.role !== "admin" && session.user.role !== "seller")) {
-    return null;
-  }
-
   return (
-    <div className="w-full min-h-screen px-3 py-4 sm:px-6 sm:py-6 max-w-4xl mx-auto">
-      {/* Current SEO Preview */}
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg shadow-md p-3 sm:p-6 mb-4 sm:mb-6 border border-blue-200">
-        <div className="flex items-center gap-2 mb-3 sm:mb-4">
-          <svg className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-          </svg>
-          <h2 className="text-base sm:text-xl font-medium text-gray-800">Current Live SEO Settings</h2>
-        </div>
-        
-        <div className="space-y-3 sm:space-y-4">
-          <div className="bg-white rounded-lg p-3 sm:p-4 shadow-sm">
-            <h3 className="text-xs sm:text-sm font-medium text-gray-500 mb-1">Page Title</h3>
-            <p className="text-sm sm:text-base text-gray-800 font-medium break-words">{seoData.title || "Not set"}</p>
-            <span className="text-xs text-gray-500 mt-1 inline-block">
-              {seoData.title?.length || 0} characters
-            </span>
+    <div className="w-full min-h-screen px-3 sm:px-4 py-6 max-w-4xl mx-auto bg-black text-white">
+
+      {/* Live Preview */}
+      <div className="bg-[#111] border border-[#9d0208] rounded-xl shadow-lg p-4 sm:p-5 mb-6">
+        <h2 className="text-lg sm:text-xl font-semibold flex items-center gap-2 mb-4">
+          <span className="text-[#9d0208]">●</span> Current Live SEO Settings
+        </h2>
+
+        <div className="space-y-4">
+
+          <div className="bg-[#1a1a1a] rounded-lg p-3 border border-[#222]">
+            <h3 className="text-xs sm:text-sm text-gray-300 mb-1">Page Title</h3>
+            <p className="text-base sm:text-lg">{seoData.title || "Not set"}</p>
           </div>
 
-          <div className="bg-white rounded-lg p-3 sm:p-4 shadow-sm">
-            <h3 className="text-xs sm:text-sm font-medium text-gray-500 mb-1">Meta Description</h3>
-            <p className="text-sm sm:text-base text-gray-800 break-words">{seoData.description || "Not set"}</p>
-            <span className="text-xs text-gray-500 mt-1 inline-block">
-              {seoData.description?.length || 0} characters
-            </span>
+          <div className="bg-[#1a1a1a] rounded-lg p-3 border border-[#222]">
+            <h3 className="text-xs sm:text-sm text-gray-300 mb-1">Meta Description</h3>
+            <p className="text-sm sm:text-base">{seoData.description || "Not set"}</p>
           </div>
 
-          <div className="bg-white rounded-lg p-3 sm:p-4 shadow-sm">
-            <h3 className="text-xs sm:text-sm font-medium text-gray-500 mb-2">Keywords</h3>
-            {seoData.keywords && seoData.keywords.length > 0 ? (
-              <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                {seoData.keywords.map((keyword, index) => (
+          <div className="bg-[#1a1a1a] rounded-lg p-3 border border-[#222]">
+            <h3 className="text-xs sm:text-sm text-gray-300 mb-2">Keywords</h3>
+
+            {seoData.keywords.length ? (
+              <div className="flex flex-wrap gap-2">
+                {seoData.keywords.map((k, i) => (
                   <span
-                    key={index}
-                    className="px-2 py-1 sm:px-3 bg-blue-100 text-blue-800 rounded-full text-xs sm:text-sm break-all"
+                    key={i}
+                    className="px-2 py-1 bg-[#9d0208]/20 border border-[#9d0208]/40 text-[#ffb3b3] rounded-full text-xs sm:text-sm"
                   >
-                    {keyword}
+                    {k}
                   </span>
                 ))}
               </div>
             ) : (
-              <p className="text-gray-500 text-xs sm:text-sm">No keywords set</p>
+              <p className="text-gray-400 text-sm">No keywords added</p>
             )}
           </div>
 
-          <div className="bg-white rounded-lg p-3 sm:p-4 shadow-sm">
-            <h3 className="text-xs sm:text-sm font-medium text-gray-500 mb-2">Open Graph Settings</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 text-xs sm:text-sm">
-              <div>
-                <span className="text-gray-600">OG Title:</span>
-                <p className="text-gray-800 font-medium break-words">{seoData.openGraph?.title || "Not set"}</p>
-              </div>
-              <div>
-                <span className="text-gray-600">Site Name:</span>
-                <p className="text-gray-800 font-medium break-words">{seoData.openGraph?.siteName || "Not set"}</p>
-              </div>
-              <div className="sm:col-span-2">
-                <span className="text-gray-600">OG Description:</span>
-                <p className="text-gray-800 break-words">{seoData.openGraph?.description || "Not set"}</p>
-              </div>
-              <div>
-                <span className="text-gray-600">Type:</span>
-                <p className="text-gray-800 font-medium">{seoData.openGraph?.type || "website"}</p>
-              </div>
-              <div>
-                <span className="text-gray-600">Locale:</span>
-                <p className="text-gray-800 font-medium">{seoData.openGraph?.locale || "en_US"}</p>
-              </div>
-              {seoData.openGraph?.url && (
-                <div className="sm:col-span-2">
-                  <span className="text-gray-600">URL:</span>
-                  <p className="text-gray-800 break-all text-xs">{seoData.openGraph.url}</p>
-                </div>
-              )}
+          <div className="bg-[#1a1a1a] rounded-lg p-3 border border-[#222]">
+            <h3 className="text-xs sm:text-sm text-gray-300 mb-2">Open Graph</h3>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
+              <p className="text-sm"><span className="text-gray-400">OG Title:</span> {seoData.openGraph.title}</p>
+              <p className="text-sm"><span className="text-gray-400">Site Name:</span> {seoData.openGraph.siteName}</p>
+
+              <p className="text-sm sm:col-span-2">
+                <span className="text-gray-400">OG Description:</span> {seoData.openGraph.description}
+              </p>
+
+              <p className="text-sm"><span className="text-gray-400">Type:</span> {seoData.openGraph.type}</p>
+              <p className="text-sm"><span className="text-gray-400">Locale:</span> {seoData.openGraph.locale}</p>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Edit Form */}
-      <div className="bg-white rounded-lg shadow-md p-4 sm:p-8">
-        <h1 className="text-xl sm:text-3xl font-medium mb-1 sm:mb-2">Update SEO Settings</h1>
-        <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">Modify your website's SEO settings and metadata</p>
+      {/* Form */}
+      <div className="bg-[#0d0d0d] p-4 sm:p-6 rounded-xl border border-[#9d0208] shadow-lg">
+        <h1 className="text-xl sm:text-2xl font-semibold mb-2">Update SEO Settings</h1>
+        <p className="text-gray-400 mb-6 text-sm">Modify your website's SEO metadata</p>
 
-        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
-          {/* Basic SEO */}
-          <div className="space-y-3 sm:space-y-4">
-            <h2 className="text-lg sm:text-xl font-medium border-b pb-2">Basic SEO</h2>
-            
-            <div>
-              <label className="block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2">
-                Page Title <span className="text-red-500">*</span>
-              </label>
+        <form onSubmit={handleSubmit} className="space-y-6">
+
+          {/* Title */}
+          <div>
+            <label className="text-sm block mb-2">Page Title *</label>
+            <input
+              type="text"
+              name="title"
+              value={seoData.title}
+              onChange={handleChange}
+              className="w-full px-3 py-2 bg-black border border-[#9d0208] rounded-lg focus:ring-[#9d0208]"
+            />
+          </div>
+
+          {/* Description */}
+          <div>
+            <label className="text-sm block mb-2">Meta Description *</label>
+            <textarea
+              name="description"
+              rows="3"
+              value={seoData.description}
+              onChange={handleChange}
+              className="w-full px-3 py-2 bg-black border border-[#9d0208] rounded-lg"
+            />
+          </div>
+
+          {/* Keywords */}
+          <div>
+            <label className="text-sm block mb-2">Keywords</label>
+
+            <div className="flex gap-2 mb-3 max-xs:flex-col">
               <input
                 type="text"
-                name="title"
-                value={seoData.title}
-                onChange={handleChange}
-                className="w-full px-3 py-2 sm:px-4 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter page title"
-                required
+                value={keywordInput}
+                onChange={(e) => setKeywordInput(e.target.value)}
+                className="flex-1 px-3 py-2 bg-black border border-[#9d0208] rounded-lg"
+                placeholder="Add keyword"
               />
-              <p className="text-xs text-gray-500 mt-1">Recommended: 50-60 characters</p>
+
+              <button
+                type="button"
+                onClick={addKeyword}
+                className="px-4 py-2 bg-[#9d0208] text-white rounded-lg"
+              >
+                Add
+              </button>
             </div>
 
-            <div>
-              <label className="block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2">
-                Meta Description <span className="text-red-500">*</span>
-              </label>
-              <textarea
-                name="description"
-                value={seoData.description}
-                onChange={handleChange}
-                rows="3"
-                className="w-full px-3 py-2 sm:px-4 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter meta description"
-                required
-              />
-              <p className="text-xs text-gray-500 mt-1">Recommended: 150-160 characters</p>
-            </div>
-
-            <div>
-              <label className="block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2">Keywords</label>
-              <div className="flex flex-col sm:flex-row gap-2 mb-2">
-                <input
-                  type="text"
-                  value={keywordInput}
-                  onChange={(e) => setKeywordInput(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addKeyword())}
-                  className="flex-1 px-3 py-2 sm:px-4 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Add keyword and press Enter"
-                />
-                <button
-                  type="button"
-                  onClick={addKeyword}
-                  className="px-4 py-2 sm:px-6 text-sm sm:text-base bg-gray-700 text-white rounded-lg hover:bg-gray-800 whitespace-nowrap"
+            <div className="flex flex-wrap gap-2">
+              {seoData.keywords.map((k, i) => (
+                <span
+                  key={i}
+                  className="flex items-center gap-2 bg-[#9d0208]/20 border border-[#9d0208]/40 px-3 py-1 rounded-full text-sm"
                 >
-                  Add
-                </button>
-              </div>
-              <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                {seoData.keywords.map((keyword, index) => (
-                  <span
-                    key={index}
-                    className="inline-flex items-center gap-1 px-2 py-1 sm:px-3 bg-blue-100 text-blue-800 rounded-full text-xs sm:text-sm break-all"
-                  >
-                    <span className="break-all">{keyword}</span>
-                    <button
-                      type="button"
-                      onClick={() => removeKeyword(index)}
-                      className="hover:text-blue-600 text-base sm:text-lg flex-shrink-0"
-                    >
-                      ×
-                    </button>
-                  </span>
-                ))}
-              </div>
+                  {k}
+                  <button onClick={() => removeKeyword(i)} className="text-[#ffb3b3]">×</button>
+                </span>
+              ))}
             </div>
           </div>
 
-          {/* Open Graph / Social Media */}
-          <div className="space-y-3 sm:space-y-4">
-            <h2 className="text-lg sm:text-xl font-medium border-b pb-2">Open Graph (Social Media)</h2>
-            
-            <div>
-              <label className="block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2">OG Title</label>
+          {/* OG */}
+          <div className="border-t border-[#222] pt-6">
+            <h2 className="text-lg sm:text-xl font-semibold mb-4">Open Graph Metadata</h2>
+
+            <div className="space-y-4">
               <input
                 type="text"
                 name="title"
                 value={seoData.openGraph.title}
                 onChange={handleOpenGraphChange}
-                className="w-full px-3 py-2 sm:px-4 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Title for social media shares"
+                placeholder="OG Title"
+                className="w-full px-3 py-2 bg-black border border-[#9d0208] rounded-lg"
               />
-            </div>
 
-            <div>
-              <label className="block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2">OG Description</label>
               <textarea
                 name="description"
+                rows="2"
                 value={seoData.openGraph.description}
                 onChange={handleOpenGraphChange}
-                rows="2"
-                className="w-full px-3 py-2 sm:px-4 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Description for social media shares"
+                placeholder="OG Description"
+                className="w-full px-3 py-2 bg-black border border-[#9d0208] rounded-lg"
               />
-            </div>
 
-            <div>
-              <label className="block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2">Site Name</label>
               <input
                 type="text"
                 name="siteName"
+                placeholder="Site Name"
                 value={seoData.openGraph.siteName}
                 onChange={handleOpenGraphChange}
-                className="w-full px-3 py-2 sm:px-4 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Your website name"
+                className="w-full px-3 py-2 bg-black border border-[#9d0208] rounded-lg"
               />
-            </div>
 
-            <div>
-              <label className="block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2">URL</label>
               <input
                 type="url"
                 name="url"
+                placeholder="Page URL"
                 value={seoData.openGraph.url}
                 onChange={handleOpenGraphChange}
-                className="w-full px-3 py-2 sm:px-4 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="https://yourwebsite.com"
+                className="w-full px-3 py-2 bg-black border border-[#9d0208] rounded-lg"
               />
-            </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-              <div>
-                <label className="block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2">Locale</label>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <input
                   type="text"
                   name="locale"
                   value={seoData.openGraph.locale}
                   onChange={handleOpenGraphChange}
-                  className="w-full px-3 py-2 sm:px-4 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="en_US"
+                  className="px-3 py-2 bg-black border border-[#9d0208] rounded-lg"
                 />
-              </div>
 
-              <div>
-                <label className="block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2">Type</label>
                 <select
                   name="type"
                   value={seoData.openGraph.type}
                   onChange={handleOpenGraphChange}
-                  className="w-full px-3 py-2 sm:px-4 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="px-3 py-2 bg-black border border-[#9d0208] rounded-lg"
                 >
                   <option value="website">Website</option>
                   <option value="article">Article</option>
@@ -378,22 +308,25 @@ export default function SeoManagement() {
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+          {/* Buttons */}
+          <div className="flex gap-4 pt-4 max-xs:flex-col">
             <button
               type="submit"
               disabled={loading}
-              className="w-full sm:w-auto px-6 py-2.5 sm:px-8 sm:py-3 text-sm sm:text-base bg-gray-800 text-white rounded-lg hover:bg-gray-900 disabled:bg-gray-400 disabled:cursor-not-allowed"
+              className="w-full xs:w-auto px-6 py-3 bg-[#9d0208] rounded-lg hover:bg-[#7a0207]"
             >
-              {loading ? "Updating..." : "Update SEO Settings"}
+              {loading ? "Updating..." : "Save Changes"}
             </button>
+
             <button
               type="button"
               onClick={fetchSeoData}
-              className="w-full sm:w-auto px-6 py-2.5 sm:px-8 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg hover:bg-gray-50"
+              className="w-full xs:w-auto px-6 py-3 border border-[#9d0208] rounded-lg hover:bg-[#9d0208]/20"
             >
               Reset
             </button>
           </div>
+
         </form>
       </div>
     </div>
