@@ -9,6 +9,7 @@ import Loading from "@/components/Loading";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
+import TopBar from "@/components/TopBar";
 
 const MyOrders = () => {
 
@@ -62,6 +63,7 @@ const MyOrders = () => {
 
     return (
         <>
+        <TopBar/>
             <Navbar />
             <div className="min-h-screen bg-black">
                 <div className="px-3 sm:px-4 md:px-8 lg:px-16 py-4 sm:py-6 md:py-8">

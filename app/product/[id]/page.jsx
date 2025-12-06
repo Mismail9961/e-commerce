@@ -10,6 +10,7 @@ import Loading from "@/components/Loading";
 import { useAppContext } from "@/context/AppContext";
 import axios from "axios";
 import React from "react";
+import TopBar from "@/components/TopBar";
 
 const Product = () => {
 
@@ -71,6 +72,7 @@ const Product = () => {
     if (error || !productData) {
         return (
             <>
+            <TopBar/>
                 <Navbar />
                 <div className="min-h-screen bg-black flex items-center justify-center px-4">
                     <div className="text-center bg-gradient-to-br from-gray-900 to-black rounded-2xl border border-gray-800 p-8 sm:p-12 max-w-md">

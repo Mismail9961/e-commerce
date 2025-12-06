@@ -9,7 +9,7 @@ export default function TopBar() {
         &#8249;
       </span>
 
-      <span>We don't offer Cash on Delivery at this time.</span>
+      <span>We offer Cash on Delivery all over Karachi.</span>
 
       <span className="absolute font-bold right-[520px] top-1/2 -translate-y-1/2 text-gray-300 cursor-pointer select-none">
         &#8250;

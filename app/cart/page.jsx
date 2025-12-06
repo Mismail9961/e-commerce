@@ -7,6 +7,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useAppContext } from "@/context/AppContext";
 import axios from "axios";
+import TopBar from "@/components/TopBar";
 
 const Cart = () => {
 
@@ -77,6 +78,7 @@ const Cart = () => {
 
   return (
     <div className="bg-black min-h-screen">
+      <TopBar/>
       <Navbar />
       <div className="max-w-7xl mx-auto px-4 min-[375px]:px-6 sm:px-8 lg:px-12 py-8 sm:py-12 lg:py-16">
         <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 lg:gap-10">

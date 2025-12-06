@@ -5,6 +5,7 @@ import { Mail, Phone, MapPin, XCircle, CheckCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import TopBar from "@/components/TopBar";
 
 export default function ContactUs() {
   const [form, setForm] = useState({
@@ -62,6 +63,7 @@ export default function ContactUs() {
 
   return (
     <div className="bg-black min-h-screen">
+      <TopBar/>
       <Navbar />
 
       <main className="max-w-6xl mx-auto px-4 min-[375px]:px-6 sm:px-8 py-8 sm:py-12 lg:py-16">

@@ -4,6 +4,7 @@ import ProductCard from "@/components/ProductCard";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useAppContext } from "@/context/AppContext";
+import TopBar from "@/components/TopBar";
 
 const AllProducts = () => {
     const { products } = useAppContext();
@@ -38,6 +39,7 @@ const AllProducts = () => {
 
     return (
         <>
+        <TopBar/>
             <Navbar />
             <div className="min-h-screen bg-black">
                 <div className="max-w-7xl mx-auto px-4 min-[375px]:px-6 sm:px-8 lg:px-12">
