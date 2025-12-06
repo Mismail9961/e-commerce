@@ -146,13 +146,10 @@ const AddProduct = () => {
               value={category}
               onChange={(e) => setCategory(e.target.value)}
             >
-              <option value="Earphone">Earphone</option>
-              <option value="Headphone">Headphone</option>
-              <option value="Watch">Watch</option>
-              <option value="Smartphone">Smartphone</option>
-              <option value="Laptop">Laptop</option>
-              <option value="Camera">Camera</option>
-              <option value="Accessories">Accessories</option>
+              <option value="Gaming Consoles">Gaming Consoles</option>
+              <option value="Mobile Accessories">Mobile Accessories</option>
+              <option value="PlayStation Games">PlayStation Games</option>
+              <option value="Gaming Accessories">Gaming Accessories</option>
             </select>
           </div>
 
