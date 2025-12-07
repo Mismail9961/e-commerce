@@ -3,6 +3,7 @@
 import React from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import TopBar from "@/components/TopBar";
 
 export const metadata = {
   title: "About Us | 7even86gamehub",
@@ -13,6 +14,7 @@ export const metadata = {
 export default function AboutPage() {
   return (
     <div className="bg-black min-h-screen">
+      <TopBar/>
       <Navbar />
       
       {/* Hero Section */}

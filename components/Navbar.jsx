@@ -5,13 +5,15 @@ import Link from "next/link";
 import { useAppContext } from "@/context/AppContext";
 import { useSession, signOut } from "next-auth/react";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const Navbar = () => {
-  const { router, getCartCount } = useAppContext();
+  const { getCartCount } = useAppContext();
   const { data: session, status } = useSession();
   const pathname = usePathname();
+  const router = useRouter();
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showCategoriesDropdown, setShowCategoriesDropdown] = useState(false);
 
   const canAccessSellerDashboard =
     session?.user?.role === "seller" || session?.user?.role === "admin";
@@ -25,6 +27,21 @@ const Navbar = () => {
   const cartCount = getCartCount();
 
   const isActive = (path) => pathname === path;
+
+  // Categories list
+  const categories = [
+    { name: "Gaming Consoles", slug: "gaming-consoles" },
+    { name: "Mobile Accessories", slug: "mobile-accessories" },
+    { name: "PlayStation Games", slug: "playStation-games" },
+    { name: "Gaming Accessories", slug: "gaming-accessories" },
+  ];
+
+  // Handle category click
+  const handleCategoryClick = (categorySlug) => {
+    setShowCategoriesDropdown(false);
+    setShowDropdown(false);
+    router.push(`/all-products?category=${categorySlug}`);
+  };
 
   return (
     <nav className="sticky top-0 z-50 bg-black border-b border-[#9d0208]/20">
@@ -52,16 +69,57 @@ const Navbar = () => {
             >
               Home
             </Link>
-            <Link
-              href="/all-products"
-              className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${
-                isActive("/all-products")
-                  ? "bg-[#9d0208] text-white"
-                  : "text-gray-300 hover:text-white hover:bg-white/5"
-              }`}
-            >
-              Shop
-            </Link>
+            
+            {/* Shop with Categories Dropdown - Desktop */}
+            <div className="relative">
+              <button
+                onMouseEnter={() => setShowCategoriesDropdown(true)}
+                onMouseLeave={() => setShowCategoriesDropdown(false)}
+                onClick={() => router.push("/all-products")}
+                className={`flex items-center gap-1 px-5 py-2 rounded-lg text-sm font-medium transition-all ${
+                  isActive("/all-products")
+                    ? "bg-[#9d0208] text-white"
+                    : "text-gray-300 hover:text-white hover:bg-white/5"
+                }`}
+              >
+                Shop
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              {/* Categories Dropdown */}
+              {showCategoriesDropdown && (
+                <div
+                  onMouseEnter={() => setShowCategoriesDropdown(true)}
+                  onMouseLeave={() => setShowCategoriesDropdown(false)}
+                  className="absolute left-0 mt-1 w-56 bg-[#1a1a1a] rounded-xl shadow-2xl border border-white/10 overflow-hidden z-50"
+                >
+                  <div className="py-2">
+                    <Link
+                      href="/all-products"
+                      className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white transition-colors"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                      </svg>
+                      All Products
+                    </Link>
+                    <div className="border-t border-white/10 my-2"></div>
+                    {categories.map((category) => (
+                      <button
+                        key={category.slug}
+                        onClick={() => handleCategoryClick(category.slug)}
+                        className="w-full text-left block px-4 py-2.5 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white transition-colors"
+                      >
+                        {category.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
             <Link
               href="/about-us"
               className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${
@@ -257,20 +315,37 @@ const Navbar = () => {
                             </svg>
                             <span>Home</span>
                           </Link>
-                          <Link
-                            href="/all-products"
-                            className={`flex items-center gap-3 px-4 py-3 text-sm font-medium transition-colors ${
-                              isActive("/all-products")
-                                ? "text-white bg-[#9d0208]"
-                                : "text-gray-300 hover:bg-white/5"
-                            }`}
-                            onClick={() => setShowDropdown(false)}
-                          >
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                            </svg>
-                            <span>Shop</span>
-                          </Link>
+                          
+                          {/* Shop with Categories - Mobile */}
+                          <div>
+                            <Link
+                              href="/all-products"
+                              className={`flex items-center gap-3 px-4 py-3 text-sm font-medium transition-colors ${
+                                isActive("/all-products")
+                                  ? "text-white bg-[#9d0208]"
+                                  : "text-gray-300 hover:bg-white/5"
+                              }`}
+                              onClick={() => setShowDropdown(false)}
+                            >
+                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                              </svg>
+                              <span>Shop</span>
+                            </Link>
+                            {/* Categories submenu */}
+                            <div className="bg-black/20 py-1">
+                              {categories.map((category) => (
+                                <button
+                                  key={category.slug}
+                                  onClick={() => handleCategoryClick(category.slug)}
+                                  className="w-full text-left block px-4 py-2 pl-12 text-xs font-medium text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+                                >
+                                  {category.name}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+
                           <Link
                             href="/about-us"
                             className={`flex items-center gap-3 px-4 py-3 text-sm font-medium transition-colors ${

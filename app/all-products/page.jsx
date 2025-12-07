@@ -1,13 +1,15 @@
 'use client'
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import ProductCard from "@/components/ProductCard";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useAppContext } from "@/context/AppContext";
 import TopBar from "@/components/TopBar";
+import { useSearchParams } from "next/navigation";
 
 const AllProducts = () => {
     const { products } = useAppContext();
+    const searchParams = useSearchParams();
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [showFilters, setShowFilters] = useState(false);
 
@@ -16,6 +18,27 @@ const AllProducts = () => {
         const cats = products.map(p => p.category).filter(Boolean);
         return [...new Set(cats)];
     }, [products]);
+
+    // Handle URL category parameter
+    useEffect(() => {
+        const categoryParam = searchParams.get('category');
+        if (categoryParam) {
+            // Convert URL slug to actual category name if needed
+            const categoryMap = {
+                'gaming-consoles': 'Gaming Consoles',
+                'mobile-accessories': 'Mobile Accessories',
+                'playStation-games': 'PlayStation Games',
+                'gaming-accessories': 'Gaming Accessories'
+            };
+            
+            const categoryName = categoryMap[categoryParam] || categoryParam;
+            
+            // Only set if the category exists in our products
+            if (categories.includes(categoryName)) {
+                setSelectedCategories([categoryName]);
+            }
+        }
+    }, [searchParams, categories]);
 
     // Filter products based on selected categories
     const filteredProducts = useMemo(() => {
@@ -49,6 +72,11 @@ const AllProducts = () => {
                             <h1 className="text-2xl min-[375px]:text-3xl sm:text-4xl font-bold text-white">
                                 All Products
                             </h1>
+                            {selectedCategories.length > 0 && (
+                                <p className="text-sm text-gray-400 mt-2">
+                                    Filtered by: <span className="text-[#9d0208] font-medium">{selectedCategories.join(', ')}</span>
+                                </p>
+                            )}
                         </div>
                         
                         {/* Mobile Filter Toggle */}
