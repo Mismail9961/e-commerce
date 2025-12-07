@@ -75,7 +75,7 @@ const Product = () => {
             <>
             <TopBar/>
                 <Navbar />
-                <div className="min-h-screen bg-black flex items-center justify-center px-4">
+                <div className="min-h-screen bg-[#003049] flex items-center justify-center px-4">
                     <div className="text-center bg-gradient-to-br from-gray-900 to-black rounded-2xl border border-gray-800 p-8 sm:p-12 max-w-md">
                         <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-[#8a1a13] to-black rounded-full flex items-center justify-center mb-6 mx-auto shadow-lg shadow-[#8a1a13]/50">
                             <svg className="w-8 h-8 sm:w-10 sm:h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -102,7 +102,7 @@ const Product = () => {
     return (
         <>
             <Navbar />
-            <div className="bg-black min-h-screen px-3 sm:px-4 md:px-8 lg:px-16 xl:px-24 pt-6 sm:pt-8 md:pt-12 pb-8">
+            <div className="bg-[#003049] min-h-screen px-3 sm:px-4 md:px-8 lg:px-16 xl:px-24 pt-6 sm:pt-8 md:pt-12 pb-8">
                 
                 {/* Product Details Section */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 mb-12 sm:mb-16">
@@ -241,7 +241,7 @@ const Product = () => {
                             <div className="absolute inset-0 flex items-center justify-center">
                                 <div className="w-full h-px bg-gradient-to-r from-transparent via-gray-800 to-transparent"></div>
                             </div>
-                            <div className="relative inline-block bg-black px-6">
+                            <div className="relative inline-block px-6">
                                 <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold">
                                     <span className="text-white">Featured </span>
                                     <span className="bg-gradient-to-r from-[#8a1a13] to-white bg-clip-text text-transparent">Products</span>

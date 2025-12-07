@@ -48,7 +48,7 @@ const AddAddress = () => {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-black px-3 sm:px-4 md:px-8 lg:px-16 xl:px-24 py-6 sm:py-8 md:py-12">
+      <div className="min-h-screen bg-[#003049] px-3 sm:px-4 md:px-8 lg:px-16 xl:px-24 py-6 sm:py-8 md:py-12">
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
           
           {/* Form Section */}
