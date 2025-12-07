@@ -10,6 +10,7 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 import TopBar from "@/components/TopBar";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 const MyOrders = () => {
 
@@ -242,6 +243,7 @@ const MyOrders = () => {
                 </div>
             </div>
             <Footer />
+            <WhatsAppButton/>
         </>
     );
 };

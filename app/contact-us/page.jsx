@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import TopBar from "@/components/TopBar";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 export default function ContactUs() {
   const [form, setForm] = useState({
@@ -265,6 +266,7 @@ export default function ContactUs() {
       </main>
 
       <Footer />
+      <WhatsAppButton/>
     </div>
   );
 }

@@ -8,6 +8,7 @@ import FeaturedProduct from "@/components/FeaturedProduct";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import TopBar from "@/components/TopBar";
+import WhatsAppButton from "@/components/WhatsAppButton"; // Add this
 
 const Home = () => {
   return (
@@ -19,8 +20,8 @@ const Home = () => {
         <HomeProducts />
         <Banner />
         <Footer />
-
       </div>
+      <WhatsAppButton /> {/* Add this */}
     </>
   );
 };

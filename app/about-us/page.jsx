@@ -4,6 +4,7 @@ import React from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import TopBar from "@/components/TopBar";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 export const metadata = {
   title: "About Us | 7even86gamehub",
@@ -178,6 +179,7 @@ export default function AboutPage() {
       </div>
       
       <Footer />
+      <WhatsAppButton/>
     </div>
   );
 }

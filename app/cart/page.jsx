@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 import { useAppContext } from "@/context/AppContext";
 import axios from "axios";
 import TopBar from "@/components/TopBar";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 const Cart = () => {
 
@@ -306,6 +307,7 @@ const Cart = () => {
         </div>
       </div>
       <Footer />
+      <WhatsAppButton/>
     </div>
   );
 };

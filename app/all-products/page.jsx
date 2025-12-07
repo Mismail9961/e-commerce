@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import { useAppContext } from "@/context/AppContext";
 import TopBar from "@/components/TopBar";
 import { useSearchParams } from "next/navigation";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 // Separate component that uses useSearchParams
 function ProductsContent() {
@@ -265,6 +266,7 @@ const AllProducts = () => {
                 <ProductsContent />
             </Suspense>
             <Footer />
+            <WhatsAppButton/>
         </>
     );
 };

@@ -11,6 +11,7 @@ import { useAppContext } from "@/context/AppContext";
 import axios from "axios";
 import React from "react";
 import TopBar from "@/components/TopBar";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 const Product = () => {
 
@@ -268,6 +269,7 @@ const Product = () => {
                 )}
             </div>
             <Footer />
+            <WhatsAppButton/>
         </>
     )
 };
