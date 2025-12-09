@@ -93,7 +93,11 @@ const Navbar = () => {
                   onMouseLeave={() => setShowCategoriesDropdown(false)}
                   onClick={() => router.push("/all-products")}
                   className={`flex items-center gap-1 px-5 py-2 rounded-lg text-sm font-medium transition-all ${
-                    pathname?.startsWith("/all-products")
+                    pathname?.startsWith("/all-products") || 
+                    pathname === "/gaming-consoles" ||
+                    pathname === "/mobile-accessories" ||
+                    pathname === "/playstation-games" ||
+                    pathname === "/gaming-accessories"
                       ? "bg-[#9d0208] text-white"
                       : "text-gray-300 hover:text-white hover:bg-white/5"
                   }`}
@@ -114,6 +118,7 @@ const Navbar = () => {
                     <div className="py-2">
                       <Link
                         href="/all-products"
+                        onClick={() => setShowCategoriesDropdown(false)}
                         className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white transition-colors"
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -123,13 +128,15 @@ const Navbar = () => {
                       </Link>
                       <div className="border-t border-white/10 my-2"></div>
                       {categories.map((category) => (
-                        <button
+                        <Link
                           key={category.slug}
-                          onClick={() => handleCategoryClick(category.slug)}
-                          className="w-full text-left block px-4 py-2.5 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white transition-colors"
+                          href={`/${category.slug}`}
+                          onClick={() => setShowCategoriesDropdown(false)}
+                          className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white transition-colors"
                         >
+                          <div className="w-1.5 h-1.5 rounded-full bg-[#9d0208]"></div>
                           {category.name}
-                        </button>
+                        </Link>
                       ))}
                     </div>
                   </div>
