@@ -34,7 +34,7 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
   const handleCategoryClick = (categorySlug) => {
     setShowSidebar(false);
     setShowShopSubmenu(false);
-    router.push(`/all-products/${categorySlug}`);
+    router.push(`/${categorySlug}`);
   };
 
   const handleNavigation = (path) => {
