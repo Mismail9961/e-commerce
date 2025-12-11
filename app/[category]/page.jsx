@@ -9,6 +9,7 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import Loading from "@/components/Loading";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import Head from "next/head";
 
 // Map URL slugs to actual category names
 const categoryMap = {
@@ -30,10 +31,99 @@ const CategoryPage = () => {
     const categorySlug = params.category;
     const [isLoading, setIsLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState("");
+    const [categorySeo, setCategorySeo] = useState(null);
     
     // Get the actual category name from the slug
     const categoryName = categoryMap[categorySlug];
     const isAllProducts = categorySlug === 'all-products';
+
+    // Fetch category SEO data
+    useEffect(() => {
+        const fetchCategorySeo = async () => {
+            if (!categorySlug || categorySlug === 'all-products') return;
+            
+            try {
+                const response = await fetch(`/api/seo/category/${categorySlug}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success) {
+                        setCategorySeo(data.data);
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching category SEO:', error);
+            }
+        };
+
+        fetchCategorySeo();
+    }, [categorySlug]);
+
+    // Update document metadata when SEO data is loaded
+    useEffect(() => {
+        if (categorySeo?.seo) {
+            // Update title
+            document.title = categorySeo.seo.title;
+            
+            // Update meta description
+            let metaDescription = document.querySelector('meta[name="description"]');
+            if (!metaDescription) {
+                metaDescription = document.createElement('meta');
+                metaDescription.name = 'description';
+                document.head.appendChild(metaDescription);
+            }
+            metaDescription.content = categorySeo.seo.description;
+            
+            // Update keywords
+            if (categorySeo.seo.keywords?.length > 0) {
+                let metaKeywords = document.querySelector('meta[name="keywords"]');
+                if (!metaKeywords) {
+                    metaKeywords = document.createElement('meta');
+                    metaKeywords.name = 'keywords';
+                    document.head.appendChild(metaKeywords);
+                }
+                metaKeywords.content = categorySeo.seo.keywords.join(', ');
+            }
+            
+            // Update Open Graph tags
+            if (categorySeo.seo.openGraph) {
+                const og = categorySeo.seo.openGraph;
+                
+                updateMetaTag('property', 'og:title', og.title || categorySeo.seo.title);
+                updateMetaTag('property', 'og:description', og.description || categorySeo.seo.description);
+                updateMetaTag('property', 'og:url', og.url || window.location.href);
+                updateMetaTag('property', 'og:site_name', og.siteName || 'Your Store');
+                updateMetaTag('property', 'og:locale', og.locale || 'en_US');
+                updateMetaTag('property', 'og:type', og.type || 'website');
+                
+                if (og.image) {
+                    updateMetaTag('property', 'og:image', og.image);
+                }
+            }
+            
+            // Twitter Card tags
+            updateMetaTag('name', 'twitter:card', 'summary_large_image');
+            updateMetaTag('name', 'twitter:title', categorySeo.seo.title);
+            updateMetaTag('name', 'twitter:description', categorySeo.seo.description);
+            if (categorySeo.seo.openGraph?.image) {
+                updateMetaTag('name', 'twitter:image', categorySeo.seo.openGraph.image);
+            }
+        } else if (isAllProducts) {
+            // Default SEO for All Products page
+            document.title = 'All Products - Your Gaming Store';
+            updateMetaTag('name', 'description', 'Browse our complete collection of gaming products including consoles, games, and accessories.');
+        }
+    }, [categorySeo, isAllProducts]);
+
+    // Helper function to update meta tags
+    const updateMetaTag = (attribute, key, content) => {
+        let element = document.querySelector(`meta[${attribute}="${key}"]`);
+        if (!element) {
+            element = document.createElement('meta');
+            element.setAttribute(attribute, key);
+            document.head.appendChild(element);
+        }
+        element.content = content;
+    };
 
     // Extract unique categories for sidebar
     const categories = useMemo(() => {
