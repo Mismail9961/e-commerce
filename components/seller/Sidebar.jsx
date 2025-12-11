@@ -18,6 +18,7 @@ const SideBar = () => {
     const adminMenuItems = [
         { name: 'All Users', path: '/seller/users', icon: assets.user_icon || assets.add_icon },
         { name: 'SEO Settings', path: '/seller/seo', icon: assets.seo_icon || assets.add_icon },
+        { name: ' Category SEO Settings', path: '/seller/category', icon: assets.seo_icon || assets.add_icon },
     ];
 
     const menuItems =
@@ -26,7 +27,7 @@ const SideBar = () => {
             : baseMenuItems;
 
     return (
-        <div className="md:w-64 w-16 bg-black min-h-screen border-r border-[#9d0208] flex flex-col py-2">
+        <div className="md:w-64 w-16 bg-[#003049] min-h-screen border-r border-[#9d0208] flex flex-col py-2">
             {menuItems.map((item) => {
                 const isActive = pathname === item.path;
 

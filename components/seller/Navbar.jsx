@@ -8,7 +8,7 @@ const Navbar = () => {
   const { router } = useAppContext()
 
   return (
-    <div className='flex items-center bg-black justify-between border-b 
+    <div className='flex items-center bg-[#003049] justify-between border-b 
       px-3 py-2  
       sm:px-4 md:px-8 md:py-3'
     >

@@ -181,12 +181,12 @@ const AdminCategorySeoManager = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#001d2e] via-[#003049] to-[#001d2e] p-4 sm:p-6 lg:p-8">
+    <div className="min-h-screen w-full bg-gradient-to-br from-[#001d2e] via-[#003049] to-[#001d2e] p-4 sm:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">Category SEO Manager</h1>
-          <p className="text-gray-400">Manage SEO settings for category pages</p>
+          <h1 className="text-3xl sm:text-4xl font-bold text-black mb-2">Category SEO Manager</h1>
+          <p className="text-[#9D0208]">Manage SEO settings for category pages</p>
         </div>
 
         {/* Message Alert */}
@@ -205,7 +205,7 @@ const AdminCategorySeoManager = () => {
           {/* Categories List */}
           <div className="lg:col-span-1">
             <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6">
-              <h2 className="text-xl font-bold text-white mb-4">Categories</h2>
+              <h2 className="text-xl font-bold text-black mb-4">Categories</h2>
               
               {/* Search */}
               <div className="relative mb-4">
@@ -221,10 +221,10 @@ const AdminCategorySeoManager = () => {
 
               {/* Add New Category */}
               <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-400 mb-2">Add New Category</label>
+                <label className="block text-sm font-medium text-[#9d0208] mb-2">Add New Category</label>
                 <select
                   onChange={(e) => e.target.value && createNewCategory(e.target.value)}
-                  className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:border-[#9d0208]"
+                  className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-black focus:outline-none focus:border-[#9d0208]"
                   defaultValue=""
                 >
                   <option value="" disabled>Select category...</option>
@@ -241,7 +241,7 @@ const AdminCategorySeoManager = () => {
                     <Loader className="w-6 h-6 text-[#9d0208] animate-spin" />
                   </div>
                 ) : filteredCategories.length === 0 ? (
-                  <p className="text-gray-500 text-sm text-center py-8">No categories found</p>
+                  <p className="text-black text-sm text-center py-8">No categories found</p>
                 ) : (
                   filteredCategories.map((category) => (
                     <button
@@ -249,7 +249,7 @@ const AdminCategorySeoManager = () => {
                       onClick={() => loadCategoryData(category)}
                       className={`w-full text-left px-4 py-3 rounded-lg transition-all ${
                         selectedCategory?.categorySlug === category.categorySlug
-                          ? 'bg-gradient-to-r from-[#9d0208] to-[#d00000] text-white'
+                          ? 'bg-gradient-to-r from-[#9d0208] to-[#d00000] text-black'
                           : 'bg-white/5 text-gray-300 hover:bg-white/10'
                       }`}
                     >

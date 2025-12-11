@@ -90,7 +90,7 @@ const AddProduct = () => {
   };
 
   return (
-    <div className="flex-1 min-h-screen flex flex-col justify-between bg-black text-white">
+    <div className="flex-1 min-h-screen flex flex-col justify-between bg-[#003049] text-white">
       <form
         onSubmit={handleSubmit}
         className="md:p-10 p-4 space-y-5 max-w-lg mx-auto"

@@ -53,7 +53,7 @@ const ProductList = () => {
   const canDelete = ["admin", "seller"].includes(session?.user?.role);
 
   return (
-    <div className="flex-1 min-h-screen flex flex-col justify-between bg-black/95 text-white">
+    <div className="flex-1 min-h-screen flex flex-col justify-between bg-[#003049] text-white">
       {loading ? (
         <Loading />
       ) : (
@@ -69,7 +69,7 @@ const ProductList = () => {
 
           {/* No Products */}
           {products.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-10 bg-black/60 rounded-lg border border-[#9d0208]/50">
+            <div className="flex flex-col items-center justify-center py-10 bg-[#003049] rounded-lg border border-[#9d0208]/50">
               <div className="text-gray-400 text-4xl mb-3">📦</div>
               <p className="text-gray-300 font-medium">No products found</p>
               <p className="text-gray-500 text-xs">Add your first product</p>
@@ -78,7 +78,7 @@ const ProductList = () => {
             <>
 
               {/* DESKTOP TABLE */}
-              <div className="hidden sm:block max-w-6xl w-full overflow-hidden rounded-md bg-black border border-[#9d0208]/40">
+              <div className="hidden sm:block max-w-6xl w-full overflow-hidden rounded-md bg-[#003049] border border-[#9d0208]/40">
                 <table className="table-auto w-full">
                   <thead className="text-white text-sm bg-[#9d0208]/20">
                     <tr>

@@ -43,7 +43,7 @@ const CategoryPage = () => {
             if (!categorySlug || categorySlug === 'all-products') return;
             
             try {
-                const response = await fetch(`/api/category-seo/${categorySlug}`);
+                const response = await fetch(`/api/seo/${categorySlug}`);
                 if (response.ok) {
                     const data = await response.json();
                     if (data.success) {
@@ -171,20 +171,20 @@ const CategoryPage = () => {
             <>
                 <TopBar/>
                 <Navbar />
-                <div className="min-h-screen w-full bg-gradient-to-br from-[#001d2e] via-[#003049] to-[#001d2e] flex items-center justify-center px-2.5 min-[375px]:px-3">
-                    <div className="text-center px-1.5 min-[375px]:px-2 max-w-sm min-[375px]:max-w-md">
-                        <div className="mb-3 min-[375px]:mb-4 sm:mb-6 relative">
+                <div className="min-h-screen bg-gradient-to-br from-[#001d2e] via-[#003049] to-[#001d2e] flex items-center justify-center px-3">
+                    <div className="text-center px-2 max-w-md">
+                        <div className="mb-4 sm:mb-6 relative">
                             <div className="absolute inset-0 bg-[#9d0208]/20 blur-3xl rounded-full"></div>
-                            <h1 className="text-4xl min-[375px]:text-5xl sm:text-6xl font-bold text-white mb-2 relative">404</h1>
+                            <h1 className="text-5xl sm:text-6xl font-bold text-white mb-2 relative">404</h1>
                         </div>
-                        <h2 className="text-lg min-[375px]:text-xl sm:text-2xl font-bold text-white mb-2 min-[375px]:mb-3 sm:mb-4">Category Not Found</h2>
-                        <p className="text-xs min-[375px]:text-sm sm:text-base text-gray-400 mb-5 min-[375px]:mb-6 sm:mb-8 px-2">The category you're looking for doesn't exist or may have been moved.</p>
+                        <h2 className="text-xl sm:text-2xl font-bold text-white mb-3 sm:mb-4">Category Not Found</h2>
+                        <p className="text-sm sm:text-base text-gray-400 mb-6 sm:mb-8">The category you're looking for doesn't exist or may have been moved.</p>
                         <Link 
                             href="/"
-                            className="inline-flex items-center gap-1.5 min-[375px]:gap-2 px-5 min-[375px]:px-6 sm:px-8 py-2.5 min-[375px]:py-3 sm:py-4 bg-gradient-to-r from-[#9d0208] to-[#d00000] hover:from-[#7a0106] hover:to-[#9d0208] text-white text-[11px] min-[375px]:text-xs sm:text-base font-semibold transition-all shadow-lg shadow-[#9d0208]/30 hover:shadow-[#9d0208]/50 hover:scale-105 group rounded-lg min-[375px]:rounded-xl"
+                            className="inline-flex items-center gap-2 px-6 min-[375px]:px-8 py-3 min-[375px]:py-4 bg-gradient-to-r from-[#9d0208] to-[#d00000] hover:from-[#7a0106] hover:to-[#9d0208] text-white text-xs min-[375px]:text-sm sm:text-base font-semibold transition-all shadow-lg shadow-[#9d0208]/30 hover:shadow-[#9d0208]/50 hover:scale-105 group"
                         >
                             <span>Back to Home</span>
-                            <svg className="w-3.5 h-3.5 min-[375px]:w-4 min-[375px]:h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                             </svg>
                         </Link>
@@ -202,36 +202,36 @@ const CategoryPage = () => {
             <div className="min-h-screen bg-gradient-to-br from-[#001d2e] via-[#003049] to-[#001d2e]">
                 <div className="max-w-7xl mx-auto px-3 min-[375px]:px-4 sm:px-6 md:px-8 lg:px-12">
                     {/* Breadcrumb with glass effect */}
-                    <div className="pt-4 min-[375px]:pt-6 sm:pt-8 lg:pt-10 pb-3 min-[375px]:pb-4 sm:pb-6">
-                        <nav className="inline-flex items-center gap-1 min-[375px]:gap-1.5 text-[10px] min-[375px]:text-xs sm:text-sm bg-white/5 backdrop-blur-sm border border-white/10 px-2 min-[375px]:px-2.5 sm:px-4 py-1.5 min-[375px]:py-2 sm:py-3 rounded-lg">
-                            <Link href="/" className="text-gray-400 hover:text-white transition-colors flex items-center gap-1 min-[375px]:gap-1.5 group">
-                                <svg className="w-3 h-3 min-[375px]:w-3.5 min-[375px]:h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="pt-6 sm:pt-8 lg:pt-10 pb-4 sm:pb-6">
+                        <nav className="inline-flex items-center gap-1.5 min-[375px]:gap-2 text-xs min-[375px]:text-sm bg-white/5 backdrop-blur-sm border border-white/10 px-2.5 min-[375px]:px-3 sm:px-4 py-2 min-[375px]:py-2.5 sm:py-3 rounded-lg">
+                            <Link href="/" className="text-gray-400 hover:text-white transition-colors flex items-center gap-1.5 min-[375px]:gap-2 group">
+                                <svg className="w-3.5 h-3.5 min-[375px]:w-4 min-[375px]:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                                 </svg>
                                 <span className="hidden min-[375px]:inline">Home</span>
                             </Link>
-                            <svg className="w-2.5 h-2.5 min-[375px]:w-3 min-[375px]:h-3 sm:w-4 sm:h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-3 h-3 min-[375px]:w-4 min-[375px]:h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                             </svg>
-                            <span className="text-white font-medium truncate max-w-[80px] min-[375px]:max-w-[100px] sm:max-w-none">{categoryName}</span>
+                            <span className="text-white font-medium truncate max-w-[100px] min-[375px]:max-w-none">{categoryName}</span>
                         </nav>
                     </div>
 
                     {/* Premium Header with Search Bar */}
-                    <div className="pb-4 min-[375px]:pb-6 sm:pb-8 lg:pb-10 relative">
-                        <div className="absolute top-0 left-0 w-32 h-32 min-[375px]:w-48 min-[375px]:h-48 sm:w-64 sm:h-64 bg-[#9d0208]/10 blur-3xl rounded-full"></div>
+                    <div className="pb-6 sm:pb-8 lg:pb-10 relative">
+                        <div className="absolute top-0 left-0 w-48 h-48 sm:w-64 sm:h-64 bg-[#9d0208]/10 blur-3xl rounded-full"></div>
                         <div className="relative">
-                            <div className="flex items-center gap-1.5 min-[375px]:gap-2 sm:gap-4 mb-1.5 min-[375px]:mb-2 sm:mb-3">
-                                <div className="h-0.5 w-6 min-[375px]:w-8 sm:w-12 bg-gradient-to-r from-[#9d0208] to-transparent"></div>
-                                <span className="text-[9px] min-[375px]:text-[10px] sm:text-xs font-semibold text-[#9d0208] uppercase tracking-wider">
+                            <div className="flex items-center gap-2 min-[375px]:gap-3 sm:gap-4 mb-2 sm:mb-3">
+                                <div className="h-0.5 sm:h-1 w-8 sm:w-12 bg-gradient-to-r from-[#9d0208] to-transparent"></div>
+                                <span className="text-[10px] min-[375px]:text-xs font-semibold text-[#9d0208] uppercase tracking-wider">
                                     {isAllProducts ? 'All Products' : 'Category'}
                                 </span>
                             </div>
                             
-                            {/* Header with Search Bar */}
-                            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 min-[375px]:gap-4 lg:gap-6 mb-2.5 min-[375px]:mb-3 sm:mb-4">
+                            {/* Header with Search Bar in same line */}
+                            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 lg:gap-6 mb-3 sm:mb-4">
                                 <div className="flex-1">
-                                    <h1 className="text-xl min-[375px]:text-2xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-bold text-white tracking-tight leading-tight">
+                                    <h1 className="text-2xl min-[375px]:text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-bold text-white tracking-tight leading-tight">
                                         {categoryName}
                                     </h1>
                                 </div>
@@ -244,10 +244,10 @@ const CategoryPage = () => {
                                             placeholder="Search products..."
                                             value={searchQuery}
                                             onChange={(e) => setSearchQuery(e.target.value)}
-                                            className="w-full px-3 min-[375px]:px-4 py-2 min-[375px]:py-2.5 sm:py-3 pl-8 min-[375px]:pl-10 sm:pl-11 bg-white/5 backdrop-blur-xl border border-white/10 rounded-lg sm:rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-[#9d0208] focus:ring-2 focus:ring-[#9d0208]/30 transition-all text-xs min-[375px]:text-sm"
+                                            className="w-full px-4 py-2.5 sm:py-3 pl-10 sm:pl-11 bg-white/5 backdrop-blur-xl border border-white/10 rounded-lg sm:rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-[#9d0208] focus:ring-2 focus:ring-[#9d0208]/30 transition-all text-sm"
                                         />
                                         <svg 
-                                            className="absolute left-2.5 min-[375px]:left-3 sm:left-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 min-[375px]:w-4 min-[375px]:h-4 text-gray-500" 
+                                            className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" 
                                             fill="none" 
                                             stroke="currentColor" 
                                             viewBox="0 0 24 24"
@@ -257,9 +257,9 @@ const CategoryPage = () => {
                                         {searchQuery && (
                                             <button
                                                 onClick={() => setSearchQuery("")}
-                                                className="absolute right-2.5 min-[375px]:right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition-colors"
+                                                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition-colors"
                                             >
-                                                <svg className="w-3.5 h-3.5 min-[375px]:w-4 min-[375px]:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                                                 </svg>
                                             </button>
@@ -268,17 +268,17 @@ const CategoryPage = () => {
                                 </div>
                             </div>
                             
-                            <div className="flex items-center gap-2 min-[375px]:gap-3 sm:gap-6">
-                                <p className="text-xs min-[375px]:text-sm sm:text-base text-gray-400 font-light">
+                            <div className="flex items-center gap-3 sm:gap-6">
+                                <p className="text-sm min-[375px]:text-base text-gray-400 font-light">
                                     {searchedProducts.length} {searchedProducts.length === 1 ? 'product' : 'products'}
                                     {searchQuery && <span className="ml-1">for "{searchQuery}"</span>}
                                 </p>
-                                <div className="h-px flex-1 bg-gradient-to-r from-white/20 to-transparent max-w-[100px] min-[375px]:max-w-[150px] sm:max-w-xs"></div>
+                                <div className="h-px flex-1 bg-gradient-to-r from-white/20 to-transparent max-w-[150px] sm:max-w-xs"></div>
                             </div>
                         </div>
                     </div>
 
-                    <div className="flex gap-4 min-[375px]:gap-6 sm:gap-8 lg:gap-10 pb-8 min-[375px]:pb-12 sm:pb-16 lg:pb-20">
+                    <div className="flex gap-6 sm:gap-8 lg:gap-10 pb-12 sm:pb-16 lg:pb-20">
                         {/* Premium Sidebar with glass morphism */}
                         <aside className="hidden lg:block w-72 flex-shrink-0">
                             <div className="sticky top-24">
@@ -377,25 +377,25 @@ const CategoryPage = () => {
                         {/* Products Grid with enhanced spacing */}
                         <div className="flex-1">
                             {searchedProducts.length > 0 ? (
-                                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-2.5 min-[375px]:gap-3 sm:gap-6 lg:gap-8">
+                                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-3 min-[375px]:gap-4 sm:gap-6 lg:gap-8">
                                     {searchedProducts.map((product, index) => (
                                         <ProductCard key={index} product={product} />
                                     ))}
                                 </div>
                             ) : (
-                                <div className="flex flex-col items-center justify-center py-12 min-[375px]:py-20 sm:py-32 text-center px-3 min-[375px]:px-4">
-                                    <div className="relative mb-4 min-[375px]:mb-6 sm:mb-8">
+                                <div className="flex flex-col items-center justify-center py-20 sm:py-32 text-center px-4">
+                                    <div className="relative mb-6 sm:mb-8">
                                         <div className="absolute inset-0 bg-[#9d0208]/20 blur-3xl rounded-full"></div>
-                                        <div className="relative w-16 h-16 min-[375px]:w-20 min-[375px]:h-20 sm:w-32 sm:h-32 bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl min-[375px]:rounded-2xl sm:rounded-3xl flex items-center justify-center">
-                                            <svg className="w-8 h-8 min-[375px]:w-10 min-[375px]:h-10 sm:w-16 sm:h-16 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <div className="relative w-20 h-20 min-[375px]:w-24 min-[375px]:h-24 sm:w-32 sm:h-32 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl sm:rounded-3xl flex items-center justify-center">
+                                            <svg className="w-10 h-10 min-[375px]:w-12 min-[375px]:h-12 sm:w-16 sm:h-16 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                             </svg>
                                         </div>
                                     </div>
-                                    <h3 className="text-lg min-[375px]:text-xl sm:text-3xl font-bold text-white mb-1.5 min-[375px]:mb-2 sm:mb-3">
+                                    <h3 className="text-xl min-[375px]:text-2xl sm:text-3xl font-bold text-white mb-2 sm:mb-3">
                                         {searchQuery ? "No Results Found" : "No Products Yet"}
                                     </h3>
-                                    <p className="text-xs min-[375px]:text-sm sm:text-base text-gray-400 mb-6 min-[375px]:mb-8 sm:mb-10 max-w-xs min-[375px]:max-w-md px-2">
+                                    <p className="text-sm min-[375px]:text-base text-gray-400 mb-8 sm:mb-10 max-w-md px-2">
                                         {searchQuery 
                                             ? `No products match "${searchQuery}". Try a different search term.`
                                             : "We're working on adding amazing products to this category. Check back soon!"
@@ -404,20 +404,20 @@ const CategoryPage = () => {
                                     {searchQuery ? (
                                         <button
                                             onClick={() => setSearchQuery("")}
-                                            className="inline-flex items-center gap-1.5 min-[375px]:gap-2 px-5 min-[375px]:px-6 sm:px-8 py-2.5 min-[375px]:py-3 sm:py-4 bg-gradient-to-r from-[#9d0208] to-[#d00000] hover:from-[#7a0106] hover:to-[#9d0208] text-white text-xs min-[375px]:text-sm font-semibold transition-all shadow-lg shadow-[#9d0208]/30 hover:shadow-[#9d0208]/50 hover:scale-105 rounded-lg min-[375px]:rounded-xl group"
+                                            className="inline-flex items-center gap-2 px-6 min-[375px]:px-8 py-3 min-[375px]:py-4 bg-gradient-to-r from-[#9d0208] to-[#d00000] hover:from-[#7a0106] hover:to-[#9d0208] text-white text-xs min-[375px]:text-sm font-semibold transition-all shadow-lg shadow-[#9d0208]/30 hover:shadow-[#9d0208]/50 hover:scale-105 rounded-xl group"
                                         >
                                             <span>Clear Search</span>
-                                            <svg className="w-3 h-3 min-[375px]:w-3.5 min-[375px]:h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <svg className="w-3.5 h-3.5 min-[375px]:w-4 min-[375px]:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                                             </svg>
                                         </button>
                                     ) : (
                                         <Link
                                             href="/"
-                                            className="inline-flex items-center gap-1.5 min-[375px]:gap-2 px-5 min-[375px]:px-6 sm:px-8 py-2.5 min-[375px]:py-3 sm:py-4 bg-gradient-to-r from-[#9d0208] to-[#d00000] hover:from-[#7a0106] hover:to-[#9d0208] text-white text-xs min-[375px]:text-sm font-semibold transition-all shadow-lg shadow-[#9d0208]/30 hover:shadow-[#9d0208]/50 hover:scale-105 rounded-lg min-[375px]:rounded-xl group"
+                                            className="inline-flex items-center gap-2 px-6 min-[375px]:px-8 py-3 min-[375px]:py-4 bg-gradient-to-r from-[#9d0208] to-[#d00000] hover:from-[#7a0106] hover:to-[#9d0208] text-white text-xs min-[375px]:text-sm font-semibold transition-all shadow-lg shadow-[#9d0208]/30 hover:shadow-[#9d0208]/50 hover:scale-105 rounded-xl group"
                                         >
                                             <span>Back to Home</span>
-                                            <svg className="w-3 h-3 min-[375px]:w-3.5 min-[375px]:h-3.5 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <svg className="w-3.5 h-3.5 min-[375px]:w-4 min-[375px]:h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                                             </svg>
                                         </Link>

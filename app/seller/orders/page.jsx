@@ -48,7 +48,7 @@ const Orders = () => {
 
     if (loading) {
         return (
-            <div className="flex-1 h-screen overflow-scroll flex flex-col justify-between text-sm bg-black text-white">
+            <div className="flex-1 h-screen overflow-scroll flex flex-col justify-between text-sm bg-[#003049] text-white">
                 <Loading />
             </div>
         );
@@ -56,7 +56,7 @@ const Orders = () => {
 
     if (error) {
         return (
-            <div className="flex-1 h-screen overflow-scroll flex flex-col justify-between text-sm bg-black text-white">
+            <div className="flex-1 h-screen overflow-scroll flex flex-col justify-between text-sm bg-[#003049] text-white">
                 <div className="flex items-center justify-center min-h-[60vh]">
                     <div className="text-center">
                         <p className="text-xl text-[#9d0208] mb-4">{error}</p>
@@ -74,7 +74,7 @@ const Orders = () => {
     }
 
     return (
-        <div className="flex-1 h-screen overflow-scroll flex flex-col justify-between text-sm bg-black text-white">
+        <div className="flex-1 h-screen overflow-scroll flex flex-col justify-between text-sm bg-[#003049] text-white">
             <div className="md:p-10 p-4 space-y-5">
 
                 {/* Header */}

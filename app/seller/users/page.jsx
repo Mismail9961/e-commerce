@@ -71,7 +71,7 @@ export default function AdminUsersPage() {
 
   if (status === "loading" || loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-black text-white">
+      <div className="min-h-screen flex items-center justify-center bg-[#003049] text-white">
         <div className="animate-spin rounded-full h-10 w-10 min-[375px]:h-12 min-[375px]:w-12 border-b-2 border-[#9d0208]"></div>
       </div>
     );
@@ -80,7 +80,7 @@ export default function AdminUsersPage() {
   if (!["admin", "seller"].includes(session?.user?.role)) return null;
 
   return (
-    <div className="min-h-screen bg-black py-3 px-2 min-[375px]:py-4 min-[375px]:px-3 sm:py-8 sm:px-6 lg:px-8 text-white">
+    <div className="min-h-screen bg-[#003049] py-3 px-2 min-[375px]:py-4 min-[375px]:px-3 sm:py-8 sm:px-6 lg:px-8 text-white">
       <div className="max-w-7xl mx-auto">
 
         {/* Header */}

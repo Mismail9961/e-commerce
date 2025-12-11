@@ -114,14 +114,14 @@ export default function SeoManagement() {
 
   if (fetching || status === "loading") {
     return (
-      <div className="flex justify-center items-center min-h-screen bg-black">
+      <div className="flex justify-center items-center min-h-screen bg-[#003049]">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#9d0208]"></div>
       </div>
     );
   }
 
   return (
-    <div className="w-full min-h-screen px-3 min-[375px]:px-4 sm:px-6 py-4 min-[375px]:py-6 max-w-4xl mx-auto bg-black text-white">
+    <div className="w-full min-h-screen px-3 min-[375px]:px-4 sm:px-6 py-4 min-[375px]:py-6 max-w-4xl mx-auto bg-[#003049] text-white">
 
       {/* Live Preview */}
       <div className="bg-[#111] border border-[#9d0208] rounded-lg min-[375px]:rounded-xl shadow-lg p-3 min-[375px]:p-4 sm:p-5 mb-4 min-[375px]:mb-6">
