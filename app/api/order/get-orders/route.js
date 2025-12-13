@@ -10,7 +10,7 @@ export async function GET(req) {
   try {
     const session = await getServerSession(authOptions);
 
-    console.log("Session in get-orders:", session); // Debug log
+    console.log("Session in get-orders:", session);
 
     if (!session || !session.user?.id) {
       return NextResponse.json(
@@ -21,14 +21,26 @@ export async function GET(req) {
 
     await connectDB();
 
-    console.log("Fetching orders for user:", session.user.id); // Debug log
+    const userRole = session.user.role;
+    console.log("User role:", userRole, "User ID:", session.user.id);
 
-    // Fetch all orders for this user, newest first
-    const orders = await Order.find({ userId: session.user.id })
-      .sort({ date: -1 })
-      .lean();
+    let orders;
 
-    console.log("Raw orders found:", orders.length); // Debug log
+    // Admin and Seller can see all orders
+    if (userRole === "admin" || userRole === "seller") {
+      console.log("Fetching all orders for admin/seller");
+      orders = await Order.find({})
+        .sort({ date: -1 })
+        .lean();
+    } else {
+      // Regular users see only their own orders
+      console.log("Fetching orders for regular user:", session.user.id);
+      orders = await Order.find({ userId: session.user.id })
+        .sort({ date: -1 })
+        .lean();
+    }
+
+    console.log("Raw orders found:", orders.length);
 
     if (orders.length === 0) {
       return NextResponse.json({ 
@@ -44,17 +56,14 @@ export async function GET(req) {
         const itemsWithProducts = await Promise.all(
           order.items.map(async (item) => {
             try {
-              // Convert string ID to proper format if needed
               const productId = typeof item.product === 'string' 
                 ? item.product 
                 : item.product.toString();
 
-              // Try to find product - handle both ObjectId and String _id
               let product;
               try {
                 product = await Product.findOne({ _id: productId });
               } catch (err) {
-                // If findOne fails, try findById
                 product = await Product.findById(productId);
               }
 
@@ -97,11 +106,13 @@ export async function GET(req) {
       })
     );
 
-    console.log("Orders with products:", ordersWithProducts.length); // Debug log
+    console.log("Orders with products:", ordersWithProducts.length);
 
     return NextResponse.json({ 
       success: true, 
-      orders: ordersWithProducts 
+      orders: ordersWithProducts,
+      totalOrders: ordersWithProducts.length,
+      userRole: userRole
     });
   } catch (err) {
     console.error("Error fetching orders:", err);

@@ -15,23 +15,25 @@ const Orders = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const fetchSellerOrders = async () => {
+    const fetchOrders = async () => {
         setLoading(true);
         setError(null);
         try {
-            const { data } = await axios.get("/api/seller/orders", { withCredentials: true });
+            // Use the general orders endpoint that handles role-based access
+            const { data } = await axios.get("/api/order/get-orders", { withCredentials: true });
             if (data.success) {
                 setOrders(data.orders || []);
+                console.log(`Loaded ${data.totalOrders} orders for ${data.userRole}`);
             } else {
                 setError(data.error || "Failed to fetch orders");
             }
         } catch (err) {
-            console.error("Error fetching seller orders:", err);
+            console.error("Error fetching orders:", err);
             if (err.response?.status === 401) {
                 setError("Please login to view orders");
                 router.push('/login');
             } else if (err.response?.status === 403) {
-                setError("Unauthorized. Seller access required.");
+                setError("Unauthorized access");
             } else {
                 setError(err.response?.data?.error || "Failed to fetch orders");
             }
@@ -41,8 +43,8 @@ const Orders = () => {
     };
 
     useEffect(() => {
-        if (session?.user?.role === "seller" || session?.user?.role === "admin") {
-            fetchSellerOrders();
+        if (session?.user) {
+            fetchOrders();
         }
     }, [session]);
 
@@ -68,7 +70,6 @@ const Orders = () => {
                         </button>
                     </div>
                 </div>
-                <Footer />
             </div>
         );
     }
@@ -79,9 +80,18 @@ const Orders = () => {
 
                 {/* Header */}
                 <div className="flex items-center justify-between">
-                    <h2 className="text-lg font-medium text-[#9d0208]">Orders</h2>
+                    <div>
+                        <h2 className="text-lg font-medium text-[#9d0208]">
+                            {session?.user?.role === "admin" ? "All Orders (Admin)" : 
+                             session?.user?.role === "seller" ? "All Orders (Seller)" : 
+                             "My Orders"}
+                        </h2>
+                        <p className="text-xs text-gray-400 mt-1">
+                            Total: {orders.length} order{orders.length !== 1 ? 's' : ''}
+                        </p>
+                    </div>
                     <button
-                        onClick={fetchSellerOrders}
+                        onClick={fetchOrders}
                         className="px-4 py-2 bg-[#9d0208]/20 text-[#9d0208] rounded hover:bg-[#9d0208]/30 transition text-xs"
                     >
                         Refresh
@@ -92,10 +102,14 @@ const Orders = () => {
                 {orders.length === 0 ? (
                     <div className="flex flex-col items-center justify-center py-20">
                         <p className="text-xl text-gray-400 mb-4">No orders found</p>
-                        <p className="text-sm text-gray-500">Orders containing your products will appear here</p>
+                        <p className="text-sm text-gray-500">
+                            {session?.user?.role === "admin" || session?.user?.role === "seller" 
+                                ? "All orders will appear here" 
+                                : "Your orders will appear here"}
+                        </p>
                     </div>
                 ) : (
-                    <div className="max-w-4xl rounded-md">
+                    <div className="max-w-5xl rounded-md">
 
                         {orders.map((order) => (
                             <div
@@ -128,11 +142,11 @@ const Orders = () => {
                                         </span>
 
                                         <span className="text-xs text-gray-400">
-                                            Items: {order.totalItems || order.items?.length || 0}
+                                            Order ID: {order._id.slice(-8)}
                                         </span>
 
                                         <span className="text-xs text-gray-400">
-                                            Customer: {order.customer?.name || "N/A"}
+                                            Items: {order.totalItems || order.items?.length || 0}
                                         </span>
 
                                         {/* Status Badge */}
@@ -152,16 +166,27 @@ const Orders = () => {
                                     </div>
                                 </div>
 
+                                {/* Customer Info (for admin/seller) */}
+                                {(session?.user?.role === "admin" || session?.user?.role === "seller") && (
+                                    <div className="text-gray-300 text-sm">
+                                        <p className="font-medium text-white mb-1">Customer</p>
+                                        <p className="text-xs">
+                                            {order.address?.fullName || "N/A"}
+                                            <br />
+                                            {order.address?.phoneNumber || ""}
+                                        </p>
+                                    </div>
+                                )}
+
                                 {/* Address */}
                                 <div className="text-gray-300 text-sm">
-                                    <p>
-                                        <span className="font-medium text-white">{order.address?.fullName || "N/A"}</span>
+                                    <p className="font-medium text-white mb-1">Delivery Address</p>
+                                    <p className="text-xs">
+                                        {order.address?.area || ""}
                                         <br />
-                                        <span>{order.address?.area || ""}</span>
+                                        {`${order.address?.city || ""}, ${order.address?.state || ""}`}
                                         <br />
-                                        <span>{`${order.address?.city || ""}, ${order.address?.state || ""}`}</span>
-                                        <br />
-                                        <span>{order.address?.phoneNumber || ""}</span>
+                                        {order.address?.zipCode || ""}
                                     </p>
                                 </div>
 
@@ -169,29 +194,31 @@ const Orders = () => {
                                 <div className="flex flex-col items-end">
                                     <p className="font-medium text-white">
                                         {currency}
-                                        {order.sellerAmount?.toFixed(2) || order.amount?.toFixed(2) || "0.00"}
+                                        {order.amount?.toFixed(2) || "0.00"}
                                     </p>
-                                    <p className="text-xs text-gray-400 mt-1">Your Products</p>
+                                    <p className="text-xs text-gray-400 mt-1">Total Amount</p>
                                 </div>
 
                                 {/* Payment Info */}
                                 <div className="text-sm text-gray-300">
-                                    <p className="flex flex-col">
-                                        <span>Method: COD</span>
-                                        <span>Date: {order.date ? new Date(order.date).toLocaleDateString() : "N/A"}</span>
+                                    <p className="flex flex-col gap-1">
+                                        <span className="text-xs">Method: {order.paymentMethod || "COD"}</span>
+                                        <span className="text-xs">
+                                            Date: {order.date ? new Date(order.date).toLocaleDateString() : "N/A"}
+                                        </span>
 
                                         <span
-                                            className={`font-medium ${
-                                                order.paymentType === "Paid"
+                                            className={`text-xs font-medium ${
+                                                order.payment === true || order.paymentType === "Paid"
                                                     ? "text-green-400"
                                                     : order.paymentType === "Refunded"
                                                     ? "text-red-400"
-                                                    : order.paymentType === "Pending"
-                                                    ? "text-yellow-400"
-                                                    : "text-gray-400"
+                                                    : "text-yellow-400"
                                             }`}
                                         >
-                                            Payment: {order.paymentType || "COD"}
+                                            {order.payment === true || order.paymentType === "Paid" 
+                                                ? "Paid" 
+                                                : order.paymentType || "Pending"}
                                         </span>
                                     </p>
                                 </div>
