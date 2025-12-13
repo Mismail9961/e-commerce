@@ -59,8 +59,8 @@ const AddProduct = () => {
         toast.success(data.message);
         setNewCategory("");
         setShowAddCategory(false);
-        await fetchCategories(); // Refresh categories list
-        setCategory(data.data._id); // Auto-select the new category
+        await fetchCategories();
+        setCategory(data.data._id);
       } else {
         toast.error(data.message || "Failed to add category");
       }
@@ -72,8 +72,8 @@ const AddProduct = () => {
 
   if (!user || !["seller", "admin"].includes(user.role)) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-lg font-semibold text-[#9d0208]">Access Denied</p>
+      <div className="min-h-screen flex items-center justify-center px-4">
+        <p className="text-base sm:text-lg font-semibold text-[#9d0208]">Access Denied</p>
       </div>
     );
   }
@@ -141,16 +141,16 @@ const AddProduct = () => {
     <div className="flex-1 min-h-screen flex flex-col justify-between bg-[#003049] text-white">
       <form
         onSubmit={handleSubmit}
-        className="md:p-10 p-4 space-y-5 max-w-lg mx-auto"
+        className="w-full px-3 py-4 sm:p-6 md:p-10 space-y-4 sm:space-y-5 max-w-lg mx-auto"
       >
         {/* Product Images */}
         <div>
-          <p className="text-base font-semibold text-[#9d0208]">
+          <p className="text-sm sm:text-base font-semibold text-[#9d0208] mb-2">
             Product Image
           </p>
-          <div className="flex flex-wrap items-center gap-3 mt-2">
+          <div className="grid grid-cols-2 xs:flex xs:flex-wrap items-center gap-2 sm:gap-3">
             {[...Array(4)].map((_, index) => (
-              <label key={index} htmlFor={`image${index}`}>
+              <label key={index} htmlFor={`image${index}`} className="block">
                 <input
                   type="file"
                   id={`image${index}`}
@@ -169,9 +169,9 @@ const AddProduct = () => {
                       : assets.upload_area
                   }
                   alt={`upload-${index}`}
-                  width={100}
-                  height={100}
-                  className="cursor-pointer border border-[#9d0208] rounded"
+                  width={80}
+                  height={80}
+                  className="cursor-pointer border border-[#9d0208] rounded w-[70px] h-[70px] xs:w-[80px] xs:h-[80px] sm:w-[100px] sm:h-[100px] object-cover"
                 />
               </label>
             ))}
@@ -179,10 +179,10 @@ const AddProduct = () => {
         </div>
 
         {/* Product Name */}
-        <div className="flex flex-col gap-1 max-w-md">
+        <div className="flex flex-col gap-1 w-full">
           <label
             htmlFor="product-name"
-            className="text-base font-semibold text-[#9d0208]"
+            className="text-sm sm:text-base font-semibold text-[#9d0208]"
           >
             Product Name
           </label>
@@ -190,7 +190,7 @@ const AddProduct = () => {
             type="text"
             id="product-name"
             placeholder="Type here"
-            className="outline-none md:py-2.5 py-2 px-3 rounded border border-[#9d0208]/50 bg-black text-white focus:border-[#9d0208] focus:ring-1 focus:ring-[#9d0208]"
+            className="outline-none py-2 sm:py-2.5 px-2.5 sm:px-3 rounded border border-[#9d0208]/50 bg-black text-white text-sm sm:text-base focus:border-[#9d0208] focus:ring-1 focus:ring-[#9d0208]"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
@@ -198,57 +198,57 @@ const AddProduct = () => {
         </div>
 
         {/* Product Description */}
-        <div className="flex flex-col gap-1 max-w-md">
+        <div className="flex flex-col gap-1 w-full">
           <label
             htmlFor="product-description"
-            className="text-base font-semibold text-[#9d0208]"
+            className="text-sm sm:text-base font-semibold text-[#9d0208]"
           >
             Product Description
           </label>
           <textarea
             id="product-description"
-            rows={4}
+            rows={3}
             placeholder="Type here"
-            className="outline-none md:py-2.5 py-2 px-3 rounded border bg-black text-white border-[#9d0208]/50 resize-none focus:border-[#9d0208] focus:ring-1 focus:ring-[#9d0208]"
+            className="outline-none py-2 sm:py-2.5 px-2.5 sm:px-3 rounded border bg-black text-white text-sm sm:text-base border-[#9d0208]/50 resize-none focus:border-[#9d0208] focus:ring-1 focus:ring-[#9d0208]"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             required
           />
         </div>
 
-        {/* Category, Price, Offer Price */}
-        <div className="flex items-center gap-5 flex-wrap">
-          {/* Category */}
-          <div className="flex flex-col gap-1 w-40">
-            <label
-              htmlFor="category"
-              className="text-base font-semibold text-[#9d0208]"
-            >
-              Category
-            </label>
-            <select
-              id="category"
-              className="outline-none md:py-2.5 py-2 px-3 rounded border bg-black text-white border-[#9d0208]/50 focus:border-[#9d0208] focus:ring-1 focus:ring-[#9d0208]"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              required
-            >
-              <option value="">
-                {isLoadingCategories ? "Loading..." : "Select Category"}
+        {/* Category */}
+        <div className="flex flex-col gap-1 w-full">
+          <label
+            htmlFor="category"
+            className="text-sm sm:text-base font-semibold text-[#9d0208]"
+          >
+            Category
+          </label>
+          <select
+            id="category"
+            className="outline-none py-2 sm:py-2.5 px-2.5 sm:px-3 rounded border bg-black text-white text-sm sm:text-base border-[#9d0208]/50 focus:border-[#9d0208] focus:ring-1 focus:ring-[#9d0208]"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            required
+          >
+            <option value="">
+              {isLoadingCategories ? "Loading..." : "Select Category"}
+            </option>
+            {categories.map((cat) => (
+              <option key={cat._id} value={cat._id}>
+                {cat.name}
               </option>
-              {categories.map((cat) => (
-                <option key={cat._id} value={cat._id}>
-                  {cat.name}
-                </option>
-              ))}
-            </select>
-          </div>
+            ))}
+          </select>
+        </div>
 
+        {/* Price and Offer Price */}
+        <div className="flex flex-col xs:flex-row items-stretch xs:items-center gap-3 sm:gap-4">
           {/* Product Price */}
-          <div className="flex flex-col gap-1 w-32">
+          <div className="flex flex-col gap-1 flex-1 min-w-0">
             <label
               htmlFor="product-price"
-              className="text-base font-semibold text-[#9d0208]"
+              className="text-sm sm:text-base font-semibold text-[#9d0208]"
             >
               Product Price
             </label>
@@ -258,7 +258,7 @@ const AddProduct = () => {
               placeholder="0"
               min="0"
               step="0.01"
-              className="outline-none md:py-2.5 py-2 px-3 rounded border bg-black text-white border-[#9d0208]/50 focus:border-[#9d0208] focus:ring-1 focus:ring-[#9d0208]"
+              className="outline-none py-2 sm:py-2.5 px-2.5 sm:px-3 rounded border bg-black text-white text-sm sm:text-base border-[#9d0208]/50 focus:border-[#9d0208] focus:ring-1 focus:ring-[#9d0208] w-full"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
               required
@@ -266,10 +266,10 @@ const AddProduct = () => {
           </div>
 
           {/* Offer Price */}
-          <div className="flex flex-col gap-1 w-32">
+          <div className="flex flex-col gap-1 flex-1 min-w-0">
             <label
               htmlFor="offer-price"
-              className="text-base font-semibold text-[#9d0208]"
+              className="text-sm sm:text-base font-semibold text-[#9d0208]"
             >
               Offer Price
             </label>
@@ -279,7 +279,7 @@ const AddProduct = () => {
               placeholder="0"
               min="0"
               step="0.01"
-              className="outline-none md:py-2.5 py-2 px-3 rounded border bg-black text-white border-[#9d0208]/50 focus:border-[#9d0208] focus:ring-1 focus:ring-[#9d0208]"
+              className="outline-none py-2 sm:py-2.5 px-2.5 sm:px-3 rounded border bg-black text-white text-sm sm:text-base border-[#9d0208]/50 focus:border-[#9d0208] focus:ring-1 focus:ring-[#9d0208] w-full"
               value={offerPrice}
               onChange={(e) => setOfferPrice(e.target.value)}
             />
@@ -290,18 +290,18 @@ const AddProduct = () => {
         <button
           type="button"
           onClick={() => setShowAddCategory(!showAddCategory)}
-          className="text-sm text-[#9d0208] hover:underline"
+          className="text-xs sm:text-sm text-[#9d0208] hover:underline"
         >
           {showAddCategory ? "- Cancel Add Category" : "+ Add New Category"}
         </button>
 
         {/* Add Category Form */}
         {showAddCategory && (
-          <div className="flex items-center gap-3 p-4 border border-[#9d0208]/50 rounded bg-black">
+          <div className="flex flex-col xs:flex-row items-stretch xs:items-center gap-2 sm:gap-3 p-3 sm:p-4 border border-[#9d0208]/50 rounded bg-black">
             <input
               type="text"
               placeholder="Category name"
-              className="flex-1 outline-none py-2 px-3 rounded border border-[#9d0208]/50 bg-[#003049] text-white focus:border-[#9d0208] focus:ring-1 focus:ring-[#9d0208]"
+              className="flex-1 outline-none py-2 px-2.5 sm:px-3 rounded border border-[#9d0208]/50 bg-[#003049] text-white text-sm sm:text-base focus:border-[#9d0208] focus:ring-1 focus:ring-[#9d0208]"
               value={newCategory}
               onChange={(e) => setNewCategory(e.target.value)}
               onKeyPress={(e) => {
@@ -311,32 +311,34 @@ const AddProduct = () => {
                 }
               }}
             />
-            <button
-              type="button"
-              onClick={handleAddCategory}
-              className="px-4 py-2 bg-[#9d0208] text-white font-semibold rounded hover:bg-black hover:text-[#9d0208] border border-[#9d0208] transition"
-            >
-              Add
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setShowAddCategory(false);
-                setNewCategory("");
-              }}
-              className="px-4 py-2 bg-black text-white border border-[#9d0208]/50 rounded hover:border-[#9d0208] transition"
-            >
-              Cancel
-            </button>
+            <div className="flex gap-2 xs:gap-2">
+              <button
+                type="button"
+                onClick={handleAddCategory}
+                className="flex-1 xs:flex-initial px-3 sm:px-4 py-2 bg-[#9d0208] text-white text-xs sm:text-sm font-semibold rounded hover:bg-black hover:text-[#9d0208] border border-[#9d0208] transition"
+              >
+                Add
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowAddCategory(false);
+                  setNewCategory("");
+                }}
+                className="flex-1 xs:flex-initial px-3 sm:px-4 py-2 bg-black text-white text-xs sm:text-sm border border-[#9d0208]/50 rounded hover:border-[#9d0208] transition"
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         )}
 
         {/* ADD Product Button */}
         <button
           type="submit"
-          className="px-8 py-2.5 bg-[#9d0208] text-white font-semibold rounded hover:bg-black hover:text-[#9d0208] border border-[#9d0208] transition"
+          className="w-full sm:w-auto px-6 sm:px-8 py-2.5 bg-[#9d0208] text-white text-sm sm:text-base font-semibold rounded hover:bg-black hover:text-[#9d0208] border border-[#9d0208] transition"
         >
-          ADD
+          ADD PRODUCT
         </button>
       </form>
     </div>
