@@ -133,7 +133,7 @@ const ProductList = () => {
               <span className="text-xs min-[320px]:text-sm font-bold text-[#9d0208]">{products.length}</span>
             </div>
             <button
-              onClick={() => router.push('/seller/add-product')}
+              onClick={() => router.push('/seller')}
               className="px-3 min-[320px]:px-4 py-2 bg-[#9d0208] text-white text-xs min-[320px]:text-sm rounded-lg min-[320px]:rounded-xl hover:bg-[#7a0006] transition flex items-center gap-2"
             >
               <span className="text-base min-[320px]:text-lg">+</span>
