@@ -2,7 +2,6 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/db";
 import User from "@/models/User";
-
 export async function POST(request) {
   try {
     await connectDB();
@@ -16,15 +15,19 @@ export async function POST(request) {
       );
     }
 
-    // Remove the product from all users' carts
+    console.log("Removing product from all carts:", productId);
+
+    // Since cartItems is an object like {"productId": quantity}
+    // We need to unset the field with the productId as the key
+    const unsetField = {};
+    unsetField[`cartItems.${productId}`] = "";
+
     const result = await User.updateMany(
-      { "cartData.productId": productId },
-      { 
-        $pull: { 
-          cartData: { productId: productId } 
-        } 
-      }
+      { [`cartItems.${productId}`]: { $exists: true } },
+      { $unset: unsetField }
     );
+
+    console.log(`Product removed from ${result.modifiedCount} user carts`);
 
     return NextResponse.json({
       success: true,
@@ -35,7 +38,7 @@ export async function POST(request) {
   } catch (error) {
     console.error("Error removing product from carts:", error);
     return NextResponse.json(
-      { success: false, error: "Failed to update carts" },
+      { success: false, error: error.message },
       { status: 500 }
     );
   }
