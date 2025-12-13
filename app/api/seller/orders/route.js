@@ -1,17 +1,16 @@
-// app/api/seller/orders/route.js
+// File: /api/admin/all-orders/route.js
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import connectDB from "@/lib/db";
 import Order from "@/models/Order";
 import Product from "@/models/Product";
-import User from "@/models/User";
 
-// Get orders for seller (orders containing their products)
 export async function GET(req) {
   try {
     const session = await getServerSession(authOptions);
 
+    // Check if user is authenticated and is an admin
     if (!session || !session.user?.id) {
       return NextResponse.json(
         { success: false, error: "Not authenticated" },
@@ -19,78 +18,113 @@ export async function GET(req) {
       );
     }
 
-    // Check if user is seller or admin
-    if (!["seller", "admin"].includes(session.user.role)) {
+    if (session.user.role !== "admin") {
       return NextResponse.json(
-        { success: false, error: "Unauthorized. Seller access required." },
+        { success: false, error: "Unauthorized. Admin access required." },
         { status: 403 }
       );
     }
 
     await connectDB();
 
-    // Fetch all orders, newest first
-    const allOrders = await Order.find({})
+    console.log("Admin fetching all orders");
+
+    // Fetch ALL orders from the database, newest first
+    const orders = await Order.find({})
       .sort({ date: -1 })
       .lean();
 
-    // Filter orders to only include those with products from this seller
-    const sellerOrders = [];
-    
-    for (const order of allOrders) {
-      // Get product details for each item
-      const itemsWithProducts = await Promise.all(
-        order.items.map(async (item) => {
-          try {
-            const product = await Product.findById(item.product);
-            return {
-              ...item,
-              product: product || null
-            };
-          } catch (error) {
-            console.error(`Error fetching product ${item.product}:`, error);
-            return {
-              ...item,
-              product: null
-            };
-          }
-        })
-      );
+    console.log(`Found ${orders.length} total orders`);
 
-      // Filter items to only include products from this seller
-      const sellerItems = itemsWithProducts.filter(item => 
-        item.product && item.product.userId === session.user.id
-      );
-
-      // Only include this order if it has at least one product from this seller
-      if (sellerItems.length > 0) {
-        // Get customer details
-        const customer = await User.findById(order.userId).select("name email imageUrl");
-        
-        // Calculate the amount for seller's products only
-        let sellerAmount = 0;
-        sellerItems.forEach(item => {
-          const price = item.product.offerPrice || item.product.price || 0;
-          sellerAmount += price * item.quantity;
-        });
-
-        sellerOrders.push({
-          ...order,
-          customer: customer || { name: "Customer not found", email: "N/A", _id: order.userId },
-          items: sellerItems, // Only seller's products
-          sellerAmount: sellerAmount, // Amount for seller's products only
-          totalItems: sellerItems.length
-        });
-      }
+    if (orders.length === 0) {
+      return NextResponse.json({ 
+        success: true, 
+        orders: [],
+        message: "No orders found" 
+      });
     }
 
-    return NextResponse.json({ success: true, orders: sellerOrders });
+    // Populate product details for each order
+    const ordersWithProducts = await Promise.all(
+      orders.map(async (order) => {
+        const itemsWithProducts = await Promise.all(
+          order.items.map(async (item) => {
+            try {
+              const productId = typeof item.product === 'string' 
+                ? item.product 
+                : item.product.toString();
+
+              let product;
+              try {
+                product = await Product.findOne({ _id: productId });
+              } catch (err) {
+                product = await Product.findById(productId);
+              }
+
+              if (!product) {
+                console.log(`Product not found: ${productId}`);
+                return {
+                  product: {
+                    _id: productId,
+                    name: "Product Unavailable",
+                    price: 0,
+                    image: []
+                  },
+                  quantity: item.quantity,
+                  _id: item._id
+                };
+              }
+
+              return {
+                product: {
+                  _id: product._id,
+                  name: product.name,
+                  price: product.price,
+                  offerPrice: product.offerPrice,
+                  image: product.image
+                },
+                quantity: item.quantity,
+                _id: item._id
+              };
+            } catch (error) {
+              console.error(`Error fetching product ${item.product}:`, error);
+              return {
+                product: {
+                  _id: item.product,
+                  name: "Error Loading Product",
+                  price: 0,
+                  image: []
+                },
+                quantity: item.quantity,
+                _id: item._id
+              };
+            }
+          })
+        );
+
+        return {
+          ...order,
+          _id: order._id.toString(),
+          items: itemsWithProducts
+        };
+      })
+    );
+
+    console.log(`Returning ${ordersWithProducts.length} orders with product details`);
+
+    return NextResponse.json({ 
+      success: true, 
+      orders: ordersWithProducts 
+    });
   } catch (err) {
-    console.error("Error fetching seller orders:", err);
+    console.error("Error fetching all orders:", err);
     return NextResponse.json(
-      { success: false, error: "Failed to fetch orders" },
+      { 
+        success: false, 
+        error: "Failed to fetch orders",
+        details: err.message 
+      },
       { status: 500 }
     );
   }
 }
-
