@@ -25,8 +25,8 @@ export async function generateMetadata() {
   
   if (!seoData) {
     return {
-      title: "7even86gamehub.pk",
-      description: "Your one-stop shop for gaming consoles, accessories, and more in Pakistan.",
+      title: "",
+      description: "",
     };
   }
 
