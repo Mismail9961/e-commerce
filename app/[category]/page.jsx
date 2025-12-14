@@ -163,13 +163,13 @@ const CategoryPage = () => {
       <>
         <TopBar />
         <Navbar />
-        <div className="min-h-screen flex items-center justify-center bg-[#001d2e]">
+        <div className="min-h-screen flex items-center justify-center bg-[#001d2e] px-3">
           <div className="text-center">
-            <h1 className="text-6xl font-bold text-white mb-4">404</h1>
-            <p className="text-gray-400 mb-6">Category not found</p>
+            <h1 className="text-4xl sm:text-6xl font-bold text-white mb-3 sm:mb-4">404</h1>
+            <p className="text-sm sm:text-base text-gray-400 mb-4 sm:mb-6">Category not found</p>
             <Link
               href="/all-products"
-              className="px-6 py-3 bg-[#9d0208] text-white rounded-xl hover:bg-[#7a0006] transition"
+              className="inline-block px-5 sm:px-6 py-2.5 sm:py-3 bg-[#9d0208] text-white text-sm sm:text-base rounded-lg sm:rounded-xl hover:bg-[#7a0006] transition"
             >
               Browse All Products
             </Link>
@@ -194,22 +194,22 @@ const CategoryPage = () => {
       <Navbar />
 
       <div className="min-h-screen bg-gradient-to-br from-[#001d2e] via-[#003049] to-[#001d2e]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-12">
 
           {/* Breadcrumb */}
-          <div className="pt-8 pb-6 text-sm text-gray-400">
+          <div className="pt-4 sm:pt-6 lg:pt-8 pb-3 sm:pb-4 lg:pb-6 text-xs sm:text-sm text-gray-400">
             <Link href="/" className="hover:text-white transition">Home</Link>
-            <span className="mx-2">/</span>
-            <span className="text-white">{categoryName}</span>
+            <span className="mx-1.5 sm:mx-2">/</span>
+            <span className="text-white truncate inline-block max-w-[200px] sm:max-w-none align-bottom">{categoryName}</span>
           </div>
 
           {/* Header */}
-          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 pb-10">
-            <div>
-              <h1 className="text-4xl sm:text-5xl font-bold text-white mb-2">
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-3 sm:gap-4 lg:gap-6 pb-4 sm:pb-6 lg:pb-10">
+            <div className="w-full lg:w-auto">
+              <h1 className="text-2xl sm:text-3xl lg:text-5xl font-bold text-white mb-1 sm:mb-2 leading-tight">
                 {categoryName}
               </h1>
-              <p className="text-gray-400 text-sm">
+              <p className="text-gray-400 text-xs sm:text-sm">
                 {searchedProducts.length} {searchedProducts.length === 1 ? 'product' : 'products'} found
               </p>
             </div>
@@ -219,17 +219,51 @@ const CategoryPage = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search products..."
-                className="w-full px-4 py-3 pl-10 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#9d0208]/40 transition"
+                className="w-full px-3 sm:px-4 py-2 sm:py-2.5 lg:py-3 pl-8 sm:pl-10 bg-white/5 border border-white/10 rounded-lg sm:rounded-xl text-sm sm:text-base text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#9d0208]/40 transition"
               />
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+              <span className="absolute left-2.5 sm:left-3 top-1/2 -translate-y-1/2 text-base sm:text-lg text-gray-500">
                 🔍
               </span>
             </div>
           </div>
 
-          <div className="flex gap-8 pb-20">
+          {/* MOBILE CATEGORY DROPDOWN */}
+          <div className="lg:hidden w-full mb-4 sm:mb-6">
+            <select
+              value={isAllProducts ? "all-products" : category}
+              onChange={(e) => {
+                const value = e.target.value;
+                window.location.href = value === "all-products" ? "/all-products" : `/${value}`;
+              }}
+              className="w-full px-3 sm:px-4 py-2 sm:py-2.5 bg-black border border-white/10 rounded-lg sm:rounded-xl text-sm sm:text-base text-white focus:outline-none focus:ring-2 focus:ring-[#9d0208]/40"
+            >
+              <option value="all-products">All Products ({products.length})</option>
+              {categories.map((cat) => {
+                // Count products for this category (handle ObjectId format)
+                const productCount = products.filter(p => {
+                  let productCategoryId;
+                  if (typeof p.category === 'object' && p.category?.$oid) {
+                    productCategoryId = String(p.category.$oid);
+                  } else if (typeof p.category === 'object' && p.category?._id) {
+                    productCategoryId = String(p.category._id);
+                  } else {
+                    productCategoryId = String(p.category);
+                  }
+                  return productCategoryId === cat._id;
+                }).length;
+                
+                return (
+                  <option key={cat._id} value={cat.slug}>
+                    {cat.name} ({productCount})
+                  </option>
+                );
+              })}
+            </select>
+          </div>
 
-            {/* SIDEBAR */}
+          <div className="flex gap-4 sm:gap-6 lg:gap-8 pb-8 sm:pb-12 lg:pb-20">
+
+            {/* SIDEBAR - Desktop Only */}
             <aside className="hidden lg:block w-72">
               <div className="sticky top-24 bg-white/5 border border-white/10 rounded-2xl p-6">
                 <h3 className="text-white font-bold mb-4 text-lg">Categories</h3>
@@ -282,55 +316,21 @@ const CategoryPage = () => {
               </div>
             </aside>
 
-            {/* MOBILE CATEGORY DROPDOWN */}
-            <div className="lg:hidden w-full mb-6">
-              <select
-                value={isAllProducts ? "all-products" : category}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  window.location.href = value === "all-products" ? "/all-products" : `/${value}`;
-                }}
-                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-[#9d0208]/40"
-              >
-                <option value="all-products">All Products ({products.length})</option>
-                {categories.map((cat) => {
-                  // Count products for this category (handle ObjectId format)
-                  const productCount = products.filter(p => {
-                    let productCategoryId;
-                    if (typeof p.category === 'object' && p.category?.$oid) {
-                      productCategoryId = String(p.category.$oid);
-                    } else if (typeof p.category === 'object' && p.category?._id) {
-                      productCategoryId = String(p.category._id);
-                    } else {
-                      productCategoryId = String(p.category);
-                    }
-                    return productCategoryId === cat._id;
-                  }).length;
-                  
-                  return (
-                    <option key={cat._id} value={cat.slug}>
-                      {cat.name} ({productCount})
-                    </option>
-                  );
-                })}
-              </select>
-            </div>
-
             {/* PRODUCTS GRID */}
-            <div className="flex-1">
+            <div className="flex-1 w-full min-w-0">
               {searchedProducts.length > 0 ? (
-                <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-2.5 sm:gap-3 md:gap-4 lg:gap-6">
                   {searchedProducts.map((product) => (
                     <ProductCard key={product._id} product={product} />
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-32">
-                  <div className="text-6xl mb-4">📦</div>
-                  <h3 className="text-2xl font-bold text-white mb-3">
+                <div className="text-center py-16 sm:py-24 lg:py-32 px-3">
+                  <div className="text-4xl sm:text-5xl lg:text-6xl mb-3 sm:mb-4">📦</div>
+                  <h3 className="text-xl sm:text-2xl font-bold text-white mb-2 sm:mb-3">
                     No products found
                   </h3>
-                  <p className="text-gray-400 mb-6">
+                  <p className="text-sm sm:text-base text-gray-400 mb-4 sm:mb-6 max-w-md mx-auto">
                     {searchQuery 
                       ? `No results for "${searchQuery}" in ${categoryName}`
                       : `No products available in ${categoryName} yet`
@@ -339,7 +339,7 @@ const CategoryPage = () => {
                   {searchQuery && (
                     <button
                       onClick={() => setSearchQuery("")}
-                      className="px-6 py-3 bg-[#9d0208] text-white rounded-xl hover:bg-[#7a0006] transition"
+                      className="px-5 sm:px-6 py-2.5 sm:py-3 bg-[#9d0208] text-white text-sm sm:text-base rounded-lg sm:rounded-xl hover:bg-[#7a0006] transition"
                     >
                       Clear Search
                     </button>
