@@ -14,7 +14,6 @@ import TopBar from "@/components/TopBar";
 import WhatsAppButton from "@/components/WhatsAppButton";
 
 const Product = () => {
-
     const { id } = useParams();
     const { router, addToCart, currency } = useAppContext()
 
@@ -23,6 +22,32 @@ const Product = () => {
     const [relatedProducts, setRelatedProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [seoData, setSeoData] = useState(null);
+    const [globalSeo, setGlobalSeo] = useState(null);
+
+    // Fetch global SEO settings
+    const fetchGlobalSeo = async () => {
+        try {
+            const res = await axios.get("/api/product-pages-seo");
+            if (res.data.success) {
+                setGlobalSeo(res.data.data);
+            }
+        } catch (err) {
+            console.error("Error fetching global SEO:", err);
+        }
+    };
+
+    // Fetch product-specific SEO
+    const fetchProductSeo = async (productId) => {
+        try {
+            const res = await axios.get(`/api/product-seo?productId=${productId}`);
+            if (res.data.success && res.data.seo) {
+                setSeoData(res.data.seo);
+            }
+        } catch (err) {
+            console.error("Error fetching product SEO:", err);
+        }
+    };
 
     const fetchProductData = async () => {
         try {
@@ -34,6 +59,7 @@ const Product = () => {
             if (res.data.success && res.data.data) {
                 setProductData(res.data.data);
                 setMainImage(res.data.data.image?.[0] || null);
+                fetchProductSeo(id);
             } else {
                 setError("Product not found");
             }
@@ -49,7 +75,6 @@ const Product = () => {
         try {
             const res = await axios.get("/api/product/list");
             if (res.data.success && res.data.data) {
-                // Get category ID from current product
                 let currentCategoryId = null;
                 if (productData?.category) {
                     if (typeof productData.category === 'object' && productData.category?.$oid) {
@@ -61,7 +86,6 @@ const Product = () => {
                     }
                 }
 
-                // Filter related products by same category
                 const related = res.data.data
                     .filter((product) => {
                         if (product._id === id) return false;
@@ -86,7 +110,107 @@ const Product = () => {
         }
     }
 
+    // Update document head with SEO metadata
     useEffect(() => {
+        if (!productData || !globalSeo) return;
+
+        const displayPrice = productData.offerPrice || productData.price;
+        const productImage = productData.image?.[0] || "";
+
+        // Use product-specific SEO if available, otherwise use global SEO
+        const title = seoData?.title || globalSeo?.title || 'Gaming Products in Pakistan | 7even86 Game Hub';
+        const description = seoData?.description || globalSeo?.description || '';
+        const keywords = seoData?.keywords?.join(', ') || globalSeo?.keywords?.join(', ') || '';
+        const ogTitle = seoData?.openGraph?.title || title;
+        const ogDescription = seoData?.openGraph?.description || description;
+        const ogImage = seoData?.openGraph?.image || productImage;
+        const brand = seoData?.structuredData?.brand || globalSeo?.structuredData?.defaultBrand || '7even86 Game Hub';
+        const condition = seoData?.structuredData?.condition || globalSeo?.structuredData?.defaultCondition || 'new';
+        const availability = seoData?.openGraph?.availability || globalSeo?.structuredData?.defaultAvailability || 'in stock';
+
+        // Update page title
+        document.title = title;
+
+        // Update or create meta tags
+        const updateMetaTag = (property, content, isProperty = false) => {
+            if (!content) return;
+            
+            const attribute = isProperty ? 'property' : 'name';
+            let meta = document.querySelector(`meta[${attribute}="${property}"]`);
+            
+            if (!meta) {
+                meta = document.createElement('meta');
+                meta.setAttribute(attribute, property);
+                document.head.appendChild(meta);
+            }
+            meta.setAttribute('content', content);
+        };
+
+        // Basic meta tags
+        updateMetaTag('description', description);
+        if (keywords) updateMetaTag('keywords', keywords);
+
+        // Open Graph tags
+        updateMetaTag('og:type', 'product', true);
+        updateMetaTag('og:title', ogTitle, true);
+        updateMetaTag('og:description', ogDescription, true);
+        if (ogImage) updateMetaTag('og:image', ogImage, true);
+        updateMetaTag('og:site_name', globalSeo?.openGraph?.siteName || '7even86 Game Hub', true);
+        updateMetaTag('og:url', window.location.href, true);
+
+        // Twitter Card tags
+        updateMetaTag('twitter:card', 'summary_large_image');
+        updateMetaTag('twitter:title', ogTitle);
+        updateMetaTag('twitter:description', ogDescription);
+        if (ogImage) updateMetaTag('twitter:image', ogImage);
+
+        // Product specific tags
+        updateMetaTag('product:price:amount', String(displayPrice), true);
+        updateMetaTag('product:price:currency', globalSeo?.structuredData?.defaultCurrency || 'PKR', true);
+
+        // Add structured data
+        const structuredData = {
+            "@context": "https://schema.org/",
+            "@type": "Product",
+            "name": productData.name,
+            "image": productImage,
+            "description": description || productData.description,
+            "brand": {
+                "@type": "Brand",
+                "name": brand
+            },
+            "sku": seoData?.structuredData?.sku || productData._id,
+            "offers": {
+                "@type": "Offer",
+                "url": window.location.href,
+                "priceCurrency": globalSeo?.structuredData?.defaultCurrency || "PKR",
+                "price": displayPrice,
+                "availability": `https://schema.org/${availability === 'in stock' ? 'InStock' : 'OutOfStock'}`,
+                "itemCondition": `https://schema.org/${condition === 'new' ? 'NewCondition' : 'UsedCondition'}`
+            },
+            "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": globalSeo?.structuredData?.averageRating || 4.5,
+                "reviewCount": globalSeo?.structuredData?.reviewCount || 0
+            }
+        };
+
+        // Remove existing structured data script
+        const existingScript = document.querySelector('script[type="application/ld+json"]');
+        if (existingScript) {
+            existingScript.remove();
+        }
+
+        // Add new structured data script
+        const script = document.createElement('script');
+        script.type = 'application/ld+json';
+        script.text = JSON.stringify(structuredData);
+        document.head.appendChild(script);
+
+    }, [productData, globalSeo, seoData]);
+
+    useEffect(() => {
+        fetchGlobalSeo();
         if (id) {
             fetchProductData();
         }
@@ -98,14 +222,11 @@ const Product = () => {
         }
     }, [productData])
 
-    // Helper function to get category name
     const getCategoryName = () => {
         if (!productData?.category) return "N/A";
-        
         if (typeof productData.category === 'object') {
             return productData.category.name || "N/A";
         }
-        
         return productData.category;
     };
 
@@ -163,7 +284,6 @@ const Product = () => {
                     
                     {/* Image Gallery */}
                     <div className="space-y-3 sm:space-y-4">
-                        {/* Main Image */}
                         <div className="relative rounded-xl sm:rounded-2xl overflow-hidden bg-white/5 border border-white/10 shadow-2xl">
                             {discountPercentage > 0 && (
                                 <div className="absolute top-4 right-4 z-10 bg-[#9d0208] text-white px-3 py-1 rounded-full text-xs sm:text-sm font-bold">
@@ -181,7 +301,6 @@ const Product = () => {
                             </div>
                         </div>
 
-                        {/* Thumbnail Grid */}
                         {productImages.length > 1 && (
                             <div className="grid grid-cols-4 gap-2 sm:gap-3">
                                 {productImages.map((image, index) => (
@@ -211,12 +330,10 @@ const Product = () => {
 
                     {/* Product Info */}
                     <div className="flex flex-col space-y-4 sm:space-y-6">
-                        {/* Product Name */}
                         <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white leading-tight">
                             {productData.name}
                         </h1>
 
-                        {/* Rating */}
                         <div className="flex items-center gap-3">
                             <div className="flex items-center gap-0.5">
                                 {[1, 2, 3, 4].map((star) => (
@@ -231,12 +348,10 @@ const Product = () => {
                             <span className="text-sm sm:text-base text-gray-400 font-medium">(4.5)</span>
                         </div>
 
-                        {/* Description */}
                         <p className="text-sm sm:text-base text-gray-400 leading-relaxed">
                             {productData.description}
                         </p>
 
-                        {/* Price */}
                         <div className="flex items-baseline gap-3 flex-wrap">
                             <span className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-[#9d0208] to-white bg-clip-text text-transparent">
                                 {currency}{displayPrice}
@@ -253,10 +368,8 @@ const Product = () => {
                             )}
                         </div>
 
-                        {/* Divider */}
                         <div className="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
 
-                        {/* Product Details Table */}
                         <div className="bg-white/5 rounded-xl border border-white/10 p-4 sm:p-6">
                             <table className="w-full">
                                 <tbody className="space-y-2">
@@ -283,7 +396,6 @@ const Product = () => {
                             </table>
                         </div>
 
-                        {/* Action Buttons */}
                         <div className="flex flex-col sm:flex-row items-stretch gap-3 sm:gap-4 pt-4">
                             <button 
                                 onClick={() => addToCart(productData._id)} 
@@ -313,7 +425,6 @@ const Product = () => {
                 {/* Related Products Section */}
                 {relatedProducts.length > 0 && (
                     <div className="space-y-6 sm:space-y-8">
-                        {/* Section Header */}
                         <div className="text-center relative">
                             <div className="absolute inset-0 flex items-center justify-center">
                                 <div className="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
@@ -326,14 +437,12 @@ const Product = () => {
                             </div>
                         </div>
 
-                        {/* Products Grid */}
                         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 md:gap-6">
                             {relatedProducts.map((product) => (
                                 <ProductCard key={product._id} product={product} />
                             ))}
                         </div>
 
-                        {/* See More Button */}
                         <div className="flex justify-center pt-4 sm:pt-6">
                             <button 
                                 onClick={() => router.push("/all-products")}

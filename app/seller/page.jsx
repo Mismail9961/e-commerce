@@ -290,7 +290,7 @@ const AddProduct = () => {
         <button
           type="button"
           onClick={() => setShowAddCategory(!showAddCategory)}
-          className="text-xs sm:text-sm text-[#9d0208] hover:underline"
+          className="w-full sm:w-auto px-6 mr-6 sm:px-8 py-2.5 bg-[#9d0208] text-white text-sm sm:text-base font-semibold rounded hover:bg-black hover:text-[#9d0208] border border-[#9d0208] transition"
         >
           {showAddCategory ? "- Cancel Add Category" : "+ Add New Category"}
         </button>

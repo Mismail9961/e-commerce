@@ -1,22 +1,16 @@
 "use client";
-import { useState, useEffect, Suspense } from "react";
-import { useSession } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
-import axios from "axios";
-import toast from "react-hot-toast";
-import Image from "next/image";
+import { useState, useEffect } from "react";
+import { 
+  Save, RefreshCw, Globe, Tag,
+  Facebook, Twitter, Instagram, Youtube, MessageCircle,
+  Eye, EyeOff, Trash2
+} from "lucide-react";
 
-function ProductSeoContent() {
-  const { data: session, status } = useSession();
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const productId = searchParams.get('productId');
-
+export default function ProductPagesSeoAdmin() {
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
-  const [product, setProduct] = useState(null);
+  const [showPreview, setShowPreview] = useState(false);
   const [seoData, setSeoData] = useState({
-    productId: "",
     title: "",
     description: "",
     keywords: [],
@@ -27,62 +21,45 @@ function ProductSeoContent() {
       url: "",
       siteName: "",
       locale: "en_US",
-      type: "product",
+      type: "website",
       image: "",
-      price: 0,
-      currency: "PKR",
-      availability: "in stock",
     },
     structuredData: {
-      brand: "",
-      sku: "",
-      gtin: "",
-      mpn: "",
-      condition: "new",
+      organizationName: "",
+      websiteName: "",
+      defaultBrand: "",
+      defaultCondition: "new",
+      defaultAvailability: "in stock",
+      defaultCurrency: "PKR",
+      reviewCount: 0,
+      averageRating: 4.5,
+    },
+    socialMedia: {
+      facebook: "",
+      twitter: "",
+      instagram: "",
+      youtube: "",
+      tiktok: "",
     },
   });
   const [keywordInput, setKeywordInput] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
-  // Auth check
   useEffect(() => {
-    if (status === "loading") return;
-
-    if (status === "unauthenticated") {
-      toast.error("Please login to access this page");
-      router.push("/login");
-      return;
-    }
-
-    if (session?.user?.role !== "admin" && session?.user?.role !== "seller") {
-      toast.error("Access denied");
-      router.push("/");
-      return;
-    }
-
-    if (!productId) {
-      toast.error("Product ID is required");
-      router.push("/seller/products");
-      return;
-    }
-  }, [status, session, router, productId]);
-
-  // Fetch SEO data
-  useEffect(() => {
-    if (productId && (session?.user?.role === "admin" || session?.user?.role === "seller")) {
-      fetchSeoData();
-    }
-  }, [productId, session]);
+    fetchSeoData();
+  }, []);
 
   const fetchSeoData = async () => {
     try {
       setFetching(true);
-      const response = await axios.get(`/api/product-seo?productId=${productId}`);
-      if (response.data.success) {
-        setSeoData({ ...seoData, ...response.data.seo });
-        setProduct(response.data.product);
+      const res = await fetch("/api/product-pages-seo");
+      const data = await res.json();
+      if (data.success) {
+        setSeoData(data.data);
       }
     } catch (error) {
-      toast.error("Failed to load SEO settings");
+      setErrorMsg("Failed to load SEO settings");
       console.error(error);
     } finally {
       setFetching(false);
@@ -94,19 +71,10 @@ function ProductSeoContent() {
     setSeoData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleOpenGraphChange = (e) => {
-    const { name, value } = e.target;
+  const handleNestedChange = (section, field, value) => {
     setSeoData((prev) => ({
       ...prev,
-      openGraph: { ...prev.openGraph, [name]: value },
-    }));
-  };
-
-  const handleStructuredDataChange = (e) => {
-    const { name, value } = e.target;
-    setSeoData((prev) => ({
-      ...prev,
-      structuredData: { ...prev.structuredData, [name]: value },
+      [section]: { ...prev[section], [field]: value },
     }));
   };
 
@@ -127,395 +95,462 @@ function ProductSeoContent() {
     }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
+    setSuccessMsg("");
+    setErrorMsg("");
 
     if (!seoData.title || !seoData.description) {
-      toast.error("Title and description are required");
+      setErrorMsg("Title and description are required");
       return;
     }
 
     try {
       setLoading(true);
-      const response = await axios.post("/api/product-seo", {
-        ...seoData,
-        productId,
+      const res = await fetch("/api/product-pages-seo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(seoData),
       });
-      if (response.data.success) {
-        toast.success("Product SEO updated successfully");
+      const data = await res.json();
+      
+      if (data.success) {
+        setSuccessMsg("Product Pages SEO updated successfully!");
+        setTimeout(() => setSuccessMsg(""), 3000);
+      } else {
+        setErrorMsg(data.error || "Failed to update");
       }
     } catch (error) {
-      toast.error("Failed to update SEO");
+      setErrorMsg("Failed to update SEO settings");
       console.error(error);
     } finally {
       setLoading(false);
     }
   };
 
-  if (fetching || status === "loading") {
+  const handleReset = async () => {
+    if (!confirm("Reset to default settings? This cannot be undone.")) return;
+    
+    try {
+      setLoading(true);
+      const res = await fetch("/api/product-pages-seo", { method: "DELETE" });
+      const data = await res.json();
+      
+      if (data.success) {
+        await fetchSeoData();
+        setSuccessMsg("Settings reset to default");
+        setTimeout(() => setSuccessMsg(""), 3000);
+      }
+    } catch (error) {
+      setErrorMsg("Failed to reset settings");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (fetching) {
     return (
       <div className="flex justify-center items-center min-h-screen bg-[#003049]">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#9d0208]"></div>
+        <div className="animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-b-2 border-[#9d0208]"></div>
       </div>
     );
   }
 
   return (
-    <div className="w-full min-h-screen px-3 min-[375px]:px-4 sm:px-6 py-4 min-[375px]:py-6 max-w-5xl mx-auto bg-[#003049] text-white">
-
-      {/* Product Info Banner */}
-      {product && (
-        <div className="bg-[#111] border border-[#9d0208] rounded-lg min-[375px]:rounded-xl shadow-lg p-3 min-[375px]:p-4 sm:p-5 mb-4 min-[375px]:mb-6">
-          <div className="flex items-center gap-3 sm:gap-4">
-            {product.image && (
-              <Image
-                src={product.image}
-                alt={product.name}
-                width={80}
-                height={80}
-                className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-lg"
-              />
-            )}
-            <div>
-              <h2 className="text-base sm:text-lg font-semibold">{product.name}</h2>
-              <p className="text-xs sm:text-sm text-gray-400">
-                Price: PKR {product.offerPrice || product.price}
-              </p>
-              <p className="text-xs text-gray-500 mt-1">
-                Managing SEO for Product ID: {productId?.slice(-8)}
-              </p>
-            </div>
-          </div>
+    <div className="min-h-screen bg-[#003049] px-3 sm:px-6 py-4 sm:py-8">
+      <div className="max-w-7xl mx-auto">
+        
+        {/* Header */}
+        <div className="mb-4 sm:mb-8">
+          <h1 className="text-xl sm:text-3xl lg:text-4xl font-bold text-white mb-1 sm:mb-2">
+            Product Pages SEO Settings
+          </h1>
+          <p className="text-xs sm:text-base text-gray-400">
+            Configure SEO settings for all product pages
+          </p>
         </div>
-      )}
 
-      {/* Live Preview */}
-      <div className="bg-[#111] border border-[#9d0208] rounded-lg min-[375px]:rounded-xl shadow-lg p-3 min-[375px]:p-4 sm:p-5 mb-4 min-[375px]:mb-6">
-        <h2 className="text-base min-[375px]:text-lg sm:text-xl font-semibold flex items-center gap-2 mb-3 min-[375px]:mb-4">
-          <span className="text-[#9d0208]">●</span> 
-          <span className="break-words">Current SEO Settings</span>
-        </h2>
-
-        <div className="space-y-3 min-[375px]:space-y-4">
-
-          <div className="bg-[#1a1a1a] rounded-md min-[375px]:rounded-lg p-2.5 min-[375px]:p-3 border border-[#222]">
-            <h3 className="text-xs min-[375px]:text-sm text-gray-300 mb-1">Product Title</h3>
-            <p className="text-sm min-[375px]:text-base sm:text-lg break-words">{seoData.title || "Not set"}</p>
+        {/* Alert Messages */}
+        {successMsg && (
+          <div className="mb-3 sm:mb-4 p-3 sm:p-4 bg-green-500/10 border border-green-500/30 rounded-lg text-green-400 text-xs sm:text-base">
+            {successMsg}
           </div>
-
-          <div className="bg-[#1a1a1a] rounded-md min-[375px]:rounded-lg p-2.5 min-[375px]:p-3 border border-[#222]">
-            <h3 className="text-xs min-[375px]:text-sm text-gray-300 mb-1">Meta Description</h3>
-            <p className="text-xs min-[375px]:text-sm sm:text-base break-words">{seoData.description || "Not set"}</p>
+        )}
+        {errorMsg && (
+          <div className="mb-3 sm:mb-4 p-3 sm:p-4 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 text-xs sm:text-base">
+            {errorMsg}
           </div>
+        )}
 
-          <div className="bg-[#1a1a1a] rounded-md min-[375px]:rounded-lg p-2.5 min-[375px]:p-3 border border-[#222]">
-            <h3 className="text-xs min-[375px]:text-sm text-gray-300 mb-2">Keywords</h3>
-            {seoData.keywords.length ? (
-              <div className="flex flex-wrap gap-1.5 min-[375px]:gap-2">
-                {seoData.keywords.map((k, i) => (
-                  <span
-                    key={i}
-                    className="px-2 py-0.5 min-[375px]:py-1 bg-[#9d0208]/20 border border-[#9d0208]/40 text-[#ffb3b3] rounded-full text-[10px] min-[375px]:text-xs sm:text-sm break-all"
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-6">
+          
+          {/* Main Content */}
+          <div className="lg:col-span-2 space-y-3 sm:space-y-6">
+            
+            {/* Basic SEO */}
+            <div className="bg-[#001f2f] border border-white/10 rounded-lg p-3 sm:p-6">
+              <div className="flex items-center gap-2 mb-3 sm:mb-4">
+                <Globe className="w-4 h-4 sm:w-5 sm:h-5 text-[#9d0208]" />
+                <h2 className="text-base sm:text-xl font-semibold text-white">Basic SEO</h2>
+              </div>
+
+              <div className="space-y-3 sm:space-y-4">
+                <div>
+                  <label className="text-xs sm:text-sm text-gray-300 block mb-1.5 sm:mb-2">Page Title *</label>
+                  <input
+                    type="text"
+                    name="title"
+                    value={seoData.title}
+                    onChange={handleChange}
+                    className="w-full px-2.5 sm:px-3 py-2 sm:py-2.5 text-xs sm:text-sm bg-[#003049] border border-white/20 rounded-lg text-white focus:ring-2 focus:ring-[#9d0208] focus:border-transparent"
+                    placeholder="Our Products | Gaming Hub"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-xs sm:text-sm text-gray-300 block mb-1.5 sm:mb-2">Meta Description *</label>
+                  <textarea
+                    name="description"
+                    value={seoData.description}
+                    onChange={handleChange}
+                    rows="3"
+                    className="w-full px-2.5 sm:px-3 py-2 sm:py-2.5 text-xs sm:text-sm bg-[#003049] border border-white/20 rounded-lg text-white resize-none focus:ring-2 focus:ring-[#9d0208] focus:border-transparent"
+                    placeholder="Browse our collection of gaming products..."
+                  />
+                </div>
+
+                <div>
+                  <label className="text-xs sm:text-sm text-gray-300 block mb-1.5 sm:mb-2">Canonical URL</label>
+                  <input
+                    type="url"
+                    name="canonicalUrl"
+                    value={seoData.canonicalUrl}
+                    onChange={handleChange}
+                    className="w-full px-2.5 sm:px-3 py-2 sm:py-2.5 text-xs sm:text-sm bg-[#003049] border border-white/20 rounded-lg text-white focus:ring-2 focus:ring-[#9d0208] focus:border-transparent"
+                    placeholder="https://yoursite.com/products"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-xs sm:text-sm text-gray-300 block mb-1.5 sm:mb-2">Keywords</label>
+                  <div className="flex gap-1.5 sm:gap-2 mb-2 sm:mb-3">
+                    <input
+                      type="text"
+                      value={keywordInput}
+                      onChange={(e) => setKeywordInput(e.target.value)}
+                      onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addKeyword())}
+                      className="flex-1 px-2.5 sm:px-3 py-2 sm:py-2.5 text-xs sm:text-sm bg-[#003049] border border-white/20 rounded-lg text-white focus:ring-2 focus:ring-[#9d0208] focus:border-transparent"
+                      placeholder="Add keyword"
+                    />
+                    <button
+                      type="button"
+                      onClick={addKeyword}
+                      className="px-3 sm:px-4 py-2 sm:py-2.5 bg-[#9d0208] text-white rounded-lg hover:bg-[#7a0207] text-xs sm:text-sm font-medium whitespace-nowrap"
+                    >
+                      Add
+                    </button>
+                  </div>
+
+                  {seoData.keywords.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                      {seoData.keywords.map((k, i) => (
+                        <span
+                          key={i}
+                          className="flex items-center gap-1.5 sm:gap-2 bg-[#9d0208]/20 border border-[#9d0208]/40 px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs"
+                        >
+                          <span className="text-white">{k}</span>
+                          <button onClick={() => removeKeyword(i)} className="text-base sm:text-lg leading-none hover:text-white text-gray-400">
+                            ×
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Structured Data */}
+            <div className="bg-[#001f2f] border border-white/10 rounded-lg p-3 sm:p-6">
+              <div className="flex items-center gap-2 mb-3 sm:mb-4">
+                <Tag className="w-4 h-4 sm:w-5 sm:h-5 text-[#9d0208]" />
+                <h2 className="text-base sm:text-xl font-semibold text-white">Default Product Schema</h2>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                <div>
+                  <label className="text-[10px] sm:text-xs text-gray-400 block mb-1">Organization Name</label>
+                  <input
+                    type="text"
+                    value={seoData.structuredData.organizationName}
+                    onChange={(e) => handleNestedChange('structuredData', 'organizationName', e.target.value)}
+                    className="w-full px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm bg-[#003049] border border-white/20 rounded-lg text-white"
+                    placeholder="Gaming Hub"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[10px] sm:text-xs text-gray-400 block mb-1">Website Name</label>
+                  <input
+                    type="text"
+                    value={seoData.structuredData.websiteName}
+                    onChange={(e) => handleNestedChange('structuredData', 'websiteName', e.target.value)}
+                    className="w-full px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm bg-[#003049] border border-white/20 rounded-lg text-white"
+                    placeholder="7even86gamehub.com"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[10px] sm:text-xs text-gray-400 block mb-1">Default Brand</label>
+                  <input
+                    type="text"
+                    value={seoData.structuredData.defaultBrand}
+                    onChange={(e) => handleNestedChange('structuredData', 'defaultBrand', e.target.value)}
+                    className="w-full px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm bg-[#003049] border border-white/20 rounded-lg text-white"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[10px] sm:text-xs text-gray-400 block mb-1">Default Currency</label>
+                  <input
+                    type="text"
+                    value={seoData.structuredData.defaultCurrency}
+                    onChange={(e) => handleNestedChange('structuredData', 'defaultCurrency', e.target.value)}
+                    className="w-full px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm bg-[#003049] border border-white/20 rounded-lg text-white"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[10px] sm:text-xs text-gray-400 block mb-1">Condition</label>
+                  <select
+                    value={seoData.structuredData.defaultCondition}
+                    onChange={(e) => handleNestedChange('structuredData', 'defaultCondition', e.target.value)}
+                    className="w-full px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm bg-[#003049] border border-white/20 rounded-lg text-white"
                   >
-                    {k}
-                  </span>
+                    <option value="new">New</option>
+                    <option value="refurbished">Refurbished</option>
+                    <option value="used">Used</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="text-[10px] sm:text-xs text-gray-400 block mb-1">Availability</label>
+                  <select
+                    value={seoData.structuredData.defaultAvailability}
+                    onChange={(e) => handleNestedChange('structuredData', 'defaultAvailability', e.target.value)}
+                    className="w-full px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm bg-[#003049] border border-white/20 rounded-lg text-white"
+                  >
+                    <option value="in stock">In Stock</option>
+                    <option value="out of stock">Out of Stock</option>
+                    <option value="preorder">Pre-order</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="text-[10px] sm:text-xs text-gray-400 block mb-1">Average Rating</label>
+                  <input
+                    type="number"
+                    min="0"
+                    max="5"
+                    step="0.1"
+                    value={seoData.structuredData.averageRating}
+                    onChange={(e) => handleNestedChange('structuredData', 'averageRating', parseFloat(e.target.value))}
+                    className="w-full px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm bg-[#003049] border border-white/20 rounded-lg text-white"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[10px] sm:text-xs text-gray-400 block mb-1">Review Count</label>
+                  <input
+                    type="number"
+                    min="0"
+                    value={seoData.structuredData.reviewCount}
+                    onChange={(e) => handleNestedChange('structuredData', 'reviewCount', parseInt(e.target.value))}
+                    className="w-full px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm bg-[#003049] border border-white/20 rounded-lg text-white"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Open Graph */}
+            <div className="bg-[#001f2f] border border-white/10 rounded-lg p-3 sm:p-6">
+              <div className="flex items-center gap-2 mb-3 sm:mb-4">
+                <Facebook className="w-4 h-4 sm:w-5 sm:h-5 text-[#9d0208]" />
+                <h2 className="text-base sm:text-xl font-semibold text-white">Open Graph</h2>
+              </div>
+
+              <div className="space-y-3 sm:space-y-4">
+                <div>
+                  <label className="text-[10px] sm:text-xs text-gray-400 block mb-1">OG Title</label>
+                  <input
+                    type="text"
+                    value={seoData.openGraph.title}
+                    onChange={(e) => handleNestedChange('openGraph', 'title', e.target.value)}
+                    className="w-full px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm bg-[#003049] border border-white/20 rounded-lg text-white"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[10px] sm:text-xs text-gray-400 block mb-1">OG Description</label>
+                  <textarea
+                    value={seoData.openGraph.description}
+                    onChange={(e) => handleNestedChange('openGraph', 'description', e.target.value)}
+                    rows="2"
+                    className="w-full px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm bg-[#003049] border border-white/20 rounded-lg text-white resize-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[10px] sm:text-xs text-gray-400 block mb-1">OG Image URL</label>
+                  <input
+                    type="url"
+                    value={seoData.openGraph.image}
+                    onChange={(e) => handleNestedChange('openGraph', 'image', e.target.value)}
+                    className="w-full px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm bg-[#003049] border border-white/20 rounded-lg text-white"
+                    placeholder="https://example.com/og-image.jpg"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                  <div>
+                    <label className="text-[10px] sm:text-xs text-gray-400 block mb-1">Site Name</label>
+                    <input
+                      type="text"
+                      value={seoData.openGraph.siteName}
+                      onChange={(e) => handleNestedChange('openGraph', 'siteName', e.target.value)}
+                      className="w-full px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm bg-[#003049] border border-white/20 rounded-lg text-white"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-[10px] sm:text-xs text-gray-400 block mb-1">Locale</label>
+                    <input
+                      type="text"
+                      value={seoData.openGraph.locale}
+                      onChange={(e) => handleNestedChange('openGraph', 'locale', e.target.value)}
+                      className="w-full px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm bg-[#003049] border border-white/20 rounded-lg text-white"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Social Media */}
+            <div className="bg-[#001f2f] border border-white/10 rounded-lg p-3 sm:p-6">
+              <div className="flex items-center gap-2 mb-3 sm:mb-4">
+                <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5 text-[#9d0208]" />
+                <h2 className="text-base sm:text-xl font-semibold text-white">Social Media Links</h2>
+              </div>
+
+              <div className="space-y-2.5 sm:space-y-3">
+                {Object.entries(seoData.socialMedia).map(([platform, url]) => (
+                  <div key={platform}>
+                    <label className="text-[10px] sm:text-xs text-gray-400 block mb-1 capitalize">{platform}</label>
+                    <input
+                      type="url"
+                      value={url}
+                      onChange={(e) => handleNestedChange('socialMedia', platform, e.target.value)}
+                      className="w-full px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm bg-[#003049] border border-white/20 rounded-lg text-white"
+                      placeholder={`https://${platform}.com/...`}
+                    />
+                  </div>
                 ))}
               </div>
-            ) : (
-              <p className="text-gray-400 text-xs min-[375px]:text-sm">No keywords added</p>
-            )}
-          </div>
-
-          <div className="bg-[#1a1a1a] rounded-md min-[375px]:rounded-lg p-2.5 min-[375px]:p-3 border border-[#222]">
-            <h3 className="text-xs min-[375px]:text-sm text-gray-300 mb-2">Product Schema</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
-              <p className="text-xs min-[375px]:text-sm break-words">
-                <span className="text-gray-400 font-medium">Brand:</span> {seoData.structuredData.brand || "Not set"}
-              </p>
-              <p className="text-xs min-[375px]:text-sm break-words">
-                <span className="text-gray-400 font-medium">SKU:</span> {seoData.structuredData.sku || "Not set"}
-              </p>
-              <p className="text-xs min-[375px]:text-sm break-words">
-                <span className="text-gray-400 font-medium">Condition:</span> {seoData.structuredData.condition}
-              </p>
-              <p className="text-xs min-[375px]:text-sm break-words">
-                <span className="text-gray-400 font-medium">Availability:</span> {seoData.openGraph.availability}
-              </p>
             </div>
-          </div>
-        </div>
-      </div>
 
-      {/* Form */}
-      <div className="bg-[#0d0d0d] p-3 min-[375px]:p-4 sm:p-6 rounded-lg min-[375px]:rounded-xl border border-[#9d0208] shadow-lg">
-        <h1 className="text-lg min-[375px]:text-xl sm:text-2xl font-semibold mb-1 min-[375px]:mb-2">Update Product SEO</h1>
-        <p className="text-gray-400 mb-4 min-[375px]:mb-6 text-xs min-[375px]:text-sm">Optimize this product for search engines</p>
-
-        <form onSubmit={handleSubmit} className="space-y-4 min-[375px]:space-y-6">
-
-          {/* Title */}
-          <div>
-            <label className="text-xs min-[375px]:text-sm block mb-1.5 min-[375px]:mb-2 font-medium">Product Title *</label>
-            <input
-              type="text"
-              name="title"
-              value={seoData.title}
-              onChange={handleChange}
-              className="w-full px-2.5 min-[375px]:px-3 py-2 text-sm min-[375px]:text-base bg-black border border-[#9d0208] rounded-md min-[375px]:rounded-lg focus:ring-1 focus:ring-[#9d0208] focus:outline-none"
-              placeholder="Enter product title"
-            />
           </div>
 
-          {/* Description */}
-          <div>
-            <label className="text-xs min-[375px]:text-sm block mb-1.5 min-[375px]:mb-2 font-medium">Meta Description *</label>
-            <textarea
-              name="description"
-              rows="3"
-              value={seoData.description}
-              onChange={handleChange}
-              className="w-full px-2.5 min-[375px]:px-3 py-2 text-sm min-[375px]:text-base bg-black border border-[#9d0208] rounded-md min-[375px]:rounded-lg focus:ring-1 focus:ring-[#9d0208] focus:outline-none resize-none"
-              placeholder="Enter meta description"
-            />
-          </div>
-
-          {/* Canonical URL */}
-          <div>
-            <label className="text-xs min-[375px]:text-sm block mb-1.5 min-[375px]:mb-2 font-medium">Canonical URL</label>
-            <input
-              type="url"
-              name="canonicalUrl"
-              value={seoData.canonicalUrl}
-              onChange={handleChange}
-              className="w-full px-2.5 min-[375px]:px-3 py-2 text-sm min-[375px]:text-base bg-black border border-[#9d0208] rounded-md min-[375px]:rounded-lg focus:ring-1 focus:ring-[#9d0208] focus:outline-none"
-              placeholder="https://yoursite.com/product/..."
-            />
-          </div>
-
-          {/* Keywords */}
-          <div>
-            <label className="text-xs min-[375px]:text-sm block mb-1.5 min-[375px]:mb-2 font-medium">Keywords</label>
-            <div className="flex flex-col min-[375px]:flex-row gap-2 mb-3">
-              <input
-                type="text"
-                value={keywordInput}
-                onChange={(e) => setKeywordInput(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addKeyword())}
-                className="flex-1 px-2.5 min-[375px]:px-3 py-2 text-sm min-[375px]:text-base bg-black border border-[#9d0208] rounded-md min-[375px]:rounded-lg focus:ring-1 focus:ring-[#9d0208] focus:outline-none"
-                placeholder="Add keyword"
-              />
+          {/* Sidebar */}
+          <div className="space-y-3 sm:space-y-6">
+            
+            {/* Preview Toggle */}
+            <div className="bg-[#001f2f] border border-white/10 rounded-lg p-3 sm:p-4">
               <button
-                type="button"
-                onClick={addKeyword}
-                className="px-4 py-2 text-sm min-[375px]:text-base bg-[#9d0208] text-white rounded-md min-[375px]:rounded-lg hover:bg-[#7a0207] transition-colors whitespace-nowrap"
+                onClick={() => setShowPreview(!showPreview)}
+                className="w-full flex items-center justify-between text-white hover:text-[#9d0208] transition-colors"
               >
-                Add
+                <span className="text-xs sm:text-sm font-medium">Live Preview</span>
+                {showPreview ? <Eye className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> : <EyeOff className="w-3.5 h-3.5 sm:w-4 sm:h-4" />}
               </button>
             </div>
 
-            {seoData.keywords.length > 0 && (
-              <div className="flex flex-wrap gap-1.5 min-[375px]:gap-2">
-                {seoData.keywords.map((k, i) => (
-                  <span
-                    key={i}
-                    className="flex items-center gap-1.5 min-[375px]:gap-2 bg-[#9d0208]/20 border border-[#9d0208]/40 px-2 min-[375px]:px-3 py-1 rounded-full text-xs min-[375px]:text-sm"
-                  >
-                    <span className="break-all">{k}</span>
-                    <button 
-                      type="button"
-                      onClick={() => removeKeyword(i)} 
-                      className="text-[#ffb3b3] hover:text-white text-base min-[375px]:text-lg leading-none"
-                    >
-                      ×
-                    </button>
-                  </span>
-                ))}
+            {/* Preview */}
+            {showPreview && (
+              <div className="bg-[#001f2f] border border-white/10 rounded-lg p-3 sm:p-4">
+                <h3 className="text-xs sm:text-sm font-semibold text-white mb-2 sm:mb-3">SEO Preview</h3>
+                
+                <div className="space-y-2 sm:space-y-3">
+                  <div className="bg-[#003049] p-2 sm:p-3 rounded">
+                    <p className="text-[10px] sm:text-xs text-gray-500 mb-1">Title Tag</p>
+                    <p className="text-xs sm:text-sm text-white font-medium break-words">{seoData.title || "Not set"}</p>
+                  </div>
+
+                  <div className="bg-[#003049] p-2 sm:p-3 rounded">
+                    <p className="text-[10px] sm:text-xs text-gray-500 mb-1">Description</p>
+                    <p className="text-[10px] sm:text-xs text-gray-300 break-words">{seoData.description || "Not set"}</p>
+                  </div>
+
+                  <div className="bg-[#003049] p-2 sm:p-3 rounded">
+                    <p className="text-[10px] sm:text-xs text-gray-500 mb-1.5 sm:mb-2">Keywords</p>
+                    {seoData.keywords.length > 0 ? (
+                      <div className="flex flex-wrap gap-1">
+                        {seoData.keywords.map((k, i) => (
+                          <span key={i} className="px-1.5 sm:px-2 py-0.5 bg-[#9d0208]/20 text-[9px] sm:text-[10px] text-gray-300 rounded">
+                            {k}
+                          </span>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-[10px] sm:text-xs text-gray-500">No keywords</p>
+                    )}
+                  </div>
+                </div>
               </div>
             )}
-          </div>
 
-          {/* Product Schema */}
-          <div className="border-t border-[#222] pt-4 min-[375px]:pt-6">
-            <h2 className="text-base min-[375px]:text-lg sm:text-xl font-semibold mb-3 min-[375px]:mb-4">Product Schema Data</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 min-[375px]:gap-4">
-              <div>
-                <label className="text-xs min-[375px]:text-sm text-gray-400 block mb-1">Brand</label>
-                <input
-                  type="text"
-                  name="brand"
-                  value={seoData.structuredData.brand}
-                  onChange={handleStructuredDataChange}
-                  placeholder="Brand name"
-                  className="w-full px-2.5 min-[375px]:px-3 py-2 text-sm min-[375px]:text-base bg-black border border-[#9d0208] rounded-md min-[375px]:rounded-lg focus:ring-1 focus:ring-[#9d0208] focus:outline-none"
-                />
-              </div>
+            {/* Actions */}
+            <div className="bg-[#001f2f] border border-white/10 rounded-lg p-3 sm:p-4 space-y-2 sm:space-y-3">
+              <button
+                onClick={handleSubmit}
+                disabled={loading}
+                className="w-full flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2.5 sm:py-3 bg-[#9d0208] text-white rounded-lg hover:bg-[#7a0207] transition-colors disabled:opacity-50 text-xs sm:text-sm font-medium"
+              >
+                <Save className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                {loading ? "Saving..." : "Save Changes"}
+              </button>
 
-              <div>
-                <label className="text-xs min-[375px]:text-sm text-gray-400 block mb-1">SKU</label>
-                <input
-                  type="text"
-                  name="sku"
-                  value={seoData.structuredData.sku}
-                  onChange={handleStructuredDataChange}
-                  placeholder="Stock Keeping Unit"
-                  className="w-full px-2.5 min-[375px]:px-3 py-2 text-sm min-[375px]:text-base bg-black border border-[#9d0208] rounded-md min-[375px]:rounded-lg focus:ring-1 focus:ring-[#9d0208] focus:outline-none"
-                />
-              </div>
+              <button
+                onClick={fetchSeoData}
+                disabled={loading}
+                className="w-full flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2.5 sm:py-3 border border-white/20 text-white rounded-lg hover:bg-white/5 transition-colors disabled:opacity-50 text-xs sm:text-sm"
+              >
+                <RefreshCw className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                Refresh
+              </button>
 
-              <div>
-                <label className="text-xs min-[375px]:text-sm text-gray-400 block mb-1">GTIN</label>
-                <input
-                  type="text"
-                  name="gtin"
-                  value={seoData.structuredData.gtin}
-                  onChange={handleStructuredDataChange}
-                  placeholder="Global Trade Item Number"
-                  className="w-full px-2.5 min-[375px]:px-3 py-2 text-sm min-[375px]:text-base bg-black border border-[#9d0208] rounded-md min-[375px]:rounded-lg focus:ring-1 focus:ring-[#9d0208] focus:outline-none"
-                />
-              </div>
+              <button
+                onClick={handleReset}
+                disabled={loading}
+                className="w-full flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2.5 sm:py-3 border border-red-500/50 text-red-400 rounded-lg hover:bg-red-500/10 transition-colors disabled:opacity-50 text-xs sm:text-sm"
+              >
+                <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                Reset to Default
+              </button>
+            </div>
 
-              <div>
-                <label className="text-xs min-[375px]:text-sm text-gray-400 block mb-1">MPN</label>
-                <input
-                  type="text"
-                  name="mpn"
-                  value={seoData.structuredData.mpn}
-                  onChange={handleStructuredDataChange}
-                  placeholder="Manufacturer Part Number"
-                  className="w-full px-2.5 min-[375px]:px-3 py-2 text-sm min-[375px]:text-base bg-black border border-[#9d0208] rounded-md min-[375px]:rounded-lg focus:ring-1 focus:ring-[#9d0208] focus:outline-none"
-                />
-              </div>
-
-              <div>
-                <label className="text-xs min-[375px]:text-sm text-gray-400 block mb-1">Condition</label>
-                <select
-                  name="condition"
-                  value={seoData.structuredData.condition}
-                  onChange={handleStructuredDataChange}
-                  className="w-full px-2.5 min-[375px]:px-3 py-2 text-sm min-[375px]:text-base bg-black border border-[#9d0208] rounded-md min-[375px]:rounded-lg focus:ring-1 focus:ring-[#9d0208] focus:outline-none"
-                >
-                  <option value="new">New</option>
-                  <option value="refurbished">Refurbished</option>
-                  <option value="used">Used</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="text-xs min-[375px]:text-sm text-gray-400 block mb-1">Availability</label>
-                <select
-                  name="availability"
-                  value={seoData.openGraph.availability}
-                  onChange={handleOpenGraphChange}
-                  className="w-full px-2.5 min-[375px]:px-3 py-2 text-sm min-[375px]:text-base bg-black border border-[#9d0208] rounded-md min-[375px]:rounded-lg focus:ring-1 focus:ring-[#9d0208] focus:outline-none"
-                >
-                  <option value="in stock">In Stock</option>
-                  <option value="out of stock">Out of Stock</option>
-                  <option value="preorder">Pre-order</option>
-                </select>
-              </div>
+            {/* Info */}
+            <div className="bg-[#9d0208]/10 border border-[#9d0208]/30 rounded-lg p-3 sm:p-4">
+              <h3 className="text-xs sm:text-sm font-semibold text-white mb-1.5 sm:mb-2">Important</h3>
+              <ul className="text-[10px] sm:text-xs text-gray-400 space-y-1 sm:space-y-1.5">
+                <li>• Changes apply to all product pages</li>
+                <li>• Individual product SEO can override defaults</li>
+                <li>• Structured data improves search visibility</li>
+                <li>• Always test changes before publishing</li>
+              </ul>
             </div>
           </div>
 
-          {/* Open Graph */}
-          <div className="border-t border-[#222] pt-4 min-[375px]:pt-6">
-            <h2 className="text-base min-[375px]:text-lg sm:text-xl font-semibold mb-3 min-[375px]:mb-4">Open Graph Metadata</h2>
-            <div className="space-y-3 min-[375px]:space-y-4">
-              <div>
-                <label className="text-xs min-[375px]:text-sm text-gray-400 block mb-1">OG Title</label>
-                <input
-                  type="text"
-                  name="title"
-                  value={seoData.openGraph.title}
-                  onChange={handleOpenGraphChange}
-                  placeholder="OG Title"
-                  className="w-full px-2.5 min-[375px]:px-3 py-2 text-sm min-[375px]:text-base bg-black border border-[#9d0208] rounded-md min-[375px]:rounded-lg focus:ring-1 focus:ring-[#9d0208] focus:outline-none"
-                />
-              </div>
-
-              <div>
-                <label className="text-xs min-[375px]:text-sm text-gray-400 block mb-1">OG Description</label>
-                <textarea
-                  name="description"
-                  rows="2"
-                  value={seoData.openGraph.description}
-                  onChange={handleOpenGraphChange}
-                  placeholder="OG Description"
-                  className="w-full px-2.5 min-[375px]:px-3 py-2 text-sm min-[375px]:text-base bg-black border border-[#9d0208] rounded-md min-[375px]:rounded-lg focus:ring-1 focus:ring-[#9d0208] focus:outline-none resize-none"
-                />
-              </div>
-
-              <div>
-                <label className="text-xs min-[375px]:text-sm text-gray-400 block mb-1">OG Image URL</label>
-                <input
-                  type="url"
-                  name="image"
-                  value={seoData.openGraph.image}
-                  onChange={handleOpenGraphChange}
-                  placeholder="https://example.com/image.jpg"
-                  className="w-full px-2.5 min-[375px]:px-3 py-2 text-sm min-[375px]:text-base bg-black border border-[#9d0208] rounded-md min-[375px]:rounded-lg focus:ring-1 focus:ring-[#9d0208] focus:outline-none"
-                />
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="text-xs min-[375px]:text-sm text-gray-400 block mb-1">Price</label>
-                  <input
-                    type="number"
-                    name="price"
-                    value={seoData.openGraph.price}
-                    onChange={handleOpenGraphChange}
-                    className="w-full px-2.5 min-[375px]:px-3 py-2 text-sm min-[375px]:text-base bg-black border border-[#9d0208] rounded-md min-[375px]:rounded-lg focus:ring-1 focus:ring-[#9d0208] focus:outline-none"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-xs min-[375px]:text-sm text-gray-400 block mb-1">Currency</label>
-                  <input
-                    type="text"
-                    name="currency"
-                    value={seoData.openGraph.currency}
-                    onChange={handleOpenGraphChange}
-                    className="w-full px-2.5 min-[375px]:px-3 py-2 text-sm min-[375px]:text-base bg-black border border-[#9d0208] rounded-md min-[375px]:rounded-lg focus:ring-1 focus:ring-[#9d0208] focus:outline-none"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Buttons */}
-          <div className="flex flex-col min-[375px]:flex-row gap-2 min-[375px]:gap-3 sm:gap-4 pt-3 min-[375px]:pt-4">
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full min-[375px]:flex-1 px-4 min-[375px]:px-6 py-2.5 min-[375px]:py-3 text-sm min-[375px]:text-base bg-[#9d0208] text-white rounded-md min-[375px]:rounded-lg hover:bg-[#7a0207] transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
-            >
-              {loading ? "Updating..." : "Save Changes"}
-            </button>
-
-            <button
-              type="button"
-              onClick={fetchSeoData}
-              disabled={loading}
-              className="w-full min-[375px]:flex-1 px-4 min-[375px]:px-6 py-2.5 min-[375px]:py-3 text-sm min-[375px]:text-base border border-[#9d0208] text-white rounded-md min-[375px]:rounded-lg hover:bg-[#9d0208]/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
-            >
-              Reset
-            </button>
-          </div>
-
-        </form>
+        </div>
       </div>
     </div>
-  );
-}
-
-export default function ProductSeoManagement() {
-  return (
-    <Suspense fallback={
-      <div className="flex justify-center items-center min-h-screen bg-[#003049]">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#9d0208]"></div>
-      </div>
-    }>
-      <ProductSeoContent />
-    </Suspense>
   );
 }
