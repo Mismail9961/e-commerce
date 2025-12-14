@@ -85,10 +85,10 @@ const Footer = () => {
               <li>
                 <a 
                   className="text-xs min-[375px]:text-sm text-gray-400 hover:text-[#9d0208] transition-colors duration-300 flex items-center gap-2 group" 
-                  href="#"
+                  href="/warranty"
                 >
                   <span className="w-0 h-px bg-[#9d0208] group-hover:w-4 transition-all duration-300"></span>
-                  Privacy policy
+                  Warranty
                 </a>
               </li>
             </ul>
