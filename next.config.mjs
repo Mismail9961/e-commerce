@@ -25,12 +25,8 @@ const nextConfig = {
       },
     ],
   },
-  // Add this to make all pages dynamic by default
-  // This prevents database connections during build
-  experimental: {
-    dynamicIO: true,
-  },
-  // Optional: Output configuration for better performance
+
+  // Standalone output is safe and recommended for Vercel
   output: 'standalone',
 };
 
