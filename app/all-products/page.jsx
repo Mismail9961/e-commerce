@@ -83,7 +83,7 @@ const AllProducts = () => {
   const renderCategories = (onClick) => {
     if (loadingCategories) {
       return (
-        <p className="text-sm text-gray-400 px-4">
+        <p className="text-sm text-[#03045e]/60 px-4">
           Loading categories...
         </p>
       );
@@ -91,7 +91,7 @@ const AllProducts = () => {
 
     if (categories.length === 0) {
       return (
-        <p className="text-sm text-gray-500 px-4">
+        <p className="text-sm text-[#03045e]/60 px-4">
           No categories found
         </p>
       );
@@ -107,7 +107,7 @@ const AllProducts = () => {
           key={category}
           href={`/${slug}`}
           onClick={onClick}
-          className="group flex items-center gap-3 px-4 py-3 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-xl transition-all"
+          className="group flex items-center gap-3 px-4 py-3 text-sm text-[#03045e]/60 hover:text-[#00b4d8] hover:bg-[#00b4d8]/5 rounded-xl transition-all"
         >
           <span>{category}</span>
         </Link>
@@ -121,12 +121,12 @@ const AllProducts = () => {
       <TopBar />
       <Navbar />
 
-      <div className="min-h-screen bg-gradient-to-br from-[#001d2e] via-[#003049] to-[#001d2e]">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
 
           {/* Header */}
           <div className="pt-10 pb-8 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-            <h1 className="text-4xl sm:text-5xl font-bold text-white">
+            <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-[#00b4d8] to-[#03045e] bg-clip-text text-transparent">
               All Products
             </h1>
 
@@ -137,9 +137,9 @@ const AllProducts = () => {
                 placeholder="Search products..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-4 py-3 pl-10 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#9d0208]/40"
+                className="w-full px-4 py-3 pl-10 bg-white border border-gray-200 rounded-xl text-[#03045e] placeholder-[#03045e]/40 focus:outline-none focus:ring-2 focus:ring-[#00b4d8] focus:border-[#00b4d8] transition shadow-sm"
               />
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#03045e]/40">
                 🔍
               </span>
             </div>
@@ -149,23 +149,24 @@ const AllProducts = () => {
 
             {/* DESKTOP SIDEBAR */}
             <aside className="hidden lg:block w-72">
-              <div className="sticky top-24 bg-white/5 border border-white/10 rounded-2xl p-6">
-                <h3 className="text-white font-bold mb-4">Categories</h3>
+              <div className="sticky top-24 bg-white border border-gray-200 rounded-2xl p-6 shadow-lg">
+                <h3 className="text-[#03045e] font-bold mb-4">Categories</h3>
                 <div className="space-y-1">
                   {renderCategories()}
                 </div>
 
-                <div className="border-t border-white/10 mt-6 pt-6">
-                  <h4 className="text-sm text-gray-400 mb-3">Filter</h4>
+                <div className="border-t border-gray-200 mt-6 pt-6">
+                  <h4 className="text-sm text-[#03045e]/60 font-semibold mb-3">Filter by Category</h4>
                   {categories.map((category) => (
                     <label
                       key={category}
-                      className="flex items-center gap-3 text-sm text-gray-400 cursor-pointer mb-2"
+                      className="flex items-center gap-3 text-sm text-[#03045e]/80 cursor-pointer mb-3 hover:text-[#00b4d8] transition-colors"
                     >
                       <input
                         type="checkbox"
                         checked={selectedCategories.includes(category)}
                         onChange={() => toggleCategory(category)}
+                        className="w-4 h-4 text-[#00b4d8] bg-white border-gray-300 rounded focus:ring-[#00b4d8] focus:ring-2"
                       />
                       {category}
                     </label>
@@ -175,7 +176,7 @@ const AllProducts = () => {
                 {selectedCategories.length > 0 && (
                   <button
                     onClick={clearFilters}
-                    className="mt-4 text-sm text-[#9d0208]"
+                    className="mt-4 text-sm text-[#00b4d8] hover:text-[#03045e] font-medium transition-colors"
                   >
                     Clear filters
                   </button>
@@ -193,10 +194,11 @@ const AllProducts = () => {
                 </div>
               ) : (
                 <div className="text-center py-32">
-                  <h3 className="text-2xl font-bold text-white mb-3">
+                  <div className="text-6xl mb-4">📦</div>
+                  <h3 className="text-2xl font-bold bg-gradient-to-r from-[#00b4d8] to-[#03045e] bg-clip-text text-transparent mb-3">
                     No products found
                   </h3>
-                  <p className="text-gray-400 mb-6">
+                  <p className="text-[#03045e]/60 mb-6">
                     Try adjusting your search or filters
                   </p>
                   {(searchQuery || selectedCategories.length > 0) && (
@@ -205,9 +207,9 @@ const AllProducts = () => {
                         setSearchQuery("");
                         clearFilters();
                       }}
-                      className="px-6 py-3 bg-[#9d0208] text-white rounded-xl"
+                      className="px-6 py-3 bg-gradient-to-r from-[#00b4d8] to-[#03045e] text-white rounded-xl hover:from-[#03045e] hover:to-[#00b4d8] transition-all shadow-lg"
                     >
-                      Reset
+                      Reset Filters
                     </button>
                   )}
                 </div>

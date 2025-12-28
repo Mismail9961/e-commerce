@@ -48,27 +48,27 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
       {/* Overlay */}
       {showSidebar && (
         <div
-          className="fixed inset-0 bg-black/80 z-[60] transition-opacity"
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[60] transition-opacity"
           onClick={() => setShowSidebar(false)}
         />
       )}
 
       {/* Sidebar */}
       <div
-        className={`fixed top-0 left-0 h-full w-[280px] xs:w-[300px] bg-[#003049] z-[70] transform transition-transform duration-300 ease-out shadow-2xl ${
+        className={`fixed top-0 left-0 h-full w-[280px] xs:w-[300px] bg-white z-[70] transform transition-transform duration-300 ease-out shadow-2xl ${
           showSidebar ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         <div className="flex flex-col h-full">
           {/* Header */}
-          <div className="relative px-4 xs:px-6 py-4 xs:py-5 border-b border-white/10">
+          <div className="relative px-4 xs:px-6 py-4 xs:py-5 border-b border-gray-200">
             <div className="flex items-center justify-between">
-              <h1 className="text-lg xs:text-xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+              <h1 className="text-lg xs:text-xl font-bold bg-gradient-to-r from-[#00b4d8] to-[#03045e] bg-clip-text text-transparent">
                 7even86gamehub
               </h1>
               <button
                 onClick={() => setShowSidebar(false)}
-                className="p-1.5 xs:p-2 text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200"
+                className="p-1.5 xs:p-2 text-[#03045e]/60 hover:text-[#00b4d8] hover:bg-[#00b4d8]/5 rounded-lg transition-all duration-200"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
@@ -78,47 +78,47 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
           </div>
 
           {/* Scrollable Content */}
-          <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
+          <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
             {/* User Info Section */}
             {status === "loading" ? (
               <div className="px-4 xs:px-6 py-4 xs:py-5">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 xs:w-14 h-12 xs:h-14 rounded-xl bg-white/5 animate-pulse"></div>
+                  <div className="w-12 xs:w-14 h-12 xs:h-14 rounded-xl bg-gray-100 animate-pulse"></div>
                   <div className="flex-1">
-                    <div className="h-3.5 xs:h-4 bg-white/5 rounded-lg animate-pulse mb-2"></div>
-                    <div className="h-2.5 xs:h-3 bg-white/5 rounded-lg animate-pulse w-2/3"></div>
+                    <div className="h-3.5 xs:h-4 bg-gray-100 rounded-lg animate-pulse mb-2"></div>
+                    <div className="h-2.5 xs:h-3 bg-gray-100 rounded-lg animate-pulse w-2/3"></div>
                   </div>
                 </div>
               </div>
             ) : session ? (
-              <div className="px-4 xs:px-6 py-4 xs:py-5 border-b border-white/10">
+              <div className="px-4 xs:px-6 py-4 xs:py-5 border-b border-gray-200">
                 <div className="flex items-center gap-3 xs:gap-4">
                   {session.user.image ? (
                     <img
                       src={session.user.image}
                       alt={session.user.name}
-                      className="w-12 xs:w-14 h-12 xs:h-14 rounded-xl object-cover border-2 border-[#9d0208]/40 shadow-lg flex-shrink-0"
+                      className="w-12 xs:w-14 h-12 xs:h-14 rounded-xl object-cover border-2 border-[#00b4d8]/30 shadow-lg flex-shrink-0"
                     />
                   ) : (
-                    <div className="w-12 xs:w-14 h-12 xs:h-14 rounded-xl bg-gradient-to-br from-[#9d0208] to-[#dc2626] flex items-center justify-center text-white font-bold text-lg xs:text-xl shadow-lg border-2 border-[#9d0208]/40 flex-shrink-0">
+                    <div className="w-12 xs:w-14 h-12 xs:h-14 rounded-xl bg-gradient-to-br from-[#00b4d8] to-[#03045e] flex items-center justify-center text-white font-bold text-lg xs:text-xl shadow-lg border-2 border-[#00b4d8]/30 flex-shrink-0">
                       {session.user.name?.charAt(0).toUpperCase()}
                     </div>
                   )}
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm xs:text-[15px] font-semibold text-white truncate">
+                    <p className="text-sm xs:text-[15px] font-semibold text-[#03045e] truncate">
                       {session.user.name}
                     </p>
-                    <p className="text-[11px] xs:text-xs text-gray-400 truncate mt-0.5 xs:mt-1">
+                    <p className="text-[11px] xs:text-xs text-[#03045e]/60 truncate mt-0.5 xs:mt-1">
                       {session.user.email}
                     </p>
                   </div>
                 </div>
               </div>
             ) : (
-              <div className="px-4 xs:px-6 py-4 xs:py-5 border-b border-white/10">
+              <div className="px-4 xs:px-6 py-4 xs:py-5 border-b border-gray-200">
                 <button
                   onClick={() => handleNavigation("/login")}
-                  className="w-full flex items-center justify-center gap-2 xs:gap-2.5 px-4 xs:px-5 py-2.5 xs:py-3 text-xs xs:text-sm font-semibold text-white bg-gradient-to-r from-[#9d0208] to-[#dc2626] rounded-xl hover:from-[#7a0106] hover:to-[#b91c1c] transition-all duration-200 shadow-lg hover:shadow-[#9d0208]/50"
+                  className="w-full flex items-center justify-center gap-2 xs:gap-2.5 px-4 xs:px-5 py-2.5 xs:py-3 text-xs xs:text-sm font-semibold text-white bg-gradient-to-r from-[#00b4d8] to-[#03045e] rounded-xl hover:from-[#03045e] hover:to-[#00b4d8] transition-all duration-200 shadow-lg hover:shadow-xl"
                 >
                   <svg className="w-4 xs:w-5 h-4 xs:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
@@ -135,8 +135,8 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
                 onClick={() => handleNavigation("/")}
                 className={`w-full flex items-center gap-3 xs:gap-3.5 px-3 xs:px-4 py-2.5 xs:py-3 rounded-xl text-sm xs:text-[15px] font-medium transition-all duration-200 mb-1 ${
                   isActive("/")
-                    ? "bg-gradient-to-r from-[#9d0208] to-[#dc2626] text-white shadow-lg shadow-[#9d0208]/30"
-                    : "text-gray-300 hover:bg-white/5 hover:text-white"
+                    ? "bg-gradient-to-r from-[#00b4d8] to-[#03045e] text-white shadow-lg"
+                    : "text-[#03045e]/70 hover:bg-[#00b4d8]/5 hover:text-[#00b4d8]"
                 }`}
               >
                 <svg className="w-4 xs:w-5 h-4 xs:h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -151,8 +151,8 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
                   onClick={() => setShowShopSubmenu(!showShopSubmenu)}
                   className={`w-full flex items-center justify-between px-3 xs:px-4 py-2.5 xs:py-3 rounded-xl text-sm xs:text-[15px] font-medium transition-all duration-200 ${
                     pathname?.startsWith("/all-products")
-                      ? "bg-gradient-to-r from-[#9d0208] to-[#dc2626] text-white shadow-lg shadow-[#9d0208]/30"
-                      : "text-gray-300 hover:bg-white/5 hover:text-white"
+                      ? "bg-gradient-to-r from-[#00b4d8] to-[#03045e] text-white shadow-lg"
+                      : "text-[#03045e]/70 hover:bg-[#00b4d8]/5 hover:text-[#00b4d8]"
                   }`}
                 >
                   <div className="flex items-center gap-3 xs:gap-3.5">
@@ -173,10 +173,10 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
 
                 {/* Submenu */}
                 {showShopSubmenu && (
-                  <div className="mt-1 ml-3 xs:ml-4 pl-4 xs:pl-6 border-l-2 border-white/10 space-y-0.5">
+                  <div className="mt-1 ml-3 xs:ml-4 pl-4 xs:pl-6 border-l-2 border-gray-200 space-y-0.5">
                     <button
                       onClick={() => handleNavigation("/all-products")}
-                      className="w-full text-left px-3 xs:px-4 py-2 xs:py-2.5 rounded-lg text-xs xs:text-sm text-gray-400 hover:text-white hover:bg-white/5 transition-all duration-200"
+                      className="w-full text-left px-3 xs:px-4 py-2 xs:py-2.5 rounded-lg text-xs xs:text-sm text-[#03045e]/60 hover:text-[#00b4d8] hover:bg-[#00b4d8]/5 transition-all duration-200"
                     >
                       All Products
                     </button>
@@ -184,7 +184,7 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
                       <button
                         key={category.slug}
                         onClick={() => handleCategoryClick(category.slug)}
-                        className="w-full text-left px-3 xs:px-4 py-2 xs:py-2.5 rounded-lg text-xs xs:text-sm text-gray-400 hover:text-white hover:bg-white/5 transition-all duration-200"
+                        className="w-full text-left px-3 xs:px-4 py-2 xs:py-2.5 rounded-lg text-xs xs:text-sm text-[#03045e]/60 hover:text-[#00b4d8] hover:bg-[#00b4d8]/5 transition-all duration-200"
                       >
                         {category.name}
                       </button>
@@ -198,8 +198,8 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
                 onClick={() => handleNavigation("/about-us")}
                 className={`w-full flex items-center gap-3 xs:gap-3.5 px-3 xs:px-4 py-2.5 xs:py-3 rounded-xl text-sm xs:text-[15px] font-medium transition-all duration-200 mb-1 ${
                   isActive("/about-us")
-                    ? "bg-gradient-to-r from-[#9d0208] to-[#dc2626] text-white shadow-lg shadow-[#9d0208]/30"
-                    : "text-gray-300 hover:bg-white/5 hover:text-white"
+                    ? "bg-gradient-to-r from-[#00b4d8] to-[#03045e] text-white shadow-lg"
+                    : "text-[#03045e]/70 hover:bg-[#00b4d8]/5 hover:text-[#00b4d8]"
                 }`}
               >
                 <svg className="w-4 xs:w-5 h-4 xs:h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -213,8 +213,8 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
                 onClick={() => handleNavigation("/contact-us")}
                 className={`w-full flex items-center gap-3 xs:gap-3.5 px-3 xs:px-4 py-2.5 xs:py-3 rounded-xl text-sm xs:text-[15px] font-medium transition-all duration-200 mb-1 ${
                   isActive("/contact-us")
-                    ? "bg-gradient-to-r from-[#9d0208] to-[#dc2626] text-white shadow-lg shadow-[#9d0208]/30"
-                    : "text-gray-300 hover:bg-white/5 hover:text-white"
+                    ? "bg-gradient-to-r from-[#00b4d8] to-[#03045e] text-white shadow-lg"
+                    : "text-[#03045e]/70 hover:bg-[#00b4d8]/5 hover:text-[#00b4d8]"
                 }`}
               >
                 <svg className="w-4 xs:w-5 h-4 xs:h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -224,7 +224,7 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
               </button>
 
               {/* Divider for logged in users */}
-              {session && <div className="my-3 xs:my-4 border-t border-white/10"></div>}
+              {session && <div className="my-3 xs:my-4 border-t border-gray-200"></div>}
 
               {/* Cart */}
               {session && (
@@ -232,8 +232,8 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
                   onClick={() => handleNavigation("/cart")}
                   className={`w-full flex items-center justify-between px-3 xs:px-4 py-2.5 xs:py-3 rounded-xl text-sm xs:text-[15px] font-medium transition-all duration-200 mb-1 ${
                     isActive("/cart")
-                      ? "bg-gradient-to-r from-[#9d0208] to-[#dc2626] text-white shadow-lg shadow-[#9d0208]/30"
-                      : "text-gray-300 hover:bg-white/5 hover:text-white"
+                      ? "bg-gradient-to-r from-[#00b4d8] to-[#03045e] text-white shadow-lg"
+                      : "text-[#03045e]/70 hover:bg-[#00b4d8]/5 hover:text-[#00b4d8]"
                   }`}
                 >
                   <div className="flex items-center gap-3 xs:gap-3.5">
@@ -243,7 +243,7 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
                     <span>Cart</span>
                   </div>
                   {cartCount > 0 && (
-                    <span className="min-w-[22px] xs:min-w-[24px] h-5 xs:h-6 px-1.5 xs:px-2 bg-white text-[#9d0208] text-[10px] xs:text-xs font-bold flex items-center justify-center rounded-full">
+                    <span className="min-w-[22px] xs:min-w-[24px] h-5 xs:h-6 px-1.5 xs:px-2 bg-[#00b4d8] text-white text-[10px] xs:text-xs font-bold flex items-center justify-center rounded-full shadow-sm">
                       {cartCount}
                     </span>
                   )}
@@ -256,8 +256,8 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
                   onClick={() => handleNavigation("/my-orders")}
                   className={`w-full flex items-center gap-3 xs:gap-3.5 px-3 xs:px-4 py-2.5 xs:py-3 rounded-xl text-sm xs:text-[15px] font-medium transition-all duration-200 mb-1 ${
                     isActive("/my-orders")
-                      ? "bg-gradient-to-r from-[#9d0208] to-[#dc2626] text-white shadow-lg shadow-[#9d0208]/30"
-                      : "text-gray-300 hover:bg-white/5 hover:text-white"
+                      ? "bg-gradient-to-r from-[#00b4d8] to-[#03045e] text-white shadow-lg"
+                      : "text-[#03045e]/70 hover:bg-[#00b4d8]/5 hover:text-[#00b4d8]"
                   }`}
                 >
                   <svg className="w-4 xs:w-5 h-4 xs:h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -270,13 +270,13 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
               {/* Seller Dashboard */}
               {canAccessSellerDashboard && (
                 <>
-                  <div className="my-3 xs:my-4 border-t border-white/10"></div>
+                  <div className="my-3 xs:my-4 border-t border-gray-200"></div>
                   <button
                     onClick={() => handleNavigation("/seller")}
                     className={`w-full flex items-center gap-3 xs:gap-3.5 px-3 xs:px-4 py-2.5 xs:py-3 rounded-xl text-sm xs:text-[15px] font-medium transition-all duration-200 mb-1 ${
                       pathname?.startsWith("/seller")
-                        ? "bg-gradient-to-r from-[#9d0208] to-[#dc2626] text-white shadow-lg shadow-[#9d0208]/30"
-                        : "text-gray-300 hover:bg-white/5 hover:text-white"
+                        ? "bg-gradient-to-r from-[#00b4d8] to-[#03045e] text-white shadow-lg"
+                        : "text-[#03045e]/70 hover:bg-[#00b4d8]/5 hover:text-[#00b4d8]"
                     }`}
                   >
                     <svg className="w-4 xs:w-5 h-4 xs:h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -290,10 +290,10 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
               {/* Sign Out */}
               {session && (
                 <>
-                  <div className="my-3 xs:my-4 border-t border-white/10"></div>
+                  <div className="my-3 xs:my-4 border-t border-gray-200"></div>
                   <button
                     onClick={handleSignOut}
-                    className="w-full flex items-center gap-3 xs:gap-3.5 px-3 xs:px-4 py-2.5 xs:py-3 rounded-xl text-sm xs:text-[15px] font-medium text-red-400 hover:text-white hover:bg-red-500/10 transition-all duration-200"
+                    className="w-full flex items-center gap-3 xs:gap-3.5 px-3 xs:px-4 py-2.5 xs:py-3 rounded-xl text-sm xs:text-[15px] font-medium text-red-500 hover:text-red-600 hover:bg-red-50 transition-all duration-200"
                   >
                     <svg className="w-4 xs:w-5 h-4 xs:h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -306,8 +306,8 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
           </div>
 
           {/* Footer */}
-          <div className="px-4 xs:px-6 py-3 xs:py-4 border-t border-white/10 bg-black/40">
-            <p className="text-[10px] xs:text-[11px] text-gray-500 text-center">
+          <div className="px-4 xs:px-6 py-3 xs:py-4 border-t border-gray-200 bg-gray-50">
+            <p className="text-[10px] xs:text-[11px] text-[#03045e]/50 text-center">
               © 2024 7even86gamehub.pk All rights reserved.
             </p>
           </div>

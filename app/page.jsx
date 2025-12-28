@@ -15,7 +15,7 @@ const Home = () => {
     <>
       <TopBar />
       <Navbar/>
-      <div className="bg-[#003049]">
+      <div>
         <HeaderSlider />
         <HomeProducts />
         <Banner />
