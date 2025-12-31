@@ -36,9 +36,9 @@ import projector_image from "./projector_image.png";
 import playstation_image from "./playstation_image.png";
 import girl_with_headphone_image from "./girl_with_headphone_image.png";
 import girl_with_earphone_image from "./girl_with_earphone_image.png";
-import md_controller_image from "./md_controller_image.png";
+import md_controller_image from "./new4.png";
 import sm_controller_image from "./sm_controller_image.png";
-import jbl_soundbox_image from "./jbl_soundbox_image.png";
+import jbl_soundbox_image from "./new5.png";
 import boy_with_laptop_image from "./boy_with_laptop_image.png";
 import checkmark from "./checkmark.png";
 import product_details_page_apple_earphone_image1 from "./product_details_page_apple_earphone_image1.png";
@@ -47,9 +47,9 @@ import product_details_page_apple_earphone_image3 from "./product_details_page_a
 import product_details_page_apple_earphone_image4 from "./product_details_page_apple_earphone_image4.png";
 import product_details_page_apple_earphone_image5 from "./product_details_page_apple_earphone_image5.png";
 import mainlogo from "./1logo.jpg";
-import HeadBanner from "./banner1.webp"
-import HeadBanner1 from "./banner3.jpg"
-import HeadBanner2 from "./banner4.jpg"
+import HeadBanner from "./new1.png"
+import HeadBanner1 from "./new2.png"
+import HeadBanner2 from "./new3.png"
 
 export const assets = {
   HeadBanner2,

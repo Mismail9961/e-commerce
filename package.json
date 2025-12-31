@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@react-icons/all-files": "^4.1.0",
     "axios": "^1.13.2",
     "bcryptjs": "^3.0.3",
     "cloudinary": "^2.8.0",
@@ -23,7 +24,8 @@
     "nodemailer": "^7.0.11",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
-    "react-hot-toast": "^2.6.0"
+    "react-hot-toast": "^2.6.0",
+    "react-icons": "^5.5.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

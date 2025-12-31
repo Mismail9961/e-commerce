@@ -1,6 +1,8 @@
 import React from "react";
 import { assets } from "@/assets/assets";
 import Image from "next/image";
+import { FaArrowRight } from "react-icons/fa6";
+
 
 const Banner = () => {
   return (
@@ -22,13 +24,13 @@ const Banner = () => {
         <h2 className="text-xl min-[375px]:text-2xl sm:text-3xl lg:text-4xl font-bold 
           max-w-[280px] min-[375px]:max-w-[290px] sm:max-w-[350px] md:max-w-[400px] 
           text-white leading-tight">
-          Level Up Your Gaming Experience
+          Level Up Your Lifestyle
         </h2>
 
         <p className="text-xs min-[375px]:text-sm sm:text-base 
           max-w-[300px] min-[375px]:max-w-[343px] sm:max-w-[400px] md:max-w-[450px] 
           font-medium text-white/90">
-          From immersive sound to precise controls—everything you need to win
+          From timeless elegance to effortless movement, bold street style to ultimate versatility—everything you need to own every moment, every journey, and every look.
         </p>
 
         <button className="group flex items-center justify-center gap-2 
@@ -39,11 +41,7 @@ const Banner = () => {
           transition-all duration-300 
           hover:shadow-lg hover:shadow-white/30 rounded-lg">
           Buy now
-          <Image
-            className="group-hover:translate-x-1 transition-transform w-4 h-4"
-            src={assets.arrow_icon_white}
-            alt="arrow_icon_white"
-          />
+          <FaArrowRight className="transform group-hover:translate-x-1 transition-transform duration-300" />
         </button>
       </div>
 

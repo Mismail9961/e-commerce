@@ -16,10 +16,8 @@ const Footer = () => {
               alt="7even86GameHub Logo" 
             />
             <p className="text-xs min-[375px]:text-sm text-gray-600 leading-relaxed max-w-md">
-              Welcome to 7even86GameHub – Your Ultimate Gaming Destination. 
-              We're passionate about elevating your gaming experience with premium 
-              gaming components and accessories. From high-performance graphics cards 
-              to precision gaming peripherals – we stock only the best brands and latest technology.
+              Welcome to Sachchu – Your Ultimate Lifestyle Destination.
+We're passionate about elevating your everyday style with premium fashion essentials and accessories. From timeless ladies handbags to high-performance travel gear, bold tracksuits, street-ready footwear, ultra-comfortable t-shirts, and versatile backpacks — we stock only the best designs, superior quality, and the latest trends.
             </p>
             
             {/* Social Media Links */}
@@ -118,7 +116,7 @@ const Footer = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
                 </div>
-                <span className="break-all">contact@7even86gamehub.pk</span>
+                <span className="break-all">contact@www.sachchu.store</span>
               </a>
             </div>
           </div>

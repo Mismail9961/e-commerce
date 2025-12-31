@@ -7,9 +7,9 @@ import TopBar from "@/components/TopBar";
 import WhatsAppButton from "@/components/WhatsAppButton";
 
 export const metadata = {
-  title: "About Us | 7even86gamehub",
+  title: "About Us | Sachchu",
   description:
-    "Learn more about 7even86gamehub, our mission, vision, and the values that drive us to provide the best gaming experience in Pakistan.",
+    "Discover Sachchu – your premium destination for timeless style and modern fashion in Pakistan. Explore our mission, vision, and the values behind our curated collection.",
 };
 
 export default function AboutPage() {
@@ -24,14 +24,14 @@ export default function AboutPage() {
 
         <div className="max-w-5xl mx-auto px-4 min-[320px]:px-5 sm:px-8 lg:px-12 py-10 min-[320px]:py-12 sm:py-16 md:py-20 text-center relative z-10">
           <h1 className="text-2xl min-[320px]:text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            About <span className="text-[#2563eb]">7even86gamehub</span>
+            About <span className="text-[#2563eb]">Sachchu</span>
           </h1>
 
           <p className="text-xs min-[320px]:text-sm sm:text-base text-gray-600 leading-relaxed max-w-3xl mx-auto">
-            Welcome to <span className="font-semibold text-gray-900">7even86gamehub</span> —
-            a next-generation gaming e-commerce destination built for the modern gamer.
-            We combine technology and passion to deliver a seamless, secure, and reliable
-            online shopping experience.
+            Welcome to <span className="font-semibold text-gray-900">Sachchu</span> —
+            your ultimate premium lifestyle destination built for the modern individual.
+            We blend timeless design, superior quality, and contemporary trends to deliver
+            an effortless, confident, and stylish everyday experience.
           </p>
         </div>
       </div>
@@ -53,8 +53,9 @@ export default function AboutPage() {
             </div>
 
             <p className="text-xs min-[320px]:text-sm sm:text-base text-gray-600 leading-relaxed">
-              Our mission is to make gaming gear accessible and affordable for every gamer.
-              From components to peripherals, we deliver quality products with speed and trust.
+              Our mission is to make premium fashion accessible and empowering for everyone.
+              From elegant handbags to versatile streetwear, we deliver quality pieces that elevate
+              your style with confidence, comfort, and affordability.
             </p>
           </div>
 
@@ -71,8 +72,8 @@ export default function AboutPage() {
             </div>
 
             <p className="text-xs min-[320px]:text-sm sm:text-base text-gray-600 leading-relaxed">
-              We envision a trusted digital marketplace where innovation meets gaming culture,
-              powered by performance, transparency, and community.
+              We envision a trusted fashion destination where style meets individuality,
+              powered by quality craftsmanship, trend-forward designs, and a community that celebrates self-expression.
             </p>
           </div>
         </div>
@@ -85,7 +86,7 @@ export default function AboutPage() {
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {["Gamer First", "Quality & Performance", "Innovation", "Community"].map((value, index) => (
+            {["Style First", "Quality & Craftsmanship", "Trend-Innovation", "Confidence & Expression"].map((value, index) => (
               <div key={index} className="flex items-start gap-3">
                 <div className="w-9 h-9 flex items-center justify-center bg-[#2563eb]/10">
                   <svg className="w-5 h-5 text-[#2563eb]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -95,7 +96,7 @@ export default function AboutPage() {
                 <div>
                   <h3 className="text-sm sm:text-base font-semibold text-gray-900">{value}</h3>
                   <p className="text-xs sm:text-sm text-gray-600">
-                    We uphold this value in everything we do.
+                    We live this value in every design, every stitch, and every customer experience.
                   </p>
                 </div>
               </div>
@@ -106,18 +107,18 @@ export default function AboutPage() {
         {/* CTA */}
         <div className="mt-16 text-center">
           <h2 className="text-xl sm:text-3xl font-bold text-gray-900 mb-4">
-            Join the 7even86gamehub Experience
+            Join the Sachchu Lifestyle
           </h2>
 
           <p className="text-xs sm:text-base text-gray-600 mb-6 max-w-2xl mx-auto">
-            From browsing to checkout — we make gaming shopping smarter, faster, and more reliable.
+            From effortless elegance to bold street energy — we make building your signature look simple, stylish, and inspiring.
           </p>
 
           <a
             href="/all-products"
             className="inline-flex items-center gap-2 bg-[#2563eb] text-white px-6 py-3 text-sm sm:text-base font-semibold hover:bg-blue-700 transition-all"
           >
-            Start Shopping
+            Explore Collection
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
