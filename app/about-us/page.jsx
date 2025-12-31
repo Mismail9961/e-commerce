@@ -14,21 +14,21 @@ export const metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="bg-gradient-to-br from-gray-50 via-white to-gray-50 min-h-screen">
+    <div className="bg-[#003049] min-h-screen">
       <TopBar/>
       <Navbar />
 
       {/* Hero Section */}
-      <div className="relative overflow-hidden border-b border-gray-200">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_rgba(0,180,216,0.08)_0%,_transparent_60%)]"></div>
+      <div className="relative overflow-hidden border-b border-white/10">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_#8a1a1315_0%,_transparent_60%)]"></div>
 
         <div className="max-w-5xl mx-auto px-4 min-[375px]:px-6 sm:px-8 lg:px-12 py-12 min-[375px]:py-16 sm:py-20 md:py-24 text-center relative z-10">
-          <h1 className="text-3xl min-[375px]:text-4xl sm:text-5xl md:text-6xl font-bold text-[#03045e] mb-4 sm:mb-6">
-            About <span className="bg-gradient-to-r from-[#00b4d8] to-[#03045e] bg-clip-text text-transparent">7even86gamehub</span>
+          <h1 className="text-3xl min-[375px]:text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-4 sm:mb-6">
+            About <span className="text-[#8a1a13]">7even86gamehub</span>
           </h1>
 
-          <p className="text-sm min-[375px]:text-base sm:text-lg text-[#03045e]/70 leading-relaxed max-w-3xl mx-auto">
-            Welcome to <span className="font-semibold text-[#03045e]">7even86gamehub</span> —
+          <p className="text-sm min-[375px]:text-base sm:text-lg text-gray-300 leading-relaxed max-w-3xl mx-auto">
+            Welcome to <span className="font-semibold text-white">7even86gamehub</span> —
             a next-generation gaming e-commerce destination built for the modern gamer.
             We combine technology and passion to deliver a seamless, secure, and thrilling
             online shopping experience.
@@ -42,35 +42,35 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 min-[375px]:gap-6 sm:gap-8">
 
           {/* Mission */}
-          <div className="bg-white border border-gray-200 rounded-2xl p-5 min-[375px]:p-6 sm:p-8 group hover:shadow-xl hover:border-[#00b4d8] transition-all">
+          <div className="bg-white/5 border border-white/10 p-5 min-[375px]:p-6 sm:p-8 group hover:bg-white/10 transition-all">
             <div className="flex items-center gap-3 mb-4 sm:mb-6">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-gradient-to-br from-[#00b4d8] to-[#03045e] rounded-xl group-hover:scale-110 transition-transform shadow-lg">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-[#8a1a13] group-hover:bg-[#6f140f] transition-colors">
                 <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
-              <h2 className="text-xl min-[375px]:text-2xl sm:text-3xl font-bold text-[#03045e]">Our Mission</h2>
+              <h2 className="text-xl min-[375px]:text-2xl sm:text-3xl font-bold text-white">Our Mission</h2>
             </div>
 
-            <p className="text-xs min-[375px]:text-sm sm:text-base text-[#03045e]/70 leading-relaxed">
+            <p className="text-xs min-[375px]:text-sm sm:text-base text-gray-300 leading-relaxed">
               Our mission is simple: to make gaming gear accessible and affordable for every gamer.
               From components to peripherals, we deliver quality and speed to your doorstep.
             </p>
           </div>
 
           {/* Vision */}
-          <div className="bg-white border border-gray-200 rounded-2xl p-5 min-[375px]:p-6 sm:p-8 group hover:shadow-xl hover:border-[#00b4d8] transition-all">
+          <div className="bg-white/5 border border-white/10 p-5 min-[375px]:p-6 sm:p-8 group hover:bg-white/10 transition-all">
             <div className="flex items-center gap-3 mb-4 sm:mb-6">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-gradient-to-br from-[#00b4d8] to-[#03045e] rounded-xl group-hover:scale-110 transition-transform shadow-lg">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-[#8a1a13] group-hover:bg-[#6f140f] transition-colors">
                 <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                 </svg>
               </div>
-              <h2 className="text-xl min-[375px]:text-2xl sm:text-3xl font-bold text-[#03045e]">Our Vision</h2>
+              <h2 className="text-xl min-[375px]:text-2xl sm:text-3xl font-bold text-white">Our Vision</h2>
             </div>
 
-            <p className="text-xs min-[375px]:text-sm sm:text-base text-[#03045e]/70 leading-relaxed">
+            <p className="text-xs min-[375px]:text-sm sm:text-base text-gray-300 leading-relaxed">
               We envision a trusted digital marketplace where innovation and gaming culture meet.
               A community built on authenticity, performance, and passion.
             </p>
@@ -78,9 +78,9 @@ export default function AboutPage() {
         </div>
 
         {/* Core Values */}
-        <div className="mt-10 sm:mt-14 md:mt-16 bg-white border border-gray-200 rounded-2xl p-5 min-[375px]:p-6 sm:p-8 shadow-lg">
-          <h2 className="text-xl min-[375px]:text-2xl sm:text-3xl font-bold text-[#03045e] mb-6 sm:mb-8 flex items-center gap-3">
-            <div className="w-1 h-8 sm:h-10 bg-gradient-to-b from-[#00b4d8] to-[#03045e] rounded-full"></div>
+        <div className="mt-10 sm:mt-14 md:mt-16 bg-white/5 border border-white/10 p-5 min-[375px]:p-6 sm:p-8">
+          <h2 className="text-xl min-[375px]:text-2xl sm:text-3xl font-bold text-white mb-6 sm:mb-8 flex items-center gap-3">
+            <div className="w-1 h-8 sm:h-10 bg-[#8a1a13]"></div>
             Our Core Values
           </h2>
 
@@ -93,14 +93,14 @@ export default function AboutPage() {
               "Community",
             ].map((value, index) => (
               <div key={index} className="flex items-start gap-3 sm:gap-4 group">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0 flex items-center justify-center bg-[#00b4d8]/10 border border-[#00b4d8]/20 rounded-lg group-hover:bg-gradient-to-br group-hover:from-[#00b4d8] group-hover:to-[#03045e] group-hover:border-transparent transition-all">
-                  <svg className="w-4 h-4 sm:w-5 sm:h-5 text-[#00b4d8] group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0 flex items-center justify-center bg-white/5 border border-white/10 group-hover:bg-[#8a1a13] group-hover:border-[#8a1a13] transition-all">
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5 text-[#8a1a13] group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-sm min-[375px]:text-base sm:text-lg font-semibold text-[#03045e] mb-1 sm:mb-2">{value}</h3>
-                  <p className="text-xs min-[375px]:text-sm text-[#03045e]/60">We stand by this value in everything we do.</p>
+                  <h3 className="text-sm min-[375px]:text-base sm:text-lg font-semibold text-white mb-1 sm:mb-2">{value}</h3>
+                  <p className="text-xs min-[375px]:text-sm text-gray-300">We stand by this value in everything we do.</p>
                 </div>
               </div>
             ))}
@@ -109,8 +109,8 @@ export default function AboutPage() {
         </div>
 
         {/* CTA */}
-        <div className="mt-12 sm:mt-16 md:mt-20 text-center relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#00b4d8] to-[#03045e] shadow-2xl">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,_rgba(255,255,255,0.1)_0%,_transparent_60%)]"></div>
+        <div className="mt-12 sm:mt-16 md:mt-20 text-center relative overflow-hidden">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,_rgba(255,255,255,0.08)_0%,_transparent_60%)]"></div>
 
           <div className="relative z-10 p-6 sm:p-10 md:p-12">
             <h2 className="text-2xl min-[375px]:text-3xl sm:text-4xl font-bold text-white mb-4">
@@ -123,7 +123,7 @@ export default function AboutPage() {
 
             <a
               href="/all-products"
-              className="inline-flex items-center gap-2 bg-white text-[#03045e] px-6 min-[375px]:px-8 py-3 min-[375px]:py-3.5 font-semibold text-sm min-[375px]:text-base rounded-xl hover:bg-gray-50 hover:scale-105 transition-all group shadow-xl"
+              className="inline-flex items-center gap-2 bg-white text-[#8a1a13] px-6 min-[375px]:px-8 py-3 min-[375px]:py-3.5 font-semibold text-sm min-[375px]:text-base hover:bg-gray-100 transition-all group"
             >
               Start Shopping
               <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
