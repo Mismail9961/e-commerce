@@ -64,7 +64,7 @@ const HeaderSlider = () => {
   };
 
   return (
-    <section className="relative w-full overflow-hidden bg-black">
+    <section className="relative w-full overflow-hidden bg-gray-100">
       <AnimatePresence initial={false} mode="wait">
         <motion.div
           key={sliderData[currentSlide].id}
@@ -85,9 +85,9 @@ const HeaderSlider = () => {
               sizes="100vw"
             />
 
-            {/* Premium gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
-            <div className="absolute inset-0 bg-gradient-to-r from-[#9d0208]/20 via-transparent to-black/40"></div>
+            {/* Light gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-white/40 via-white/10 to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-transparent to-white/30"></div>
           </div>
         </motion.div>
       </AnimatePresence>
@@ -101,14 +101,14 @@ const HeaderSlider = () => {
         className="absolute left-2 min-[375px]:left-3 sm:left-4 lg:left-6 top-1/2 -translate-y-1/2 z-30 
         w-8 h-8 min-[375px]:w-9 min-[375px]:h-9 sm:w-11 sm:h-11 lg:w-14 lg:h-14
         flex items-center justify-center
-        bg-black/40 backdrop-blur-md
-        border border-white/10
-        hover:bg-[#9d0208] hover:border-[#9d0208]
+        bg-white/70 backdrop-blur-md
+        border border-gray-200
+        hover:bg-blue-600 hover:border-blue-600
         transition-all duration-300 ease-out
-        group"
+        group shadow-lg"
       >
         <svg 
-          className="w-4 h-4 min-[375px]:w-4.5 min-[375px]:h-4.5 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-white transition-transform group-hover:scale-110" 
+          className="w-4 h-4 min-[375px]:w-4.5 min-[375px]:h-4.5 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-gray-700 group-hover:text-white transition-all group-hover:scale-110" 
           fill="none" 
           stroke="currentColor" 
           viewBox="0 0 24 24"
@@ -125,14 +125,14 @@ const HeaderSlider = () => {
         className="absolute right-2 min-[375px]:right-3 sm:right-4 lg:right-6 top-1/2 -translate-y-1/2 z-30 
         w-8 h-8 min-[375px]:w-9 min-[375px]:h-9 sm:w-11 sm:h-11 lg:w-14 lg:h-14
         flex items-center justify-center
-        bg-black/40 backdrop-blur-md
-        border border-white/10
-        hover:bg-[#9d0208] hover:border-[#9d0208]
+        bg-white/70 backdrop-blur-md
+        border border-gray-200
+        hover:bg-blue-600 hover:border-blue-600
         transition-all duration-300 ease-out
-        group"
+        group shadow-lg"
       >
         <svg 
-          className="w-4 h-4 min-[375px]:w-4.5 min-[375px]:h-4.5 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-white transition-transform group-hover:scale-110" 
+          className="w-4 h-4 min-[375px]:w-4.5 min-[375px]:h-4.5 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-gray-700 group-hover:text-white transition-all group-hover:scale-110" 
           fill="none" 
           stroke="currentColor" 
           viewBox="0 0 24 24"
@@ -153,14 +153,14 @@ const HeaderSlider = () => {
             }}
             className="group relative"
           >
-            <div className={`transition-all duration-500 ease-out
+            <div className={`transition-all duration-500 ease-out rounded-full
               ${currentSlide === index ? 
-                "w-6 min-[375px]:w-8 sm:w-10 h-1 min-[375px]:h-1.5 bg-[#9d0208]" : 
-                "w-1 min-[375px]:w-1.5 h-1 min-[375px]:h-1.5 bg-white/40 group-hover:bg-white/70 group-hover:scale-125"
+                "w-6 min-[375px]:w-8 sm:w-10 h-1 min-[375px]:h-1.5 bg-blue-600 shadow-md" : 
+                "w-1 min-[375px]:w-1.5 h-1 min-[375px]:h-1.5 bg-gray-400 group-hover:bg-gray-600 group-hover:scale-125"
               }`}
             />
             {currentSlide === index && (
-              <div className="absolute inset-0 bg-[#9d0208]/50 blur-sm sm:blur-md"></div>
+              <div className="absolute inset-0 bg-blue-400/50 blur-sm sm:blur-md rounded-full"></div>
             )}
           </button>
         ))}

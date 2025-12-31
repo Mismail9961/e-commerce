@@ -239,17 +239,17 @@ const Product = () => {
             <>
                 <TopBar/>
                 <Navbar />
-                <div className="min-h-screen bg-[#003049] flex items-center justify-center px-4">
-                    <div className="text-center bg-gradient-to-br from-gray-900 to-black rounded-2xl border border-gray-800 p-8 sm:p-12 max-w-md">
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-[#9d0208] to-black rounded-full flex items-center justify-center mb-6 mx-auto shadow-lg shadow-[#9d0208]/50">
+                <div className="min-h-screen bg-[#f3f8fd] flex items-center justify-center px-4">
+                    <div className="text-center bg-white rounded-2xl border border-[#2563eb]/20 shadow-xl p-8 sm:p-12 max-w-md">
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-[#2563eb] to-[#1e40af] rounded-full flex items-center justify-center mb-6 mx-auto shadow-lg shadow-[#2563eb]/30">
                             <svg className="w-8 h-8 sm:w-10 sm:h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                         </div>
-                        <p className="text-lg sm:text-xl text-white font-semibold mb-6">{error || "Product not found"}</p>
+                        <p className="text-lg sm:text-xl text-gray-800 font-semibold mb-6">{error || "Product not found"}</p>
                         <button
                             onClick={() => router.push("/")}
-                            className="relative overflow-hidden px-6 sm:px-8 py-3 bg-gradient-to-r from-[#9d0208] to-black text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-[#9d0208]/50 transition-all duration-300"
+                            className="relative overflow-hidden px-6 sm:px-8 py-3 bg-gradient-to-r from-[#2563eb] to-[#1e40af] text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-[#2563eb]/40 transition-all duration-300"
                         >
                             Return Home
                         </button>
@@ -268,15 +268,15 @@ const Product = () => {
         <>
             <TopBar />
             <Navbar />
-            <div className="bg-gradient-to-br from-[#001d2e] via-[#003049] to-[#001d2e] min-h-screen px-3 sm:px-4 md:px-8 lg:px-16 xl:px-24 pt-6 sm:pt-8 md:pt-12 pb-8">
+            <div className="bg-[#f3f8fd] min-h-screen px-3 sm:px-4 md:px-8 lg:px-16 xl:px-24 pt-6 sm:pt-8 md:pt-12 pb-8">
                 
                 {/* Breadcrumb */}
-                <div className="text-sm text-gray-400 mb-6">
-                    <button onClick={() => router.push("/")} className="hover:text-white transition">
+                <div className="text-sm text-gray-600 mb-6">
+                    <button onClick={() => router.push("/")} className="hover:text-[#2563eb] transition">
                         Home
                     </button>
                     <span className="mx-2">/</span>
-                    <span className="text-white">{productData.name}</span>
+                    <span className="text-[#2563eb] font-medium">{productData.name}</span>
                 </div>
 
                 {/* Product Details Section */}
@@ -284,9 +284,9 @@ const Product = () => {
                     
                     {/* Image Gallery */}
                     <div className="space-y-3 sm:space-y-4">
-                        <div className="relative rounded-xl sm:rounded-2xl overflow-hidden bg-white/5 border border-white/10 shadow-2xl">
+                        <div className="relative rounded-xl sm:rounded-2xl overflow-hidden bg-white border border-gray-200 shadow-xl">
                             {discountPercentage > 0 && (
-                                <div className="absolute top-4 right-4 z-10 bg-[#9d0208] text-white px-3 py-1 rounded-full text-xs sm:text-sm font-bold">
+                                <div className="absolute top-4 right-4 z-10 bg-gradient-to-r from-[#2563eb] to-[#1e40af] text-white px-3 py-1 rounded-full text-xs sm:text-sm font-bold shadow-lg">
                                     {discountPercentage}% OFF
                                 </div>
                             )}
@@ -307,10 +307,10 @@ const Product = () => {
                                     <div
                                         key={index}
                                         onClick={() => setMainImage(image)}
-                                        className={`cursor-pointer rounded-lg sm:rounded-xl overflow-hidden bg-white/5 border-2 transition-all duration-300 hover:scale-105 ${
+                                        className={`cursor-pointer rounded-lg sm:rounded-xl overflow-hidden bg-white border-2 transition-all duration-300 hover:scale-105 ${
                                             mainImage === image 
-                                                ? "border-[#9d0208] shadow-lg shadow-[#9d0208]/50" 
-                                                : "border-white/10 hover:border-white/20"
+                                                ? "border-[#2563eb] shadow-lg shadow-[#2563eb]/30" 
+                                                : "border-gray-200 hover:border-[#2563eb]/50"
                                         }`}
                                     >
                                         <div className="aspect-square">
@@ -330,67 +330,67 @@ const Product = () => {
 
                     {/* Product Info */}
                     <div className="flex flex-col space-y-4 sm:space-y-6">
-                        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white leading-tight">
+                        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">
                             {productData.name}
                         </h1>
 
                         <div className="flex items-center gap-3">
                             <div className="flex items-center gap-0.5">
                                 {[1, 2, 3, 4].map((star) => (
-                                    <svg key={star} className="w-4 h-4 sm:w-5 sm:h-5 text-[#9d0208]" fill="currentColor" viewBox="0 0 20 20">
+                                    <svg key={star} className="w-4 h-4 sm:w-5 sm:h-5 text-[#2563eb]" fill="currentColor" viewBox="0 0 20 20">
                                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                                     </svg>
                                 ))}
-                                <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+                                <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
                                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                                 </svg>
                             </div>
-                            <span className="text-sm sm:text-base text-gray-400 font-medium">(4.5)</span>
+                            <span className="text-sm sm:text-base text-gray-600 font-medium">(4.5)</span>
                         </div>
 
-                        <p className="text-sm sm:text-base text-gray-400 leading-relaxed">
+                        <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
                             {productData.description}
                         </p>
 
                         <div className="flex items-baseline gap-3 flex-wrap">
-                            <span className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-[#9d0208] to-white bg-clip-text text-transparent">
+                            <span className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#2563eb]">
                                 {currency}{displayPrice}
                             </span>
                             {originalPrice && (
                                 <>
-                                    <span className="text-base sm:text-lg text-gray-600 line-through">
+                                    <span className="text-base sm:text-lg text-gray-500 line-through">
                                         {currency}{originalPrice}
                                     </span>
-                                    <span className="text-sm sm:text-base text-green-400 font-semibold">
+                                    <span className="text-sm sm:text-base text-green-600 font-semibold">
                                         Save {currency}{originalPrice - displayPrice}
                                     </span>
                                 </>
                             )}
                         </div>
 
-                        <div className="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+                        <div className="w-full h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
 
-                        <div className="bg-white/5 rounded-xl border border-white/10 p-4 sm:p-6">
+                        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 sm:p-6">
                             <table className="w-full">
                                 <tbody className="space-y-2">
-                                    <tr className="border-b border-white/10">
-                                        <td className="text-xs sm:text-sm text-gray-400 font-medium py-2 sm:py-3">Category</td>
-                                        <td className="text-xs sm:text-sm text-white py-2 sm:py-3 text-right font-semibold">
+                                    <tr className="border-b border-gray-200">
+                                        <td className="text-xs sm:text-sm text-gray-600 font-medium py-2 sm:py-3">Category</td>
+                                        <td className="text-xs sm:text-sm text-gray-900 py-2 sm:py-3 text-right font-semibold">
                                             {getCategoryName()}
                                         </td>
                                     </tr>
-                                    <tr className="border-b border-white/10">
-                                        <td className="text-xs sm:text-sm text-gray-400 font-medium py-2 sm:py-3">Availability</td>
+                                    <tr className="border-b border-gray-200">
+                                        <td className="text-xs sm:text-sm text-gray-600 font-medium py-2 sm:py-3">Availability</td>
                                         <td className="text-xs sm:text-sm py-2 sm:py-3 text-right">
-                                            <span className="inline-flex items-center gap-1 text-green-400 font-semibold">
-                                                <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                                            <span className="inline-flex items-center gap-1 text-green-600 font-semibold">
+                                                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
                                                 In Stock
                                             </span>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td className="text-xs sm:text-sm text-gray-400 font-medium py-2 sm:py-3">Condition</td>
-                                        <td className="text-xs sm:text-sm text-white py-2 sm:py-3 text-right font-semibold">Brand New</td>
+                                        <td className="text-xs sm:text-sm text-gray-600 font-medium py-2 sm:py-3">Condition</td>
+                                        <td className="text-xs sm:text-sm text-gray-900 py-2 sm:py-3 text-right font-semibold">Brand New</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -399,7 +399,7 @@ const Product = () => {
                         <div className="flex flex-col sm:flex-row items-stretch gap-3 sm:gap-4 pt-4">
                             <button 
                                 onClick={() => addToCart(productData._id)} 
-                                className="flex-1 py-3 sm:py-4 bg-white/5 text-white font-semibold text-sm sm:text-base rounded-xl border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300 flex items-center justify-center gap-2"
+                                className="flex-1 py-3 sm:py-4 bg-white text-[#2563eb] font-semibold text-sm sm:text-base rounded-xl border-2 border-[#2563eb] hover:bg-[#2563eb] hover:text-white transition-all duration-300 flex items-center justify-center gap-2"
                             >
                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -411,7 +411,7 @@ const Product = () => {
                                     addToCart(productData._id); 
                                     router.push('/cart') 
                                 }} 
-                                className="relative overflow-hidden flex-1 py-3 sm:py-4 bg-gradient-to-r from-[#9d0208] to-[#7a0006] text-white font-bold text-sm sm:text-base rounded-xl hover:shadow-lg hover:shadow-[#9d0208]/50 transition-all duration-300 flex items-center justify-center gap-2"
+                                className="relative overflow-hidden flex-1 py-3 sm:py-4 bg-gradient-to-r from-[#2563eb] to-[#1e40af] text-white font-bold text-sm sm:text-base rounded-xl hover:shadow-lg hover:shadow-[#2563eb]/40 transition-all duration-300 flex items-center justify-center gap-2"
                             >
                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -427,12 +427,12 @@ const Product = () => {
                     <div className="space-y-6 sm:space-y-8">
                         <div className="text-center relative">
                             <div className="absolute inset-0 flex items-center justify-center">
-                                <div className="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+                                <div className="w-full h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
                             </div>
-                            <div className="relative inline-block px-6">
+                            <div className="relative inline-block px-6 bg-[#f3f8fd]">
                                 <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold">
-                                    <span className="text-white">Related </span>
-                                    <span className="bg-gradient-to-r from-[#9d0208] to-white bg-clip-text text-transparent">Products</span>
+                                    <span className="text-gray-900">Related </span>
+                                    <span className="text-[#2563eb]">Products</span>
                                 </h2>
                             </div>
                         </div>
@@ -446,7 +446,7 @@ const Product = () => {
                         <div className="flex justify-center pt-4 sm:pt-6">
                             <button 
                                 onClick={() => router.push("/all-products")}
-                                className="px-6 sm:px-8 py-2.5 sm:py-3 border border-white/10 text-gray-400 font-semibold text-sm sm:text-base rounded-xl hover:bg-white/5 hover:border-[#9d0208] hover:text-white transition-all duration-300"
+                                className="px-6 sm:px-8 py-2.5 sm:py-3 border-2 border-[#2563eb] text-[#2563eb] font-semibold text-sm sm:text-base rounded-xl hover:bg-[#2563eb] hover:text-white transition-all duration-300"
                             >
                                 View All Products
                             </button>

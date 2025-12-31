@@ -116,20 +116,20 @@ const OrderSummary = ({ cartItems = {}, cartProducts = {} }) => {
   const totals = calculateCartTotals();
 
   return (
-    <div className="w-full md:w-96 bg-[#003049] border border-white/10 rounded-lg p-4 sm:p-5 text-white">
-      <h2 className="text-lg sm:text-xl font-bold mb-4 text-[#9d0208]">
+    <div className="w-full md:w-96 bg-[#f3f8fd] border border-white/10 rounded-lg p-4 sm:p-5 text-white">
+      <h2 className="text-lg sm:text-xl font-bold mb-4 text-[#2563eb]">
         Order Summary
       </h2>
 
       {/* Address Selector */}
       <div className="mb-6">
-        <label className="text-sm font-semibold block mb-2 text-gray-300">
+        <label className="text-sm font-semibold block mb-2 text-black">
           Select Address
         </label>
 
         <div className="relative text-sm">
           <button
-            className="w-full bg-white/5 border border-white/10 px-3 py-2 rounded text-gray-200 flex justify-between items-center"
+            className="w-full bg-white/5 border border-black px-3 py-2 rounded text-black flex justify-between items-center"
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
             <span>
@@ -161,7 +161,7 @@ const OrderSummary = ({ cartItems = {}, cartProducts = {} }) => {
               ))}
               <li
                 onClick={() => router.push("/add-address")}
-                className="px-3 py-2 text-center text-[#9d0208] hover:bg-white/10 cursor-pointer font-semibold"
+                className="px-3 py-2 bg-white text-center text-[#2563eb] hover:bg-white/10 cursor-pointer font-semibold"
               >
                 + Add New Address
               </li>
@@ -173,23 +173,23 @@ const OrderSummary = ({ cartItems = {}, cartProducts = {} }) => {
       {/* Summary */}
       <div className="space-y-3 text-sm">
         <div className="flex justify-between">
-          <p className="text-gray-300">Items ({totals.itemCount})</p>
-          <p>{currency}{totals.subtotal}</p>
+          <p className="text-black">Items ({totals.itemCount})</p>
+          <p className="text-black">{currency}{totals.subtotal}</p>
         </div>
 
         <div className="flex justify-between">
-          <p className="text-gray-300">Shipping</p>
+          <p className="text-black">Shipping</p>
           <p className="text-green-400 font-semibold">Free</p>
         </div>
 
         <div className="flex justify-between">
-          <p className="text-gray-300">Tax (2%)</p>
-          <p>{currency}{totals.tax}</p>
+          <p className="text-black">Tax (2%)</p>
+          <p className="text-black">{currency}{totals.tax}</p>
         </div>
 
         <div className="flex justify-between pt-3 mt-3 border-t border-white/10 text-lg font-bold">
           <p>Total</p>
-          <p className="text-[#9d0208]">{currency}{totals.total}</p>
+          <p className="text-[#2563eb]">{currency}{totals.total}</p>
         </div>
       </div>
 
@@ -198,7 +198,7 @@ const OrderSummary = ({ cartItems = {}, cartProducts = {} }) => {
         onClick={createOrder}
         disabled={isPlacingOrder}
         className={`w-full py-3 mt-6 rounded text-white font-semibold transition 
-          ${isPlacingOrder ? "bg-[#9d0208]/50 cursor-not-allowed" : "bg-[#9d0208] hover:bg-[#7a0106]"}`}
+          ${isPlacingOrder ? "bg-[#9d0208]/50 cursor-not-allowed" : "bg-[#2563eb] hover:bg-white/10 hover:text-[#2563eb]"}`}
       >
         {isPlacingOrder ? "Placing Order..." : "Place Order"}
       </button>

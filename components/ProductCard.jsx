@@ -23,10 +23,10 @@ const ProductCard = ({ product }) => {
       className="flex flex-col gap-1.5 min-[375px]:gap-2 w-full cursor-pointer group"
     >
       {/* Image Container */}
-      <div className="relative bg-white/5 border border-white/10 w-full aspect-[3/4] flex items-center justify-center overflow-hidden rounded-lg">
+      <div className="relative bg-gray-100 border border-gray-200 w-full aspect-[3/4] flex items-center justify-center overflow-hidden rounded-lg">
         {/* Sale Badge */}
         {hasOffer && (
-          <div className="absolute top-1.5 min-[375px]:top-2 left-1.5 min-[375px]:left-2 z-10 bg-[#9d0208] text-white text-[10px] min-[375px]:text-xs font-bold px-2 min-[375px]:px-2.5 py-0.5 min-[375px]:py-1 rounded">
+          <div className="absolute top-1.5 min-[375px]:top-2 left-1.5 min-[375px]:left-2 z-10 bg-blue-600 text-white text-[10px] min-[375px]:text-xs font-bold px-2 min-[375px]:px-2.5 py-0.5 min-[375px]:py-1 rounded shadow-md">
             Sale
           </div>
         )}
@@ -44,18 +44,18 @@ const ProductCard = ({ product }) => {
       <div className="flex flex-col gap-1 min-[375px]:gap-1.5 px-0.5 min-[375px]:px-1">
         {/* Category Badge */}
         <div className="flex items-center gap-2">
-          <span className="text-[10px] min-[375px]:text-xs text-[#9d0208] bg-[#9d0208]/10 px-2 py-0.5 rounded-full font-medium">
+          <span className="text-[10px] min-[375px]:text-xs text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full font-medium border border-blue-200">
             {categoryName}
           </span>
         </div>
 
         {/* Product Name */}
-        <p className="text-xs min-[375px]:text-sm sm:text-base font-semibold text-white line-clamp-2 leading-tight min-h-[2.5rem] min-[375px]:min-h-[2.8rem]">
+        <p className="text-xs min-[375px]:text-sm sm:text-base font-semibold text-gray-900 line-clamp-2 leading-tight min-h-[2.5rem] min-[375px]:min-h-[2.8rem]">
           {product?.name || "Unnamed Product"}
         </p>
 
         {/* Description - Hidden on mobile */}
-        <p className="hidden md:block text-xs text-gray-400 truncate">
+        <p className="hidden md:block text-xs text-gray-600 truncate">
           {product?.description || ""}
         </p>
 
@@ -71,13 +71,13 @@ const ProductCard = ({ product }) => {
               />
             ))}
           </div>
-          <p className="text-[10px] min-[375px]:text-xs text-gray-400">(4.5)</p>
+          <p className="text-[10px] min-[375px]:text-xs text-gray-600">(4.5)</p>
         </div>
 
         {/* Price and Buy Button */}
         <div className="flex items-start justify-between mt-0.5 min-[375px]:mt-1 gap-1">
           <div className="flex flex-col gap-0.5">
-            <p className="text-sm min-[375px]:text-base sm:text-lg font-bold text-white leading-none whitespace-nowrap">
+            <p className="text-sm min-[375px]:text-base sm:text-lg font-bold text-gray-900 leading-none whitespace-nowrap">
               {currency}{displayPrice}
             </p>
             {hasOffer && (
@@ -87,7 +87,7 @@ const ProductCard = ({ product }) => {
             )}
           </div>
           
-          <button className="hidden sm:flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-white bg-[#9d0208] hover:bg-[#7a0106] transition-colors rounded">
+          <button className="hidden sm:flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors rounded shadow-sm">
             Buy
           </button>
         </div>

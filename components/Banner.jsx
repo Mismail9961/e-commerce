@@ -5,12 +5,12 @@ import Image from "next/image";
 const Banner = () => {
   return (
     <div className="relative flex flex-col md:flex-row items-center justify-between md:pl-12 lg:pl-20 py-8 min-[375px]:py-10 sm:py-14 md:py-0 
-      bg-gradient-to-r from-[#003049] via-[#8a1a13] to-[#003049] 
+      bg-gradient-to-r from-blue-500 via-purple-500 to-blue-600 
       overflow-hidden my-8 min-[375px]:my-10 sm:my-12 lg:my-16">
 
       {/* Decorative Background Elements */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,_#8a1a1320_0%,_transparent_50%)]"></div>
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,_#00304920_0%,_transparent_50%)]"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,_#a78bfa30_0%,_transparent_50%)]"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,_#3b82f630_0%,_transparent_50%)]"></div>
 
       <Image
         className="w-40 min-[375px]:w-48 sm:w-56 md:w-64 relative z-10"
@@ -27,17 +27,17 @@ const Banner = () => {
 
         <p className="text-xs min-[375px]:text-sm sm:text-base 
           max-w-[300px] min-[375px]:max-w-[343px] sm:max-w-[400px] md:max-w-[450px] 
-          font-medium text-gray-200">
+          font-medium text-white/90">
           From immersive sound to precise controls—everything you need to win
         </p>
 
         <button className="group flex items-center justify-center gap-2 
           px-6 min-[375px]:px-8 py-2.5 min-[375px]:py-3 
           text-sm min-[375px]:text-base 
-          bg-[#8a1a13] hover:bg-[#70130f] 
-          text-white font-semibold 
+          bg-white hover:bg-gray-100 
+          text-blue-600 font-semibold 
           transition-all duration-300 
-          hover:shadow-lg hover:shadow-[#8a1a13]/50">
+          hover:shadow-lg hover:shadow-white/30 rounded-lg">
           Buy now
           <Image
             className="group-hover:translate-x-1 transition-transform w-4 h-4"

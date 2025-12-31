@@ -120,17 +120,17 @@ const HomeProducts = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center py-20 bg-gradient-to-br from-[#001d2e] via-[#003049] to-[#001d2e]">
+      <div className="flex justify-center items-center py-20 bg-gradient-to-br from-gray-50 via-blue-50 to-gray-50">
         <div className="flex flex-col items-center gap-3">
-          <div className="w-12 h-12 border-4 border-[#9d0208] border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-sm text-gray-400">Loading products...</p>
+          <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-sm text-gray-600">Loading products...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col py-8 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-[#001d2e] via-[#003049] to-[#001d2e]">
+    <div className="flex flex-col py-8 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-50 via-blue-50 to-gray-50">
       {sortedCategories.length > 0 ? (
         sortedCategories.map((categoryName, index) => {
           const isPriorityCategory = categoryPriority.includes(categoryName);
@@ -146,14 +146,14 @@ const HomeProducts = () => {
               {/* Category Header */}
               <div className="flex items-center justify-between mb-6 sm:mb-8">
                 <div className="flex items-center gap-3">
-                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white">
+                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900">
                     {categoryName}
                   </h2>
 
                 </div>
                 <button
                   onClick={() => router.push(`/${categorySlug}`)}
-                  className="text-sm sm:text-base text-gray-400 hover:text-white transition-colors flex items-center gap-2 group"
+                  className="text-sm sm:text-base text-gray-600 hover:text-blue-600 transition-colors flex items-center gap-2 group"
                 >
                   <span className="hidden sm:inline">View All</span>
                   <span className="sm:hidden">All</span>
@@ -169,7 +169,7 @@ const HomeProducts = () => {
               </div>
 
               {/* Products Count */}
-              <p className="text-xs sm:text-sm text-gray-400 mb-4">
+              <p className="text-xs sm:text-sm text-gray-600 mb-4">
                 {groupedProducts[categoryName].length} {groupedProducts[categoryName].length === 1 ? 'product' : 'products'}
               </p>
 
@@ -185,7 +185,7 @@ const HomeProducts = () => {
                 <div className="flex justify-center mt-6">
                   <button
                     onClick={() => router.push(`/${categorySlug}`)}
-                    className="px-6 py-2 text-sm text-gray-400 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 rounded-lg transition-all"
+                    className="px-6 py-2 text-sm text-gray-700 hover:text-blue-600 bg-white hover:bg-blue-50 border border-gray-200 hover:border-blue-300 rounded-lg transition-all shadow-sm"
                   >
                     Show {groupedProducts[categoryName].length - 10} more products
                   </button>
@@ -197,8 +197,8 @@ const HomeProducts = () => {
       ) : (
         <div className="flex flex-col items-center justify-center py-20">
           <div className="text-6xl mb-4">📦</div>
-          <p className="text-xl text-white font-semibold mb-2">No products available</p>
-          <p className="text-sm text-gray-400">Check back soon for new products!</p>
+          <p className="text-xl text-gray-900 font-semibold mb-2">No products available</p>
+          <p className="text-sm text-gray-600">Check back soon for new products!</p>
         </div>
       )}
 
@@ -207,7 +207,7 @@ const HomeProducts = () => {
         <div className="flex justify-center mt-6 sm:mt-8">
           <button
             onClick={() => router.push("/all-products")}
-            className="px-8 sm:px-12 py-3 sm:py-3.5 text-sm sm:text-base font-semibold text-white bg-[#9d0208] hover:bg-[#7a0006] transition-all duration-300 rounded-xl shadow-lg shadow-[#9d0208]/20 hover:shadow-[#9d0208]/40"
+            className="px-8 sm:px-12 py-3 sm:py-3.5 text-sm sm:text-base font-semibold text-white bg-blue-600 hover:bg-blue-700 transition-all duration-300 rounded-xl shadow-lg shadow-blue-600/20 hover:shadow-blue-600/40"
           >
             Browse All Products
           </button>
