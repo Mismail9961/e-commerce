@@ -15,7 +15,7 @@ const Home = () => {
     <>
       <TopBar />
       <Navbar/>
-      <div className="bg-[#F3F8FD]">
+      <div className="bg-[#F3F8FD] overflow-hidden">
         <HeaderSlider />
         <HomeProducts />
         <Banner />
