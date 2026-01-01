@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAppContext } from "@/context/AppContext";
 import { useSession, signOut } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
@@ -10,9 +10,32 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
   const pathname = usePathname();
   const router = useRouter();
   const [showShopSubmenu, setShowShopSubmenu] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [loadingCategories, setLoadingCategories] = useState(true);
 
   const canAccessSellerDashboard =
     session?.user?.role === "seller" || session?.user?.role === "admin";
+
+  // Fetch categories from API
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        setLoadingCategories(true);
+        const response = await fetch("/api/category/list");
+        const result = await response.json();
+        
+        if (result.success && result.data) {
+          setCategories(result.data);
+        }
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      } finally {
+        setLoadingCategories(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const handleSignOut = async () => {
     setShowSidebar(false);
@@ -22,13 +45,6 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
 
   const cartCount = getCartCount();
   const isActive = (path) => pathname === path;
-
-  const categories = [
-    { name: "Gaming Consoles", slug: "gaming-consoles" },
-    { name: "Mobile Accessories", slug: "mobile-accessories" },
-    { name: "PlayStation Games", slug: "playstation-games" },
-    { name: "Gaming Accessories", slug: "gaming-accessories" },
-  ];
 
   const handleCategoryClick = (slug) => {
     setShowSidebar(false);
@@ -142,15 +158,26 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
                   >
                     All Products
                   </button>
-                  {categories.map((c) => (
-                    <button
-                      key={c.slug}
-                      onClick={() => handleCategoryClick(c.slug)}
-                      className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-200 rounded-md"
-                    >
-                      {c.name}
-                    </button>
-                  ))}
+                  
+                  {loadingCategories ? (
+                    <div className="px-4 py-2 text-sm text-gray-500">
+                      Loading categories...
+                    </div>
+                  ) : categories.length > 0 ? (
+                    categories.map((category) => (
+                      <button
+                        key={category._id}
+                        onClick={() => handleCategoryClick(category.name.toLowerCase().replace(/\s+/g, '-'))}
+                        className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-200 rounded-md"
+                      >
+                        {category.name}
+                      </button>
+                    ))
+                  ) : (
+                    <div className="px-4 py-2 text-sm text-gray-500">
+                      No categories available
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -163,9 +190,8 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
                     Cart
                     {cartCount > 0 && (
                       <span className="bg-[#2563eb] text-white text-xs min-w-[20px] h-[20px] flex items-center justify-center rounded-full">
-  {cartCount}
-</span>
-
+                        {cartCount}
+                      </span>
                     )}
                   </button>
 

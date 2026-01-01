@@ -125,7 +125,7 @@ We're passionate about elevating your everyday style with premium fashion essent
         {/* Copyright */}
         <div className="py-5 sm:py-6 text-center">
           <p className="text-xs min-[375px]:text-sm text-gray-500">
-            Copyright 2025 © <span className="text-blue-600 font-medium">7even86gamehub.pk</span> All Rights Reserved.
+            Copyright 2025 © <span className="text-blue-600 font-medium">www.sachchu.store</span> All Rights Reserved.
           </p>
         </div>
       </div>
