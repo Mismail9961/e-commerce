@@ -12,12 +12,18 @@ const outfit = Outfit({ subsets: ['latin'], weight: ["300", "400", "500"] })
 const DEFAULT_METADATA_BASE = process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_BASE_URL || 'https://example.com';
 
 function normalizeUrl(url) {
-  if (!url) return null;
+  const input = typeof url === "string" ? url.trim() : url;
+  if (!input) return null;
   try {
-    return new URL(url).toString();
+    return new URL(input).toString();
   } catch {
     return null;
   }
+}
+
+function getSafeMetadataBase() {
+  const normalized = normalizeUrl(DEFAULT_METADATA_BASE) || "https://example.com";
+  return new URL(normalized);
 }
 
 async function getSeoData() {
@@ -44,7 +50,7 @@ export async function generateMetadata() {
 
   if (!seoData) {
     return {
-      metadataBase: new URL(DEFAULT_METADATA_BASE),
+      metadataBase: getSafeMetadataBase(),
       title: "",
       description: "",
       openGraph: {
@@ -62,7 +68,7 @@ export async function generateMetadata() {
   const validOgUrl = normalizeUrl(rawOgUrl) || normalizeUrl(DEFAULT_METADATA_BASE) || "https://example.com";
 
   return {
-    metadataBase: new URL(DEFAULT_METADATA_BASE),
+    metadataBase: getSafeMetadataBase(),
     title: seoData.title,
     description: seoData.description,
     keywords: seoData.keywords,
