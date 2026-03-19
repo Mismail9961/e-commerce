@@ -29,6 +29,11 @@ const nextConfig = {
         // CI already runs `npm run lint`; skipping during `next build` avoids build-time ESLint serialization issues.
         ignoreDuringBuilds: true,
     },
+    env: {
+        // Prevent build-time Invalid URL crashes when CI secrets are missing/empty.
+        NEXTAUTH_URL: process.env.NEXTAUTH_URL || "http://localhost:3000",
+        NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET || "ci-fallback-secret",
+    },
 };
 
 export default nextConfig;
