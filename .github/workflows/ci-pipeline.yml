@@ -219,7 +219,7 @@ jobs:
     name: Deploy to Production
     runs-on: ubuntu-latest
     needs: [build, security, validate-cloudinary]
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push' && secrets.VERCEL_TOKEN != '' && secrets.VERCEL_ORG_ID != '' && secrets.VERCEL_PROJECT_ID != ''
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     environment:
       name: production
       url: ${{ steps.deploy.outputs.deployment-url }}
@@ -227,7 +227,22 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Check required Vercel secrets
+        id: vercel-secrets-check
+        run: |
+          if [ -z "${VERCEL_TOKEN}" ] || [ -z "${VERCEL_ORG_ID}" ] || [ -z "${VERCEL_PROJECT_ID}" ]; then
+            echo "Vercel secrets not set; skipping production deploy."
+            echo "deploy_enabled=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "deploy_enabled=true" >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
       - name: Deploy to Vercel (Production)
+        if: steps.vercel-secrets-check.outputs.deploy_enabled == 'true'
         id: deploy
         uses: amondnet/vercel-action@v25
         with:
@@ -238,6 +253,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Comment deployment URL on commit
+        if: steps.vercel-secrets-check.outputs.deploy_enabled == 'true'
         uses: actions/github-script@v7
         with:
           script: |
@@ -253,7 +269,7 @@ jobs:
     name: Deploy Preview
     runs-on: ubuntu-latest
     needs: [build]
-    if: github.event_name == 'pull_request' && secrets.VERCEL_TOKEN != '' && secrets.VERCEL_ORG_ID != '' && secrets.VERCEL_PROJECT_ID != ''
+    if: github.event_name == 'pull_request'
     environment:
       name: preview
       url: ${{ steps.deploy.outputs.preview-url }}
@@ -261,7 +277,22 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Check required Vercel secrets
+        id: vercel-secrets-check
+        run: |
+          if [ -z "${VERCEL_TOKEN}" ] || [ -z "${VERCEL_ORG_ID}" ] || [ -z "${VERCEL_PROJECT_ID}" ]; then
+            echo "Vercel secrets not set; skipping preview deploy."
+            echo "deploy_enabled=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "deploy_enabled=true" >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
       - name: Deploy Preview to Vercel
+        if: steps.vercel-secrets-check.outputs.deploy_enabled == 'true'
         id: deploy
         uses: amondnet/vercel-action@v25
         with:
