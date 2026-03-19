@@ -25,6 +25,10 @@ const nextConfig = {
             },
         ],
     },
+    eslint: {
+        // CI already runs `npm run lint`; skipping during `next build` avoids build-time ESLint serialization issues.
+        ignoreDuringBuilds: true,
+    },
 };
 
 export default nextConfig;
