@@ -40,11 +40,21 @@ async function getSeoData() {
 export async function generateMetadata() {
   const seoData = await getSeoData();
   
+  const defaultOgUrl = normalizeUrl(DEFAULT_METADATA_BASE) || "https://example.com";
+
   if (!seoData) {
     return {
       metadataBase: new URL(DEFAULT_METADATA_BASE),
       title: "",
       description: "",
+      openGraph: {
+        url: defaultOgUrl,
+        title: "",
+        description: "",
+        siteName: "",
+        locale: "en_US",
+        type: "website",
+      },
     };
   }
 
