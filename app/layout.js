@@ -10,6 +10,12 @@ import Seo from "@/models/Seo";
 const outfit = Outfit({ subsets: ['latin'], weight: ["300", "400", "500"] })
 
 async function getSeoData() {
+  if (!process.env.MONGODB_URI) {
+    // In build or CI env without a DB, skip fetching and use defaults
+    console.warn("MONGODB_URI not set; skipping SEO DB fetch in generateMetadata");
+    return null;
+  }
+
   try {
     await connectDB();
     const seoData = await Seo.findOne().sort({ updatedAt: -1 });
@@ -30,6 +36,8 @@ export async function generateMetadata() {
     };
   }
 
+  const ogUrl = seoData.openGraph?.url?.trim();
+
   return {
     title: seoData.title,
     description: seoData.description,
@@ -37,7 +45,7 @@ export async function generateMetadata() {
     openGraph: {
       title: seoData.openGraph?.title || seoData.title,
       description: seoData.openGraph?.description || seoData.description,
-      url: seoData.openGraph?.url || "",
+      ...(ogUrl ? { url: ogUrl } : {}),
       siteName: seoData.openGraph?.siteName || "",
       locale: seoData.openGraph?.locale || "en_US",
       type: seoData.openGraph?.type || "website",
