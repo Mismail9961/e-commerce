@@ -12,7 +12,7 @@ const outfit = Outfit({ subsets: ['latin'], weight: ["300", "400", "500"] })
 async function getSeoData() {
   try {
     await connectDB();
-    const seoData = await Seo.findOne().lean();
+    const seoData = await Seo.findOne().sort({ updatedAt: -1 });
     return seoData;
   } catch (error) {
     console.error("Error fetching SEO data:", error);

@@ -17,6 +17,6 @@ const seoSchema = new mongoose.Schema({
   description: { type: String, required: true },
   keywords: { type: [String], default: [] },
   openGraph: { type: openGraphSchema, default: {} },
-});
+}, { timestamps: true });
 
 export default mongoose.models.Seo || mongoose.model("Seo", seoSchema);

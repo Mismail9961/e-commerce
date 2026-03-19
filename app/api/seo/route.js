@@ -9,7 +9,7 @@ import { authOptions } from "@/lib/auth";
 export async function GET() {
   try {
     await connectDB();
-    let seo = await Seo.findOne();
+    let seo = await Seo.findOne().sort({ updatedAt: -1 });
     
     // If no SEO document exists, create default one
     if (!seo) {
@@ -62,19 +62,15 @@ export async function POST(request) {
     const data = await request.json();
     
     // Find existing SEO document or create new one
-    let seo = await Seo.findOne();
-    
-    if (seo) {
-      // Update existing
-      seo.title = data.title;
-      seo.description = data.description;
-      seo.keywords = data.keywords;
-      seo.openGraph = data.openGraph;
-      await seo.save();
-    } else {
-      // Create new
-      seo = await Seo.create(data);
-    }
+    const seo = await Seo.findOneAndUpdate(
+      {}, // empty filter to match any
+      data,
+      { 
+        new: true, 
+        upsert: true, 
+        sort: { updatedAt: -1 } 
+      }
+    );
     
     return NextResponse.json({ 
       success: true, 
