@@ -47,7 +47,8 @@ const categorySeoSchema = new mongoose.Schema(
 );
 
 // Index for faster queries
-categorySeoSchema.index({ categorySlug: 1 });
+// Note: `categorySlug` is already unique in schema. Avoid duplicate index warning.
+// categorySeoSchema.index({ categorySlug: 1 });
 
 export default mongoose.models.CategorySeo ||
   mongoose.model("CategorySeo", categorySeoSchema);

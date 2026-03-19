@@ -9,6 +9,17 @@ import Seo from "@/models/Seo";
 
 const outfit = Outfit({ subsets: ['latin'], weight: ["300", "400", "500"] })
 
+const DEFAULT_METADATA_BASE = process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_BASE_URL || 'https://example.com';
+
+function normalizeUrl(url) {
+  if (!url) return null;
+  try {
+    return new URL(url).toString();
+  } catch {
+    return null;
+  }
+}
+
 async function getSeoData() {
   if (!process.env.MONGODB_URI) {
     // In build or CI env without a DB, skip fetching and use defaults
@@ -31,21 +42,24 @@ export async function generateMetadata() {
   
   if (!seoData) {
     return {
+      metadataBase: new URL(DEFAULT_METADATA_BASE),
       title: "",
       description: "",
     };
   }
 
-  const ogUrl = seoData.openGraph?.url?.trim();
+  const rawOgUrl = seoData.openGraph?.url?.trim();
+  const validOgUrl = normalizeUrl(rawOgUrl) || normalizeUrl(DEFAULT_METADATA_BASE) || "https://example.com";
 
   return {
+    metadataBase: new URL(DEFAULT_METADATA_BASE),
     title: seoData.title,
     description: seoData.description,
     keywords: seoData.keywords,
     openGraph: {
       title: seoData.openGraph?.title || seoData.title,
       description: seoData.openGraph?.description || seoData.description,
-      ...(ogUrl ? { url: ogUrl } : {}),
+      url: validOgUrl,
       siteName: seoData.openGraph?.siteName || "",
       locale: seoData.openGraph?.locale || "en_US",
       type: seoData.openGraph?.type || "website",
