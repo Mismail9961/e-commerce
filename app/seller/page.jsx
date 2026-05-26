@@ -73,7 +73,9 @@ const AddProduct = () => {
   if (!user || !["seller", "admin"].includes(user.role)) {
     return (
       <div className="min-h-screen flex items-center justify-center px-4">
-        <p className="text-base sm:text-lg font-semibold text-[#9d0208]">Access Denied</p>
+        <p className="text-base sm:text-lg font-semibold text-[#9d0208]">
+          Access Denied
+        </p>
       </div>
     );
   }
@@ -122,12 +124,10 @@ const AddProduct = () => {
 
       if (data.success) {
         toast.success(data.message);
-        setFiles([]);
-        setName("");
-        setDescription("");
-        setCategory("");
-        setPrice("");
-        setOfferPrice("");
+        // Small delay so the toast is visible before reload
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       } else {
         toast.error(data.message || "Failed to add product");
       }
