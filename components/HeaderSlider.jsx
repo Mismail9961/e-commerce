@@ -7,11 +7,11 @@ import { assets } from "@/assets/assets";
 
 const HeaderSlider = () => {
   const sliderData = [
-    { id: 1, imgSrc: assets.HeadBanner, title: "Banner 1" },
-    { id: 2, imgSrc: assets.HeadBanner1, title: "Banner 2" },
-    { id: 3, imgSrc: assets.HeadBanner2, title: "Banner 3" },
-    { id: 4, imgSrc: assets.HeadBanner1, title: "Banner 4" },
-    { id: 5, imgSrc: assets.HeadBanner, title: "Banner 5" },
+    { id: 1, imgSrc: assets.HeadBanner1, title: "Banner 1" },
+    { id: 2, imgSrc: assets.HeadBanner2, title: "Banner 2" },
+    { id: 3, imgSrc: assets.HeadBanner3, title: "Banner 3" },
+    { id: 4, imgSrc: assets.HeadBanner4, title: "Banner 4" },
+    { id: 5, imgSrc: assets.HeadBanner5, title: "Banner 5" },
   ];
 
   const [currentSlide, setCurrentSlide] = useState(0);

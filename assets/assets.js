@@ -47,13 +47,17 @@ import product_details_page_apple_earphone_image3 from "./product_details_page_a
 import product_details_page_apple_earphone_image4 from "./product_details_page_apple_earphone_image4.png";
 import product_details_page_apple_earphone_image5 from "./product_details_page_apple_earphone_image5.png";
 import mainlogo from "./1logo.jpg";
-import HeadBanner from "./new1.png"
-import HeadBanner1 from "./new2.png"
-import HeadBanner2 from "./new3.png"
+import HeadBanner1 from "./banner-img-1.png"
+import HeadBanner2 from "./banner-img-2.png"
+import HeadBanner3 from "./banner-img-3.png"
+import HeadBanner4 from "./banner-img-4.png"
+import HeadBanner5 from "./banner-img-5.png"
 
 export const assets = {
+  HeadBanner3,
+  HeadBanner4,
+  HeadBanner5,
   HeadBanner2,
-  HeadBanner,
   HeadBanner1,
   mainlogo,
   logo,
