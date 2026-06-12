@@ -52,6 +52,7 @@ import HeadBanner2 from "./banner-img-2.png"
 import HeadBanner3 from "./banner-img-3.png"
 import HeadBanner4 from "./banner-img-4.png"
 import HeadBanner5 from "./banner-img-5.png"
+import HeadBanner6 from "./last-banner.jpeg"
 
 export const assets = {
   HeadBanner3,
@@ -59,6 +60,7 @@ export const assets = {
   HeadBanner5,
   HeadBanner2,
   HeadBanner1,
+  HeadBanner6,
   mainlogo,
   logo,
   search_icon,

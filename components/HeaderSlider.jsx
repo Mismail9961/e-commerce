@@ -12,6 +12,8 @@ const HeaderSlider = () => {
     { id: 3, imgSrc: assets.HeadBanner3, title: "Banner 3" },
     { id: 4, imgSrc: assets.HeadBanner4, title: "Banner 4" },
     { id: 5, imgSrc: assets.HeadBanner5, title: "Banner 5" },
+    { id: 6, imgSrc: assets.HeadBanner6, title: "Banner 6" }
+
   ];
 
   const [currentSlide, setCurrentSlide] = useState(0);
