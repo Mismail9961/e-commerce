@@ -87,7 +87,6 @@ const HeaderSlider = () => {
               sizes="100vw"
             />
 
-            {/* Light gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-white/40 via-white/10 to-transparent"></div>
             <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-transparent to-white/30"></div>
           </div>

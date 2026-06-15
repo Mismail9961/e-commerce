@@ -5,7 +5,7 @@ const OrderSchema = new mongoose.Schema({
   userId: { 
     type: String, 
     required: true,
-    index: true // Add index for faster queries
+    index: true 
   },
   address: {
     fullName: { type: String, required: true },
@@ -47,10 +47,9 @@ const OrderSchema = new mongoose.Schema({
     default: Date.now 
   }
 }, { 
-  timestamps: true // This adds createdAt and updatedAt automatically
+  timestamps: true
 });
 
-// Add compound index for better query performance
 OrderSchema.index({ userId: 1, date: -1 });
 
 const Order = mongoose.models.Order || mongoose.model("Order", OrderSchema);
