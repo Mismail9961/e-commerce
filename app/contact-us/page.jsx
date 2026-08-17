@@ -82,7 +82,7 @@ export default function ContactUs() {
                 <p className="text-sm text-gray-500 mt-1">Mon – Fri · 9 AM – 6 PM</p>
 
                 <div className="mt-5 space-y-4 text-sm">
-                  <InfoItem icon={<Phone />} label="Phone" value="+92 3360264083" />
+                  <InfoItem icon={<Phone />} label="Phone" value="+92-336-0264082" />
                   <InfoItem icon={<Mail />} label="Email" value="sachchupk@gmail.com" />
                   <InfoItem icon={<MapPin />} label="Address" value="Gulberg, Karachi, Pakistan" />
                 </div>
